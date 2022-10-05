@@ -1,0 +1,7 @@
+{
+  "organizations": [
+    { "id": 1, "name": "Ciência da Computação" },
+    { "id": 2, "name": "Sistemas de Informação" },
+    { "id": 3, "name": "Bacharelado em Ciência da Computação" }
+  ]
+}
