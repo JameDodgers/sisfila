@@ -1,13 +1,24 @@
 import { StatusBar } from "expo-status-bar";
-import { NativeBaseProvider, VStack, Text } from "native-base";
+import { SafeAreaView, StyleSheet } from "react-native";
+import { NativeBaseProvider } from "native-base";
+import { Routes } from "./src/routes";
+import { AppProvider } from "./src/context/app";
 
 export default function App() {
   return (
     <NativeBaseProvider>
-      <StatusBar style="auto" />
-      <VStack flex={1} justifyContent="center" alignItems="center">
-        <Text>Hello world</Text>
-      </VStack>
+      <AppProvider>
+        <StatusBar style="auto" translucent={false} />
+        <SafeAreaView
+          style={{
+            flex: 1,
+          }}
+        >
+          <Routes />
+        </SafeAreaView>
+      </AppProvider>
     </NativeBaseProvider>
   );
 }
+
+const styles = StyleSheet.create({});
