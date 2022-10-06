@@ -3,6 +3,7 @@ import React, { FC } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Header, getHeaderTitle } from "@react-navigation/elements";
 import { DrawerToggleButton } from "@react-navigation/drawer";
+import { Platform } from "react-native";
 
 const { Navigator, Screen } = createNativeStackNavigator();
 
@@ -30,12 +31,14 @@ export const getStackAndScreensInsideDrawer = ({
       <Screen
         {...screensProps[0]}
         options={{
-          header: ({ route, options }) => (
-            <Header
-              title={getHeaderTitle(options, route.name)}
-              headerLeft={(props) => <DrawerToggleButton {...props} />}
-            />
-          ),
+          ...(Platform.OS !== "web" && {
+            header: ({ route, options }) => (
+              <Header
+                title={getHeaderTitle(options, route.name)}
+                headerLeft={(props) => <DrawerToggleButton {...props} />}
+              />
+            ),
+          }),
         }}
       />
       {screensProps.slice(1).map((props: any) => (

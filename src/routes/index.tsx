@@ -1,4 +1,9 @@
-import { NavigationContainer } from "@react-navigation/native";
+import { useMemo } from "react";
+import {
+  NavigationContainer,
+  // CommonActions,
+  // DrawerActions,
+} from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 
 import CustomDrawerContent from "../components/CustomDrawerContent";
@@ -14,6 +19,17 @@ const { Navigator, Screen } = createDrawerNavigator();
 export const Routes = () => {
   const { isLoggedIn } = useAppContext();
 
+  const drawerType = useMemo(() => {
+    switch (Platform.OS) {
+      case "web":
+        return "permanent";
+      case "ios":
+        return "slide";
+      case "android":
+        return "front";
+    }
+  }, []);
+
   return (
     <NavigationContainer>
       <Navigator
@@ -22,11 +38,24 @@ export const Routes = () => {
         screenOptions={{
           headerShown: false,
           swipeEnabled: false,
-          drawerType: Platform.OS === "android" ? "front" : "slide",
+          drawerType,
+          // drawerType: Platform.OS === "android" ? "front" : "slide",
           ...(Platform.OS === "web" && {
             overlayColor: "transparent",
           }),
         }}
+        // screenListeners={({ navigation, route }) => ({
+        //   drawerItemPress: (e) => {
+        //     navigation.dispatch((state) => {
+        //       const index = state.routes.findIndex(
+        //         (r) => r.name === route.name
+        //       );
+
+        //       return CommonActions.reset({ ...state, index });
+        //     });
+        //     e.preventDefault();
+        //   },
+        // })}
         drawerContent={(props) => <CustomDrawerContent {...props} />}
       >
         {isLoggedIn ? (
