@@ -31,12 +31,35 @@ export const Routes = () => {
       >
         {isLoggedIn ? (
           <>
-            <Screen name="OrganizationRoutes" component={OrganizationRoutes} />
-            <Screen name="GroupsRoutes" component={GroupsRoutes} />
-            <Screen name="AttendantsRoutes" component={AttendantsRoutes} />
+            <Screen
+              name="OrganizationRoutes"
+              options={{
+                title: "Organização",
+              }}
+              component={OrganizationRoutes}
+            />
+            <Screen
+              name="GroupsRoutes"
+              options={{
+                title: "Grupos",
+              }}
+              component={GroupsRoutes}
+            />
+            <Screen name="AttendantsRoutes"
+              options={{
+                title: 'Atendentes'
+              }}
+              component={AttendantsRoutes}
+            />
           </>
         ) : (
-          <Screen name="HomeRoutes" component={HomeRoutes} />
+          <Screen
+            name="HomeRoutes"
+            options={{
+              title: 'Início'
+            }}
+            component={HomeRoutes}
+          />
         )}
       </Navigator>
     </NavigationContainer>
