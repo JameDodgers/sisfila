@@ -8,6 +8,9 @@
     "ios": "npx expo start --ios",
     "web": "npx expo start --web"
   },
+  "resolutions": {
+    "react-error-overlay": "6.0.9"
+  },
   "dependencies": {
     "@expo/webpack-config": "^0.17.0",
     "@react-navigation/drawer": "^6.5.0",
