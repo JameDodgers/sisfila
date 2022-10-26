@@ -4,28 +4,22 @@ import {
   DrawerContentComponentProps,
   DrawerItem,
 } from "@react-navigation/drawer";
-
-import { useAppContext } from "../context/app";
+import { useAuth } from "../hooks/auth";
 
 type Props = DrawerContentComponentProps & {};
 
 const CustomDrawerContent = ({ ...props }: Props) => {
-  const { isLoggedIn } = useAppContext();
+  const { user, signOut } = useAuth();
   return (
     <DrawerContentScrollView {...props}>
       <DrawerItemList {...props} />
-      {isLoggedIn ? (
-        <DrawerItem
-          label="Sair"
-          onPress={() => {
-            console.log("onPress");
-          }}
-        />
+      {user.token ? (
+        <DrawerItem label="Sair" onPress={signOut} />
       ) : (
         <DrawerItem
-          label="Login"
+          label="Entrar"
           onPress={() => {
-            console.log("onPress");
+            props.navigation.navigate("SignIn");
           }}
         />
       )}

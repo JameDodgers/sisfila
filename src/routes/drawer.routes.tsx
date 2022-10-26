@@ -5,7 +5,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import CustomDrawerContent from "../components/CustomDrawerContent";
 import { OrganizationRoutes } from "./organization.routes";
 import { HomeRoutes } from "./home.routes";
-import { useAppContext } from "../context/app";
+import { useAuth } from "../hooks/auth";
 import { Platform } from "react-native";
 import { AttendantsRoutes } from "./attendants.routes";
 import { GroupsRoutes } from "./groups.routes";
@@ -13,7 +13,7 @@ import { GroupsRoutes } from "./groups.routes";
 const { Navigator, Screen } = createDrawerNavigator();
 
 export const DrawerRoutes = () => {
-  const { isLoggedIn } = useAppContext();
+  const { user } = useAuth();
 
   const drawerType = useMemo(() => {
     switch (Platform.OS) {
@@ -53,7 +53,7 @@ export const DrawerRoutes = () => {
       // })}
       drawerContent={(props) => <CustomDrawerContent {...props} />}
     >
-      {isLoggedIn ? (
+      {user.token ? (
         <>
           <Screen
             name="OrganizationRoutes"
