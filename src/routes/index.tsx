@@ -4,8 +4,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 const { Navigator, Screen } = createNativeStackNavigator();
 
 import { DrawerRoutes } from "./drawer.routes";
-import { Login } from "../screens/Login";
-import { Register } from "../screens/Register";
+import { SignIn } from "../screens/SignIn";
+import { SignUp } from "../screens/SignUp";
 
 export const Routes = () => (
   <NavigationContainer>
@@ -15,8 +15,20 @@ export const Routes = () => (
         options={{ headerShown: false }}
         component={DrawerRoutes}
       />
-      <Screen name="Login" component={Login} />
-      <Screen name="Register" component={Register} />
+      <Screen
+        name="SignIn"
+        options={{
+          title: "Entrar",
+        }}
+        component={SignIn}
+      />
+      <Screen
+        name="SignUp"
+        options={{
+          title: "Cadastro",
+        }}
+        component={SignUp}
+      />
     </Navigator>
   </NavigationContainer>
 );
