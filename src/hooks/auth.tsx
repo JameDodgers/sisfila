@@ -14,7 +14,7 @@ import api from "../services/api";
 import { COLLECTION_USER } from "../configs/storage";
 import Storage from "../libs/storage";
 
-const WEB_CLIENT_ID = process.env.WEB_CLIENT_ID;
+const CLIENT_ID = process.env.CLIENT_ID;
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -55,7 +55,7 @@ function AuthProvider({ children }: AuthProviderProps) {
   const [loading, setLoading] = useState(false);
 
   const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
-    clientId: WEB_CLIENT_ID,
+    clientId: CLIENT_ID,
   });
 
   useEffect(() => {
@@ -82,7 +82,7 @@ function AuthProvider({ children }: AuthProviderProps) {
         try {
           const { data } = await api.post("v1/users/auth/google", {
             oauthToken: id_token,
-            audience: WEB_CLIENT_ID,
+            audience: CLIENT_ID,
           });
 
           const userData = {
