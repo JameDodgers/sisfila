@@ -1,18 +1,16 @@
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaView, StyleSheet } from "react-native";
-import { Provider as PaperProvider, DefaultTheme } from "react-native-paper";
+import { Provider as PaperProvider } from "react-native-paper";
 import { NativeBaseProvider } from "native-base";
 import { AuthProvider } from "./src/hooks/auth";
 import { Routes } from "./src/routes";
 
-const theme = {
-  ...DefaultTheme,
-};
+import { CombinedDefaultTheme } from "./src/styles/theme";
 
 export default function App() {
   return (
     <NativeBaseProvider>
-      <PaperProvider theme={theme}>
+      <PaperProvider theme={CombinedDefaultTheme}>
         <AuthProvider>
           <StatusBar style="auto" translucent={false} />
           <SafeAreaView
