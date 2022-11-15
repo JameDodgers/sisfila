@@ -1,7 +1,7 @@
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { Button, VStack } from "native-base";
 import { useEffect, useLayoutEffect, useState } from "react";
-import api from "../../services/axios";
+import api from "../../services/api";
 
 type RouteParams = {
   id: number;
@@ -43,7 +43,13 @@ export const Organization = () => {
   return (
     <VStack flex={1} p={4}>
       <VStack flex={1}></VStack>
-      <Button>Entrar na fila</Button>
+      <Button
+        onPress={() => {
+          navigation.navigate("ModalIdentify");
+        }}
+      >
+        Entrar na fila
+      </Button>
     </VStack>
   );
 };
