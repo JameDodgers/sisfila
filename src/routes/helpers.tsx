@@ -1,15 +1,18 @@
 import React, { FC } from "react";
+import { Platform } from "react-native";
 
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Header, getHeaderTitle } from "@react-navigation/elements";
 import { DrawerToggleButton } from "@react-navigation/drawer";
-import { Platform } from "react-native";
+import { Button, Icon, IconButton, Text } from "native-base";
+
+import Feather from "@expo/vector-icons/Feather";
 
 const { Navigator, Screen } = createNativeStackNavigator();
 
 type ScreenProp = {
   name: string;
   component: FC;
+  options?: any;
 };
 
 type Params = {
@@ -28,21 +31,32 @@ export const getStackAndScreensInsideDrawer = ({
         headerBackTitleVisible: false,
       }}
     >
-      <Screen
-        {...screensProps[0]}
-        options={{
-          ...(Platform.OS !== "web" && {
-            header: ({ route, options }) => (
-              <Header
-                title={getHeaderTitle(options, route.name)}
-                headerLeft={(props) => <DrawerToggleButton {...props} />}
-              />
-            ),
-          }),
-        }}
-      />
-      {screensProps.slice(1).map((props: any) => (
-        <Screen {...props} />
+      {screensProps.map((props: any) => (
+        <Screen
+          {...props}
+          key={props.name}
+          options={({ navigation }) => ({
+            ...screensProps[0].options,
+            ...(Platform.OS !== "web" && {
+              headerLeft: ({ tintColor, canGoBack }) => {
+                if (canGoBack) {
+                  return null;
+                }
+
+                return (
+                  <IconButton
+                    size="sm"
+                    variant="link"
+                    icon={<Feather name="menu" size={24} color={tintColor} />}
+                    onPress={() => {
+                      navigation.toggleDrawer();
+                    }}
+                  />
+                );
+              },
+            }),
+          })}
+        />
       ))}
     </Navigator>
   );
