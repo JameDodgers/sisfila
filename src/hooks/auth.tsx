@@ -10,17 +10,41 @@ import * as Google from "expo-auth-session/providers/google";
 import * as AuthSession from "expo-auth-session";
 import * as WebBrowser from "expo-web-browser";
 
+import Constants from "expo-constants";
+
 import api from "../services/api";
 import { COLLECTION_USER } from "../configs/storage";
 import Storage from "../libs/storage";
+import { Platform } from "react-native";
 
-const CLIENT_ID = process.env.CLIENT_ID;
+const { EXPO_CLIENT_ID } = process.env;
+const { ANDROID_CLIENT_ID } = process.env;
+const { IOS_CLIENT_ID } = process.env;
+const { WEB_CLIENT_ID } = process.env;
+
+const AUDIENCE =
+  Constants.appOwnership === "expo"
+    ? EXPO_CLIENT_ID
+    : Platform.OS === "ios"
+    ? IOS_CLIENT_ID
+    : Platform.OS === "android"
+    ? ANDROID_CLIENT_ID
+    : Platform.OS === "web"
+    ? WEB_CLIENT_ID
+    : "";
 
 WebBrowser.maybeCompleteAuthSession();
+
+export type UserRoleOnOrganization = {
+  organizationName: string;
+  organizationId: string;
+  role: string;
+};
 
 interface User {
   email: string;
   token: string;
+  userRolesOnOrganizationsMap: UserRoleOnOrganization[];
 }
 
 interface CreateUserRequest {
@@ -55,7 +79,10 @@ function AuthProvider({ children }: AuthProviderProps) {
   const [loading, setLoading] = useState(false);
 
   const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
-    clientId: CLIENT_ID,
+    expoClientId: EXPO_CLIENT_ID,
+    androidClientId: ANDROID_CLIENT_ID,
+    iosClientId: IOS_CLIENT_ID,
+    webClientId: WEB_CLIENT_ID,
   });
 
   useEffect(() => {
@@ -82,7 +109,7 @@ function AuthProvider({ children }: AuthProviderProps) {
         try {
           const { data } = await api.post("v1/users/auth/google", {
             oauthToken: id_token,
-            audience: CLIENT_ID,
+            audience: AUDIENCE,
           });
 
           const userData = {
