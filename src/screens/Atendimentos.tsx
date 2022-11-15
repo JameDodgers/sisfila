@@ -2,26 +2,23 @@ import { useNavigation } from "@react-navigation/native";
 import { FlatList, Text, VStack } from "native-base";
 import { useEffect, useState } from "react";
 import Atendimento, { AtendimentoProps } from "../components/Atendimento";
-import api from "../services/axios";
-
+import api from "../services/api";
 
 export const Atendimentos = () => {
   const navigation = useNavigation();
 
-  const [atendimentos, setAtendimentos] =
-    useState<AtendimentoProps[]>([]);
+  const [atendimentos, setAtendimentos] = useState<AtendimentoProps[]>([]);
 
   useEffect(() => {
-    const fetchAtendimentos = async () => {
-      try {
-        const { data } = await api.get("organizations");
+    api
+      .get("v1/organizations")
+      .then(({ data }) => {
+        console.log(data);
         setAtendimentos(data);
-      } catch (e) {
-        console.log(e);
-      }
-    };
-
-    fetchAtendimentos();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, []);
 
   return (
@@ -31,6 +28,7 @@ export const Atendimentos = () => {
           m: "4",
         }}
         data={atendimentos}
+        keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => {
           return (
             <Atendimento
