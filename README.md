@@ -1,3 +1,8 @@
+## Configurações
+Faça uma cópia do `.env.example` e renomeie para `.env`
+
+Carregue as variávies de ambiente com o comando `export $(xargs < .env)`
+
 ## Comandos
 
 Instalar dependências:
