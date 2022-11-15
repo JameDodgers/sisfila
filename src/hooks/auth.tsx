@@ -117,6 +117,8 @@ function AuthProvider({ children }: AuthProviderProps) {
             token: data.token,
           };
 
+          api.defaults.headers.authorization = `Bearer ${data.token}`;
+
           await Storage.setItem(COLLECTION_USER, JSON.stringify(userData));
 
           setUser(userData);
@@ -145,6 +147,8 @@ function AuthProvider({ children }: AuthProviderProps) {
         token: data.token,
       };
 
+      api.defaults.headers.authorization = `Bearer ${data.token}`;
+
       await Storage.setItem(COLLECTION_USER, JSON.stringify(userData));
 
       setUser(userData);
@@ -167,6 +171,8 @@ function AuthProvider({ children }: AuthProviderProps) {
         ...data.user,
         token: data.token,
       };
+
+      api.defaults.headers.authorization = `Bearer ${data.token}`;
 
       await Storage.setItem(COLLECTION_USER, JSON.stringify(userData));
 
