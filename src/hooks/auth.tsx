@@ -17,6 +17,8 @@ import { COLLECTION_USER } from "../configs/storage";
 import Storage from "../libs/storage";
 import { Platform } from "react-native";
 
+import { User } from "../models/User";
+
 const { EXPO_CLIENT_ID } = process.env;
 const { ANDROID_CLIENT_ID } = process.env;
 const { IOS_CLIENT_ID } = process.env;
@@ -34,18 +36,6 @@ const AUDIENCE =
     : "";
 
 WebBrowser.maybeCompleteAuthSession();
-
-export type UserRoleOnOrganization = {
-  organizationName: string;
-  organizationId: string;
-  role: string;
-};
-
-interface User {
-  email: string;
-  token: string;
-  userRolesOnOrganizationsMap: UserRoleOnOrganization[];
-}
 
 interface CreateUserRequest {
   name: string;
