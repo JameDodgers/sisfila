@@ -12,6 +12,14 @@ const CustomDrawerContent = ({ ...props }: Props) => {
   const { user, signOut } = useAuth();
   return (
     <DrawerContentScrollView {...props}>
+      {user.token && (
+        <DrawerItem
+          label="Minhas organizações"
+          onPress={() => {
+            props.navigation.navigate("Organizations");
+          }}
+        />
+      )}
       <DrawerItemList {...props} />
       {user.token ? (
         <DrawerItem label="Sair" onPress={signOut} />

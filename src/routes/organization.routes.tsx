@@ -1,8 +1,8 @@
-import { Organization } from "../screens/Member/Organization";
+import { OrganizationDetails } from "../screens/Member/OrganizationDetails";
 
 import { getStackAndScreensInsideDrawer } from "./helpers";
 
 export const OrganizationRoutes = getStackAndScreensInsideDrawer({
   initialRouteName: "Organization",
-  screensProps: [{ name: "Organization", component: Organization }],
+  screensProps: [{ name: "Organização", component: OrganizationDetails }],
 });

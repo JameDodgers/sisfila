@@ -9,6 +9,8 @@ import { useAuth } from "../hooks/auth";
 import { Platform } from "react-native";
 import { AttendantsRoutes } from "./attendants.routes";
 import { GroupsRoutes } from "./groups.routes";
+import { Queues } from "../screens/Member/Queues";
+import { ServicesRoutes } from "./services.routes";
 
 const { Navigator, Screen } = createDrawerNavigator();
 
@@ -75,6 +77,20 @@ export const DrawerRoutes = () => {
               title: "Atendentes",
             }}
             component={AttendantsRoutes}
+          />
+          <Screen
+            name="ServicesRoutes"
+            options={{
+              title: "Serviços",
+            }}
+            component={ServicesRoutes}
+          />
+          <Screen
+            name="Queues"
+            options={{
+              title: "Filas",
+            }}
+            component={Queues}
           />
         </>
       ) : (
