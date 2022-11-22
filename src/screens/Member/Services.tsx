@@ -13,7 +13,6 @@ export const Services = () => {
       api
         .get(`v1/services/organizations/${organizationId}`)
         .then(({ data }) => {
-          console.log(data);
           setServices(data);
         })
         .catch((error) => {
