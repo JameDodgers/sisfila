@@ -1,12 +1,7 @@
-export type UserRoleOnOrganization = {
-  organizationName: string;
-  organizationId: string;
-  role: string;
-};
-
 export type User = {
   id: string;
   email: string;
+  createdAt: Date;
+  updatedAt: Date;
   token: string;
-  userRolesOnOrganizationsMap: UserRoleOnOrganization[];
 };

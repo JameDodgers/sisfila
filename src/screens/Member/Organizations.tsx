@@ -2,23 +2,18 @@ import { VStack, Box, FlatList, Center, Text } from "native-base";
 
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { useCallback, useEffect, useLayoutEffect, useState } from "react";
-import { Organization } from "../../components/Organization";
+import { Organization, OrganizationProps } from "../../components/Organization";
 import { IconButton } from "react-native-paper";
 import { useAuth } from "../../hooks/auth";
 import api from "../../services/api";
-import { UserRoleOnOrganization } from "../../models/User";
 import { useDrawer } from "../../contexts/drawer";
 
 export const Organizations = () => {
   const navigation = useNavigation();
 
-  const { user } = useAuth();
-
   const { setOrganizationId } = useDrawer();
 
-  const [organizations, setOrganizations] = useState<UserRoleOnOrganization[]>(
-    []
-  );
+  const [organizations, setOrganizations] = useState<OrganizationProps[]>([]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -35,9 +30,8 @@ export const Organizations = () => {
 
   useFocusEffect(
     useCallback(() => {
-      api.get(`v1/users/${user.id}`).then(({ data }) => {
-        console.log(data);
-        setOrganizations(data.userRolesOnOrganizationsMap);
+      api.get(`v1/organizations`).then(({ data }) => {
+        setOrganizations(data);
       });
     }, [])
   );
@@ -53,20 +47,24 @@ export const Organizations = () => {
 
   const handleOpenOrganization = (id: string) => {
     setOrganizationId(id);
-    navigation.navigate("OrganizationDetails");
+    navigation.navigate("Organization");
   };
 
   return (
     <VStack flex={1}>
       <FlatList
+        _contentContainerStyle={{
+          px: 2,
+          pt: 2,
+        }}
         data={organizations}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={ListEmptyComponent}
-        keyExtractor={(item) => String(item.organizationId)}
+        keyExtractor={(item) => String(item.id)}
         renderItem={({ item }) => (
           <Organization
-            data={item}
-            onPress={() => handleOpenOrganization(item.organizationId)}
+            item={item}
+            onPress={() => handleOpenOrganization(item.id)}
           />
         )}
       />

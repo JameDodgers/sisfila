@@ -4,5 +4,5 @@ import { getStackAndScreensInsideDrawer } from "./helpers";
 
 export const OrganizationRoutes = getStackAndScreensInsideDrawer({
   initialRouteName: "Organization",
-  screensProps: [{ name: "Organização", component: OrganizationDetails }],
+  screensProps: [{ name: "Organization", component: OrganizationDetails }],
 });
