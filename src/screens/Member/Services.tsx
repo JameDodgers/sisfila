@@ -11,7 +11,7 @@ export const Services = () => {
   useEffect(() => {
     const fetchServices = () => {
       api
-        .get(`v1/services/organizations${organizationId}`)
+        .get(`v1/services/organizations/${organizationId}`)
         .then(({ data }) => {
           console.log(data);
           setServices(data);
