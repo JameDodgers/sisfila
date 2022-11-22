@@ -5,10 +5,13 @@ import { Button, Input } from "native-base";
 import api from "../../services/api";
 import { useNavigation } from "@react-navigation/native";
 import { useDrawer } from "../../contexts/drawer";
+import { useAuth } from "../../hooks/auth";
 
 export const CreateOrganization = () => {
   const { setOrganizationId } = useDrawer();
   const navigation = useNavigation();
+
+  const { user } = useAuth();
 
   const [name, setName] = useState("");
   const [code, setCode] = useState("");
@@ -17,16 +20,26 @@ export const CreateOrganization = () => {
     api
       .post("v1/organizations", { name, code })
       .then(({ data }) => {
-        setOrganizationId(data.id);
-        navigation.navigate("DrawerStack");
+        api
+          .patch(`v1/users/${user.id}/organizations/${data.id}`, {
+            role: "TYPE_COORDINATOR",
+          })
+          .then(() => {
+            setOrganizationId(data.id);
+            navigation.navigate("Organizations");
+          })
+          .catch((e) => {
+            console.log(e);
+          });
       })
-      .catch((error) => {
-        console.log(error);
+      .catch((e) => {
+        console.log(e);
       });
   };
 
   return (
     <VStack flex={1} p={4}>
+      <VStack flex={1} space={3}>
         <Input
           size="2xl"
           placeholder="Nome"
