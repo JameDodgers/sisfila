@@ -2,8 +2,17 @@ import { Text, VStack } from "native-base";
 
 export const Queues = () => {
   return (
-    <VStack flex={1}>
-      <Text>Teste</Text>
+    <VStack>
+      <FlatList
+        _contentContainerStyle={{
+          m: "4",
+        }}
+        data={queues}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => {
+          return <Queue item={item} />;
+        }}
+      />
     </VStack>
   );
 };

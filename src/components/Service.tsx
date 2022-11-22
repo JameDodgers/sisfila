@@ -3,13 +3,13 @@ import { Text, VStack, IPressableProps, Pressable } from "native-base";
 export type ServiceProps = {
   id: string;
   name: string;
+  organizationId: string;
   subscriptionToken: string;
   guestEnroll: boolean;
-  opensAt: string;
-  closesAt: string;
-  createdAt: string;
-  updatedAt: string;
-  organizationId: string;
+  opensAt: Date;
+  closesAt: Date;
+  createdAt: Date;
+  updatedAt: Date;
 };
 
 type Props = IPressableProps & {
