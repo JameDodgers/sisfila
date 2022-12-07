@@ -1,10 +1,10 @@
-import { VStack, Box, FlatList, Center, Text } from "native-base";
+import { VStack, FlatList, Center, Text } from "native-base";
 
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import { useCallback, useEffect, useLayoutEffect, useState } from "react";
+import { useCallback, useLayoutEffect, useState } from "react";
 import { Organization, OrganizationProps } from "../../components/Organization";
 import { IconButton } from "react-native-paper";
-import { useAuth } from "../../hooks/auth";
+
 import api from "../../services/api";
 import { useDrawer } from "../../contexts/drawer";
 
@@ -30,9 +30,14 @@ export const Organizations = () => {
 
   useFocusEffect(
     useCallback(() => {
-      api.get(`v1/organizations`).then(({ data }) => {
-        setOrganizations(data);
-      });
+      api
+        .get(`v1/organizations`)
+        .then(({ data }) => {
+          setOrganizations(data);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
     }, [])
   );
 
@@ -47,7 +52,9 @@ export const Organizations = () => {
 
   const handleOpenOrganization = (id: string) => {
     setOrganizationId(id);
-    navigation.navigate("Organization");
+    navigation.navigate("Drawer", {
+      screen: "OrganizationRoutes",
+    });
   };
 
   return (
