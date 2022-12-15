@@ -9,7 +9,7 @@ import { useAuth } from "../hooks/auth";
 import { Platform } from "react-native";
 import { AttendantsRoutes } from "./attendants.routes";
 import { GroupsRoutes } from "./groups.routes";
-import { Queues } from "../screens/Member/Queues";
+import { QueuesRoutes } from "./queues.routes";
 import { ServicesRoutes } from "./services.routes";
 import { ClientsRoutes } from "./clients.routes";
 
@@ -98,7 +98,7 @@ export const DrawerRoutes = () => {
             options={{
               title: "Filas",
             }}
-            component={Queues}
+            component={QueuesRoutes}
           />
         </>
       ) : (
