@@ -1,6 +1,6 @@
-import { useNavigation } from "@react-navigation/native";
+import { useCallback, useLayoutEffect, useState } from "react";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { FlatList, VStack } from "native-base";
-import { useEffect, useLayoutEffect, useState } from "react";
 import { IconButton } from "react-native-paper";
 import { Group, GroupProps } from "../../components/Group";
 import { useDrawer } from "../../contexts/drawer";
@@ -9,6 +9,7 @@ import api from "../../services/api";
 export const Groups = () => {
   const navigation = useNavigation();
   const { organizationId } = useDrawer();
+
   const [groups, setQueues] = useState<GroupProps[]>();
 
   useLayoutEffect(() => {
@@ -24,23 +25,24 @@ export const Groups = () => {
     });
   }, [navigation]);
 
-  useEffect(() => {
-    const fetchQueues = () => {
-      api
-        .get(`v1/groups/organizations/${organizationId}`)
-        .then(({ data }) => {
-          console.log(data);
-          setQueues(data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    };
+  useFocusEffect(
+    useCallback(() => {
+      const fetchQueues = () => {
+        api
+          .get(`v1/groups/organizations/${organizationId}`)
+          .then(({ data }) => {
+            setQueues(data);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      };
 
-    if (organizationId) {
-      fetchQueues();
-    }
-  }, [organizationId]);
+      if (organizationId) {
+        fetchQueues();
+      }
+    }, [organizationId])
+  );
 
   return (
     <VStack>
