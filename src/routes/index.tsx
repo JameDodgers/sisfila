@@ -1,3 +1,5 @@
+import * as Linking from "expo-linking";
+
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
@@ -9,11 +11,29 @@ import { SignUp } from "../screens/SignUp";
 import { useAuth } from "../hooks/auth";
 import { CombinedDefaultTheme } from "../styles/theme";
 
+const prefix = Linking.createURL("/");
+
+const config = {
+  screens: {
+    DrawerStack: {
+      screens: {
+        initialRouteName: "Atendimentos",
+        Atendimento: "entrar/:queueId",
+      },
+    },
+  },
+};
+
+const linking = {
+  prefixes: [prefix],
+  config,
+};
+
 export const Routes = () => {
   const { user } = useAuth();
 
   return (
-    <NavigationContainer theme={CombinedDefaultTheme}>
+    <NavigationContainer linking={linking} theme={CombinedDefaultTheme}>
       <Navigator initialRouteName="DrawerStack">
         <Screen
           name="DrawerStack"

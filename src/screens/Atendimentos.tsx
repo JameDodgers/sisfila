@@ -1,25 +1,30 @@
-import { useNavigation } from "@react-navigation/native";
-import { FlatList, Text, VStack } from "native-base";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { FlatList, VStack } from "native-base";
 import { useEffect, useState } from "react";
-import Atendimento, { AtendimentoProps } from "../components/Atendimento";
+import { QueueProps } from "../components/Queue";
 import api from "../services/api";
+import { Atendimento } from "../components/Atendimento";
 
 export const Atendimentos = () => {
-  const navigation = useNavigation();
-
-  const [atendimentos, setAtendimentos] = useState<AtendimentoProps[]>([]);
+  const route = useRoute();
 
   useEffect(() => {
-    api
-      .get("v1/organizations")
-      .then(({ data }) => {
-        console.log(data);
-        setAtendimentos(data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+    const queueId = route.params?.queueId;
+    if (queueId) {
+      api
+        .get(`v1/queues/${queueId}`)
+        .then(({ data }) => {
+          setAtendimentos([data]);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [route.params?.queueId]);
+
+  const navigation = useNavigation();
+
+  const [atendimentos, setAtendimentos] = useState<QueueProps[]>([]);
 
   return (
     <VStack>
@@ -30,14 +35,7 @@ export const Atendimentos = () => {
         data={atendimentos}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => {
-          return (
-            <Atendimento
-              item={item}
-              onPress={() => {
-                navigation.navigate("Organization", { id: item.id });
-              }}
-            />
-          );
+          return <Atendimento item={item} />;
         }}
       />
     </VStack>

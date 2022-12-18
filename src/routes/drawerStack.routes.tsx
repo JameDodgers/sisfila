@@ -4,6 +4,8 @@ import { DrawerRoutes } from "./drawer.routes";
 
 import { Organizations } from "../screens/Member/Organizations";
 import { CreateOrganization } from "../screens/Member/CreateOrganization";
+import { Atendimentos } from "../screens/Atendimentos";
+import { Atendimento } from "../screens/Atendimento";
 import { DrawerProvider } from "../contexts/drawer";
 
 const { Navigator, Screen } = createNativeStackNavigator();
@@ -17,6 +19,8 @@ export const DrawerStack = () => {
           options={{ headerShown: false }}
           component={DrawerRoutes}
         />
+        <Screen name="Atendimento" component={Atendimento} />
+        <Screen name="Atendimentos" component={Atendimentos} />
         <Screen
           name="Organizations"
           options={{ title: "Minhas organizações" }}

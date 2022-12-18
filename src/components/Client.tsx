@@ -1,4 +1,4 @@
-import { Text, VStack, IPressableProps, Pressable } from "native-base";
+import { Text, VStack } from "native-base";
 
 export type ClientProps = {
   id: string;
@@ -9,16 +9,17 @@ export type ClientProps = {
   registrationId: string;
 };
 
-type Props = IPressableProps & {
+type Props = {
   item: ClientProps;
+  index: number;
 };
 
-export const Client = ({ item, ...rest }: Props) => {
+export const Client = ({ item, index }: Props) => {
   return (
-    <Pressable {...rest}>
-      <VStack bg="light.50" p={2} mb={4} shadow={5} rounded="md">
-        <Text>{item.name}</Text>
-      </VStack>
-    </Pressable>
+    <VStack bg="light.50">
+      <Text>
+        {index + 1} - {item.name}
+      </Text>
+    </VStack>
   );
 };
