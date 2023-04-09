@@ -20,7 +20,7 @@
     "@react-navigation/native": "^6.0.13",
     "@react-navigation/native-stack": "^6.9.0",
     "axios": "^1.0.0",
-    "expo": "^47.0.0",
+    "expo": "^48.0.0",
     "expo-application": "~5.0.1",
     "expo-auth-session": "~3.7.2",
     "expo-clipboard": "~4.0.1",
