@@ -5,18 +5,19 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import CustomDrawerContent from "../components/CustomDrawerContent";
 import { OrganizationRoutes } from "./organization.routes";
 import { HomeRoutes } from "./home.routes";
-import { useAuth } from "../hooks/auth";
+
 import { Platform } from "react-native";
 import { AttendantsRoutes } from "./attendants.routes";
 import { GroupsRoutes } from "./groups.routes";
 import { QueuesRoutes } from "./queues.routes";
 import { ServicesRoutes } from "./services.routes";
 import { ClientsRoutes } from "./clients.routes";
+import { useToken } from "../store/tokens";
 
 const { Navigator, Screen } = createDrawerNavigator();
 
 export const DrawerRoutes = () => {
-  const { user } = useAuth();
+  const token = useToken();
 
   const drawerType = useMemo(() => {
     switch (Platform.OS) {
@@ -56,7 +57,7 @@ export const DrawerRoutes = () => {
       // })}
       drawerContent={(props) => <CustomDrawerContent {...props} />}
     >
-      {user.token ? (
+      {!!token ? (
         <>
           <Screen
             name="ClientsRoutes"
@@ -97,6 +98,7 @@ export const DrawerRoutes = () => {
             name="Queues"
             options={{
               title: "Filas",
+              headerShown: true,
             }}
             component={QueuesRoutes}
           />

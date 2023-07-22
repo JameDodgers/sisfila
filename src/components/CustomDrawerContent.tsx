@@ -4,15 +4,20 @@ import {
   DrawerContentComponentProps,
   DrawerItem,
 } from "@react-navigation/drawer";
-import { useAuth } from "../hooks/auth";
+
+import { useToken } from "../store/tokens";
+import { useUserQueries } from "../queries/user";
 
 type Props = DrawerContentComponentProps & {};
 
 const CustomDrawerContent = ({ ...props }: Props) => {
-  const { user, signOut } = useAuth();
+  const token = useToken();
+
+  const { signOut } = useUserQueries();
+
   return (
     <DrawerContentScrollView {...props}>
-      {user.token && (
+      {!!token && (
         <DrawerItem
           label="Minhas organizações"
           onPress={() => {
@@ -21,7 +26,7 @@ const CustomDrawerContent = ({ ...props }: Props) => {
         />
       )}
       <DrawerItemList {...props} />
-      {user.token ? (
+      {!!token ? (
         <DrawerItem label="Sair" onPress={signOut} />
       ) : (
         <DrawerItem

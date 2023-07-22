@@ -8,8 +8,8 @@ const { Navigator, Screen } = createNativeStackNavigator();
 import { DrawerStack } from "./drawerStack.routes";
 import { SignIn } from "../screens/SignIn";
 import { SignUp } from "../screens/SignUp";
-import { useAuth } from "../hooks/auth";
 import { CombinedDefaultTheme } from "../styles/theme";
+import { useToken } from "../store/tokens";
 
 const prefix = Linking.createURL("/");
 
@@ -30,7 +30,7 @@ const linking = {
 };
 
 export const Routes = () => {
-  const { user } = useAuth();
+  const token = useToken();
 
   return (
     <NavigationContainer linking={linking} theme={CombinedDefaultTheme}>
@@ -41,7 +41,7 @@ export const Routes = () => {
           component={DrawerStack}
         />
 
-        {!user.token && (
+        {!token && (
           <>
             <Screen
               name="SignIn"
