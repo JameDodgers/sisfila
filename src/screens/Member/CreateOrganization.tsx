@@ -5,13 +5,13 @@ import { Button, Input } from "native-base";
 import api from "../../services/api";
 import { useNavigation } from "@react-navigation/native";
 import { useDrawer } from "../../contexts/drawer";
-import { useAuth } from "../../hooks/auth";
+import { useUserQueries } from "../../queries/user";
 
 export const CreateOrganization = () => {
   const { setOrganizationId } = useDrawer();
   const navigation = useNavigation();
 
-  const { user } = useAuth();
+  const { user } = useUserQueries();
 
   const [name, setName] = useState("");
   const [code, setCode] = useState("");
@@ -21,7 +21,7 @@ export const CreateOrganization = () => {
       .post("v1/organizations", { name, code })
       .then(({ data }) => {
         api
-          .patch(`v1/users/${user.id}/organizations/${data.id}`, {
+          .patch(`v1/users/${user?.id}/organizations/${data.id}`, {
             role: "TYPE_COORDINATOR",
           })
           .then(() => {

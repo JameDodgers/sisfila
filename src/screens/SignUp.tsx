@@ -18,7 +18,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { useAuth } from "../hooks/auth";
+import { useUserQueries } from "../queries/user";
 
 export const SignUp = () => {
   const nameInputRef = useRef<TextInput>(null);
@@ -28,7 +28,9 @@ export const SignUp = () => {
 
   const navigation = useNavigation();
 
-  const { loading, signUp, request } = useAuth();
+  const { useCreateUser } = useUserQueries();
+
+  const { mutate: signUp, isLoading } = useCreateUser();
 
   const validationSchema = Yup.object().shape({
     name: Yup.string()
@@ -177,8 +179,7 @@ export const SignUp = () => {
                       <Button
                         mt="8"
                         colorScheme="indigo"
-                        isDisabled={!request}
-                        isLoading={loading}
+                        isLoading={isLoading}
                         onPress={() => handleSubmit()}
                       >
                         Cadastrar

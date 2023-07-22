@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-
+import { Platform, TextInput } from "react-native";
 import {
   Button,
   Text,
@@ -15,11 +15,30 @@ import {
   KeyboardAvoidingView,
 } from "native-base";
 
-import { Platform, TextInput } from "react-native";
-
+import * as Google from "expo-auth-session/providers/google";
 import { useNavigation } from "@react-navigation/native";
+import * as AuthSession from "expo-auth-session";
+import * as WebBrowser from "expo-web-browser";
+import Constants from "expo-constants";
+import { useUserQueries } from "../queries/user";
 
-import { useAuth } from "../hooks/auth";
+const { EXPO_CLIENT_ID } = process.env;
+const { ANDROID_CLIENT_ID } = process.env;
+const { IOS_CLIENT_ID } = process.env;
+const { WEB_CLIENT_ID } = process.env;
+
+const AUDIENCE =
+  Constants.appOwnership === "expo"
+    ? EXPO_CLIENT_ID
+    : Platform.OS === "ios"
+    ? IOS_CLIENT_ID
+    : Platform.OS === "android"
+    ? ANDROID_CLIENT_ID
+    : Platform.OS === "web"
+    ? WEB_CLIENT_ID
+    : "";
+
+WebBrowser.maybeCompleteAuthSession();
 
 export const SignIn = () => {
   const navigation = useNavigation();
@@ -29,15 +48,31 @@ export const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { signIn, signInWithGoogle } = useAuth();
+  const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
+    expoClientId: EXPO_CLIENT_ID,
+    androidClientId: ANDROID_CLIENT_ID,
+    iosClientId: IOS_CLIENT_ID,
+    webClientId: WEB_CLIENT_ID,
+  });
+
+  const { useAuthenticateUser, useAuthenticateWithGoogle } = useUserQueries();
+
+  const { mutate: signIn } = useAuthenticateUser();
+
+  const { mutate: signInWithGoogle } = useAuthenticateWithGoogle();
+
+  useEffect(() => {
+    if (response?.type === "success") {
+      const { id_token } = response.params;
+      signInWithGoogle({ oauthToken: id_token, audience: AUDIENCE });
+    }
+  }, [response]);
 
   const handleSignIn = () => {
     signIn({ email, password });
   };
 
-  const handleSignInWithGoogle = () => {
-    signInWithGoogle();
-  };
+  const handleSignInWithGoogle = () => promptAsync();
 
   return (
     <KeyboardAvoidingView
