@@ -1,17 +1,38 @@
 import { StatusBar } from "expo-status-bar";
-import { SafeAreaView, StyleSheet } from "react-native";
+import {
+  AppState,
+  AppStateStatus,
+  Platform,
+  SafeAreaView,
+  StyleSheet,
+} from "react-native";
 import { Provider as PaperProvider } from "react-native-paper";
 import { NativeBaseProvider } from "native-base";
-import { AuthProvider } from "./src/hooks/auth";
+
 import { Routes } from "./src/routes";
+import { focusManager } from "@tanstack/react-query";
 
 import { CombinedDefaultTheme } from "./src/styles/theme";
+import { useEffect } from "react";
+import { DataProvider } from "./src/contexts/data";
+
+const onAppStateChange = (status: AppStateStatus) => {
+  if (Platform.OS !== "web") {
+    focusManager.setFocused(status === "active");
+  }
+};
 
 export default function App() {
+  useEffect(() => {
+    const subscription = AppState.addEventListener("change", onAppStateChange);
+
+    return () => subscription.remove();
+  }, []);
+
   return (
     <NativeBaseProvider>
       <PaperProvider theme={CombinedDefaultTheme}>
-        <AuthProvider>
+        <DataProvider>
           <StatusBar style="auto" translucent={false} />
           <SafeAreaView
             style={{
@@ -20,7 +41,7 @@ export default function App() {
           >
             <Routes />
           </SafeAreaView>
-        </AuthProvider>
+        </DataProvider>
       </PaperProvider>
     </NativeBaseProvider>
   );
