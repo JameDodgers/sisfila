@@ -22,10 +22,10 @@ import * as WebBrowser from "expo-web-browser";
 import Constants from "expo-constants";
 import { useUserQueries } from "../queries/user";
 
-const { EXPO_CLIENT_ID } = process.env;
-const { ANDROID_CLIENT_ID } = process.env;
-const { IOS_CLIENT_ID } = process.env;
-const { WEB_CLIENT_ID } = process.env;
+const EXPO_CLIENT_ID = process.env.EXPO_PUBLIC_EXPO_CLIENT_ID;
+const IOS_CLIENT_ID = process.env.EXPO_PUBLIC_ANDROID_CLIENT_ID;
+const ANDROID_CLIENT_ID = process.env.EXPO_PUBLIC_IOS_CLIENT_ID;
+const WEB_CLIENT_ID = process.env.EXPO_PUBLIC_WEB_CLIENT_ID;
 
 const AUDIENCE =
   Constants.appOwnership === "expo"
