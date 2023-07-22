@@ -12,7 +12,7 @@
     "react-error-overlay": "6.0.9"
   },
   "dependencies": {
-    "@expo/webpack-config": "^18.0.1",
+    "@expo/webpack-config": "^18.1.2",
     "@react-native-async-storage/async-storage": "1.18.2",
     "@react-native-community/netinfo": "9.3.10",
     "@react-native-google-signin/google-signin": "^8.0.1",
