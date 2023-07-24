@@ -2,17 +2,20 @@ import { persist, createJSONStorage } from "zustand/middleware";
 
 import Storage from "../libs/storage";
 import { create } from "./helpers";
+import { User } from "../models/User";
 
-interface TokensState {
+export interface Auth {
+  user?: User;
   token?: string;
 }
 
-export const useTokensStore = create<TokensState>()(
+export const useAuthStore = create<Auth>()(
   persist(
     () =>
       ({
         token: undefined,
-      } as TokensState),
+        user: undefined,
+      } as Auth),
     {
       name: "tokens",
       storage: createJSONStorage(() => Storage),
@@ -20,6 +23,6 @@ export const useTokensStore = create<TokensState>()(
   )
 );
 
-export const useToken = () => useTokensStore((state) => state.token);
+export const useToken = () => useAuthStore((state) => state.token);
 
-export const setToken = (token: string) => useTokensStore.setState({ token });
+export const useUser = () => useAuthStore((state) => state.user);

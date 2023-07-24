@@ -1,18 +1,15 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { setToken } from "../store/tokens";
+
 import * as usersApi from "../services/users";
 import { resetAllStores } from "../store/helpers";
-import { User } from "../models/User";
+
+import { useAuthStore } from "../store/auth";
 
 export const useUserQueries = () => {
   const queryClient = useQueryClient();
 
-  const user = queryClient.getQueryData<User>(["user"]);
-
   const onSuccess = (data: usersApi.AuthResponse) => {
-    queryClient.setQueryData(["user"], data.user);
-
-    setToken(data.token);
+    useAuthStore.setState(data);
   };
 
   const useAuthenticateUser = () =>
@@ -39,7 +36,6 @@ export const useUserQueries = () => {
   };
 
   return {
-    user,
     useAuthenticateUser,
     useCreateUser,
     useAuthenticateWithGoogle,

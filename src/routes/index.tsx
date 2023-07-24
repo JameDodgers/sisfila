@@ -9,7 +9,7 @@ import { DrawerStack } from "./drawerStack.routes";
 import { SignIn } from "../screens/SignIn";
 import { SignUp } from "../screens/SignUp";
 import { CombinedDefaultTheme } from "../styles/theme";
-import { useToken } from "../store/tokens";
+import { useToken } from "../store/auth";
 
 const prefix = Linking.createURL("/");
 

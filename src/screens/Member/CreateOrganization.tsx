@@ -5,13 +5,14 @@ import { Button, Input } from "native-base";
 import api from "../../services/api";
 import { useNavigation } from "@react-navigation/native";
 import { useDrawer } from "../../contexts/drawer";
-import { useUserQueries } from "../../queries/user";
+
+import { useUser } from "../../store/auth";
 
 export const CreateOrganization = () => {
   const { setOrganizationId } = useDrawer();
   const navigation = useNavigation();
 
-  const { user } = useUserQueries();
+  const user = useUser();
 
   const [name, setName] = useState("");
   const [code, setCode] = useState("");

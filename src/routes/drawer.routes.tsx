@@ -12,7 +12,7 @@ import { GroupsRoutes } from "./groups.routes";
 import { QueuesRoutes } from "./queues.routes";
 import { ServicesRoutes } from "./services.routes";
 import { ClientsRoutes } from "./clients.routes";
-import { useToken } from "../store/tokens";
+import { useToken } from "../store/auth";
 
 const { Navigator, Screen } = createDrawerNavigator();
 
