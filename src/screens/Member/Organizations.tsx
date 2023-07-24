@@ -2,18 +2,19 @@ import { VStack, FlatList, Center, Text } from "native-base";
 
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { useCallback, useLayoutEffect, useState } from "react";
-import { Organization, OrganizationProps } from "../../components/Organization";
+import { OrganizationItem } from "../../components/OrganizationItem";
 import { IconButton } from "react-native-paper";
 
 import api from "../../services/api";
 import { useDrawer } from "../../contexts/drawer";
+import { Organization } from "../../models/Organization";
 
 export const Organizations = () => {
   const navigation = useNavigation();
 
   const { setOrganizationId } = useDrawer();
 
-  const [organizations, setOrganizations] = useState<OrganizationProps[]>([]);
+  const [organizations, setOrganizations] = useState<Organization[]>([]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -69,7 +70,7 @@ export const Organizations = () => {
         ListEmptyComponent={ListEmptyComponent}
         keyExtractor={(item) => String(item.id)}
         renderItem={({ item }) => (
-          <Organization
+          <OrganizationItem
             item={item}
             onPress={() => handleOpenOrganization(item.id)}
           />

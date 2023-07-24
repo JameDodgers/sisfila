@@ -1,22 +1,39 @@
-import { useRoute, useNavigation } from "@react-navigation/native";
-import { Text, VStack } from "native-base";
+import { useNavigation } from "@react-navigation/native";
+import { Button, VStack, Text } from "native-base";
+import { useLayoutEffect } from "react";
+
 import { useDrawer } from "../../contexts/drawer";
 
-type RouteParams = {
-  id?: number;
-};
+import { useOrganizationsQueries } from "../../queries/organizations";
 
 export const OrganizationDetails = () => {
   const navigation = useNavigation();
-  const route = useRoute();
 
   const { organizationId } = useDrawer();
 
-  const id = route.params as RouteParams;
+  const { useGetOrganization } = useOrganizationsQueries();
+
+  const { data: organization } = useGetOrganization(organizationId);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: organization?.name,
+    });
+  }, [navigation, organization]);
+
+  const handleDeleteOrganization = () => {};
 
   return (
-    <VStack flex={1}>
-      <Text>Member</Text>
+    <VStack flex={1} p={4}>
+      <Button
+        bg="transparent"
+        _pressed={{
+          bg: "coolGray.200",
+        }}
+        onPress={handleDeleteOrganization}
+      >
+        <Text color="danger.600">Excluir organização</Text>
+      </Button>
     </VStack>
   );
 };

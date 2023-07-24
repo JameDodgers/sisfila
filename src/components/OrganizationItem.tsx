@@ -1,18 +1,11 @@
 import { HStack, IPressableProps, Pressable, Text } from "native-base";
-
-export type OrganizationProps = {
-  id: string;
-  name: string;
-  code: string;
-  createdAt: Date;
-  updatedAt: Date;
-};
+import { Organization } from "../models/Organization";
 
 type Props = IPressableProps & {
-  item: OrganizationProps;
+  item: Organization;
 };
 
-export const Organization = ({ item, ...props }: Props) => {
+export const OrganizationItem = ({ item, ...props }: Props) => {
   return (
     <Pressable bg="white" m={2} p={2} shadow={2} rounded={4} {...props}>
       <HStack justifyContent="space-between">
