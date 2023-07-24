@@ -30,6 +30,14 @@ export const useUserQueries = () => {
       onSuccess,
     });
 
+  const useSetUserRoleInOrganizationById = () =>
+    useMutation({
+      mutationFn: usersApi.setUserRoleInOrganizationById,
+      onSuccess: () => {
+        // queryClient.setQueryData(organizationsKeys.organizationsKeys);
+      },
+    });
+
   const signOut = () => {
     resetAllStores();
     queryClient.clear();
@@ -39,6 +47,7 @@ export const useUserQueries = () => {
     useAuthenticateUser,
     useCreateUser,
     useAuthenticateWithGoogle,
+    useSetUserRoleInOrganizationById,
     signOut,
   };
 };

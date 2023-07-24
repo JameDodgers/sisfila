@@ -1,20 +1,22 @@
 import { VStack, FlatList, Center, Text } from "native-base";
 
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import { useCallback, useLayoutEffect, useState } from "react";
+import { useNavigation } from "@react-navigation/native";
+import { useCallback, useLayoutEffect } from "react";
 import { OrganizationItem } from "../../components/OrganizationItem";
 import { IconButton } from "react-native-paper";
 
-import api from "../../services/api";
 import { useDrawer } from "../../contexts/drawer";
-import { Organization } from "../../models/Organization";
+
+import { useOrganizationsQueries } from "../../queries/organizations";
 
 export const Organizations = () => {
   const navigation = useNavigation();
 
   const { setOrganizationId } = useDrawer();
 
-  const [organizations, setOrganizations] = useState<Organization[]>([]);
+  const { useGetOrganizations } = useOrganizationsQueries();
+
+  const { data: organizations = [] } = useGetOrganizations();
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -28,19 +30,6 @@ export const Organizations = () => {
       ),
     });
   }, [navigation]);
-
-  useFocusEffect(
-    useCallback(() => {
-      api
-        .get(`v1/organizations`)
-        .then(({ data }) => {
-          setOrganizations(data);
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-    }, [])
-  );
 
   const ListEmptyComponent = useCallback(
     () => (

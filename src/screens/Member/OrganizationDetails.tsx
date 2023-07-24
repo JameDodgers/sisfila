@@ -11,9 +11,12 @@ export const OrganizationDetails = () => {
 
   const { organizationId } = useDrawer();
 
-  const { useGetOrganization } = useOrganizationsQueries();
+  const { useGetOrganization, useDeleteOrganization } =
+    useOrganizationsQueries();
 
   const { data: organization } = useGetOrganization(organizationId);
+
+  const { mutate: deleteOrganization } = useDeleteOrganization();
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -21,7 +24,10 @@ export const OrganizationDetails = () => {
     });
   }, [navigation, organization]);
 
-  const handleDeleteOrganization = () => {};
+  const handleDeleteOrganization = () => {
+    deleteOrganization(organizationId);
+    navigation.navigate("Organizations");
+  };
 
   return (
     <VStack flex={1} p={4}>

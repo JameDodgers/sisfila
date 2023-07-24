@@ -25,17 +25,39 @@ interface CreateUserResponse extends AuthResponse {}
 
 interface AuthenticateWithGoogleResponse extends AuthResponse {}
 
-export const authenticateUser = (data: AuthenticateUserRequest) =>
+const authenticateUser = (data: AuthenticateUserRequest) =>
   api
     .post<AuthenticateUserResponse>("/v1/users/auth", data)
     .then((response) => response.data);
 
-export const createUser = (data: CreateUserRequest) =>
+const createUser = (data: CreateUserRequest) =>
   api
     .post<CreateUserResponse>("/v1/users", data)
     .then((response) => response.data);
 
-export const authenticateWithGoogle = (data: AuthenticateWithGoogleRequest) =>
+const authenticateWithGoogle = (data: AuthenticateWithGoogleRequest) =>
   api
     .post<AuthenticateWithGoogleResponse>("/v1/users/auth/google", data)
     .then((response) => response.data);
+
+interface SetUserRoleInOrganizationByIdRequest {
+  userId: string;
+  organizationId: string;
+  role: "TYPE_COORDINATOR" | "";
+}
+
+const setUserRoleInOrganizationById = ({
+  userId,
+  organizationId,
+  ...data
+}: SetUserRoleInOrganizationByIdRequest) =>
+  api
+    .patch(`v1/users/${userId}/organizations/${organizationId}`, data)
+    .then((response) => response.data);
+
+export default {
+  authenticateUser,
+  createUser,
+  authenticateWithGoogle,
+  setUserRoleInOrganizationById,
+};

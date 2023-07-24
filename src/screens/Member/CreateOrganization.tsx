@@ -2,40 +2,31 @@ import { VStack } from "native-base";
 import { useState } from "react";
 import { Button, Input } from "native-base";
 
-import api from "../../services/api";
 import { useNavigation } from "@react-navigation/native";
 import { useDrawer } from "../../contexts/drawer";
 
-import { useUser } from "../../store/auth";
+import { useOrganizationsQueries } from "../../queries/organizations";
 
 export const CreateOrganization = () => {
   const { setOrganizationId } = useDrawer();
   const navigation = useNavigation();
 
-  const user = useUser();
-
   const [name, setName] = useState("");
   const [code, setCode] = useState("");
 
+  const { useCreateOrganization } = useOrganizationsQueries();
+
+  const { mutate: createOrganization } = useCreateOrganization();
+
   const handleCreateOrganization = () => {
-    api
-      .post("v1/organizations", { name, code })
-      .then(({ data }) => {
-        api
-          .patch(`v1/users/${user?.id}/organizations/${data.id}`, {
-            role: "TYPE_COORDINATOR",
-          })
-          .then(() => {
-            setOrganizationId(data.id);
-            navigation.navigate("Organizations");
-          })
-          .catch((e) => {
-            console.log(e);
-          });
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+    const payload = { name, code };
+
+    createOrganization(payload, {
+      onSuccess: (data) => {
+        navigation.navigate("Organizations");
+        setOrganizationId(data.id);
+      },
+    });
   };
 
   return (
