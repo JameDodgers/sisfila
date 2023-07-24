@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import * as usersApi from "../services/users";
+import usersApi, { AuthResponse } from "../services/api/users";
 import { resetAllStores } from "../store/helpers";
 
 import { useAuthStore } from "../store/auth";
@@ -8,7 +8,7 @@ import { useAuthStore } from "../store/auth";
 export const useUserQueries = () => {
   const queryClient = useQueryClient();
 
-  const onSuccess = (data: usersApi.AuthResponse) => {
+  const onSuccess = (data: AuthResponse) => {
     useAuthStore.setState(data);
   };
 

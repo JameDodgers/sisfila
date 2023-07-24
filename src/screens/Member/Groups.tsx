@@ -4,7 +4,7 @@ import { FlatList, VStack } from "native-base";
 import { IconButton } from "react-native-paper";
 import { Group, GroupProps } from "../../components/Group";
 import { useDrawer } from "../../contexts/drawer";
-import api from "../../services/api";
+import api from "../../services/api/config";
 
 export const Groups = () => {
   const navigation = useNavigation();

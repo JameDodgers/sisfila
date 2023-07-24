@@ -2,7 +2,7 @@ import { FlatList, VStack } from "native-base";
 import { useEffect, useState } from "react";
 import { Service, ServiceProps } from "../../components/Service";
 import { useDrawer } from "../../contexts/drawer";
-import api from "../../services/api";
+import api from "../../services/api/config";
 
 export const Services = () => {
   const { organizationId } = useDrawer();

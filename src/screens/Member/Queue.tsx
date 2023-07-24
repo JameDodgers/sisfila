@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { GroupProps } from "../../components/Group";
 
 import { useDrawer } from "../../contexts/drawer";
-import api from "../../services/api";
+import api from "../../services/api/config";
 
 export const Queue = () => {
   const route = useRoute();

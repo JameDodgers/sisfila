@@ -3,7 +3,7 @@ import { FlatList, VStack } from "native-base";
 import { useEffect, useState } from "react";
 import { Queue, QueueProps } from "../../components/Queue";
 import { useDrawer } from "../../contexts/drawer";
-import api from "../../services/api";
+import api from "../../services/api/config";
 
 export const Queues = () => {
   const navigation = useNavigation();

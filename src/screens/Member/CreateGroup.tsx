@@ -2,7 +2,7 @@ import { Text, VStack } from "native-base";
 import { useState } from "react";
 import { Button, Input } from "native-base";
 
-import api from "../../services/api";
+import api from "../../services/api/config";
 import { useNavigation } from "@react-navigation/native";
 import { useDrawer } from "../../contexts/drawer";
 

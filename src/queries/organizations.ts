@@ -1,5 +1,5 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import organizationsApi from "../services/organizations";
+import organizationsApi from "../services/api/organizations";
 
 export const useOrganizationsQueries = () => {
   const queryClient = useQueryClient();

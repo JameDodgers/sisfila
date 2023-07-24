@@ -1,7 +1,7 @@
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { Button, VStack } from "native-base";
 import { useEffect, useLayoutEffect, useState } from "react";
-import api from "../../services/api";
+import api from "../../services/api/config";
 
 type RouteParams = {
   id: number;

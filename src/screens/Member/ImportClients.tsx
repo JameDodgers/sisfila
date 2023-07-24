@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useDrawer } from "../../contexts/drawer";
 
 import { useNavigation } from "@react-navigation/native";
-import api from "../../services/api";
+import api from "../../services/api/config";
 import { GroupProps } from "../../components/Group";
 
 export const ImportClients = () => {

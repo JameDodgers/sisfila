@@ -9,7 +9,7 @@ import { useCallback, useEffect, useState } from "react";
 import { DataTable } from "react-native-paper";
 import { Button, IconButton } from "react-native-paper";
 
-import api from "../../services/api";
+import api from "../../services/api/config";
 import { useDrawer } from "../../contexts/drawer";
 import { ClientProps } from "../../components/Client";
 

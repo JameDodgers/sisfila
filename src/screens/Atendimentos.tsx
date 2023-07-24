@@ -2,7 +2,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { FlatList, VStack } from "native-base";
 import { useEffect, useState } from "react";
 import { QueueProps } from "../components/Queue";
-import api from "../services/api";
+import api from "../services/api/api";
 import { Atendimento } from "../components/Atendimento";
 
 export const Atendimentos = () => {

@@ -1,6 +1,5 @@
-import api from "./api";
-
-import { User } from "../models/User";
+import { User } from "../../models/User";
+import api from "./config";
 
 interface AuthenticateUserRequest {
   email: string;
