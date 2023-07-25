@@ -8,6 +8,7 @@ import { IconButton } from "react-native-paper";
 import { useDrawer } from "../../contexts/drawer";
 
 import { useOrganizationsQueries } from "../../queries/organizations";
+import { useRefreshOnFocus } from "../../hooks/useRefreshOnFocus";
 
 export const Organizations = () => {
   const navigation = useNavigation();
@@ -16,7 +17,9 @@ export const Organizations = () => {
 
   const { useGetOrganizations } = useOrganizationsQueries();
 
-  const { data: organizations = [] } = useGetOrganizations();
+  const { data: organizations = [], refetch } = useGetOrganizations();
+
+  useRefreshOnFocus(refetch);
 
   useLayoutEffect(() => {
     navigation.setOptions({
