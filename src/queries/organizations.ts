@@ -3,6 +3,7 @@ import organizationsApi from "../services/api/organizations";
 import { Organization } from "../models/Organization";
 import { useUserQueries } from "./user";
 import { useUser } from "../store/auth";
+import { useDrawer } from "../contexts/drawer";
 import queuesApi from "../services/api/queues";
 
 export const useOrganizationsQueries = () => {
@@ -11,6 +12,8 @@ export const useOrganizationsQueries = () => {
   const user = useUser();
 
   const { useSetUserRoleInOrganizationById } = useUserQueries();
+
+  const { setOrganizationId } = useDrawer();
 
   const { mutateAsync: setUserRoleInOrganizationById } =
     useSetUserRoleInOrganizationById();
@@ -25,6 +28,7 @@ export const useOrganizationsQueries = () => {
     useMutation({
       mutationFn: organizationsApi.create,
       onSuccess: (data) => {
+        setOrganizationId(data.id);
         if (user) {
           return setUserRoleInOrganizationById({
             userId: user.id,

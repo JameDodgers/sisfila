@@ -3,12 +3,10 @@ import { useState } from "react";
 import { Button, Input } from "native-base";
 
 import { useNavigation } from "@react-navigation/native";
-import { useDrawer } from "../../contexts/drawer";
 
 import { useOrganizationsQueries } from "../../queries/organizations";
 
 export const CreateOrganization = () => {
-  const { setOrganizationId } = useDrawer();
   const navigation = useNavigation();
 
   const [name, setName] = useState("");
@@ -22,9 +20,8 @@ export const CreateOrganization = () => {
     const payload = { name, code };
 
     createOrganization(payload, {
-      onSuccess: (data) => {
+      onSuccess: () => {
         navigation.navigate("Organizations");
-        setOrganizationId(data.id);
       },
     });
   };
