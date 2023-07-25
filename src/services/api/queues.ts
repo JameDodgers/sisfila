@@ -1,4 +1,6 @@
+import { Client } from "../../models/Client";
 import { Group } from "../../models/Group";
+import { Queue } from "../../models/Queue";
 import api from "./config";
 
 interface CreateQueueParams {
@@ -20,8 +22,12 @@ interface AttachGroupsToQueueParams {
   groups: Group[];
 }
 
+interface GetOneResponse extends Array<Queue> {
+  clients: Client[];
+}
+
 const getOne = (organizationId: string) =>
-  api.get(`v1/queues/organizations/${organizationId}`);
+  api.get<GetOneResponse>(`v1/queues/organizations/${organizationId}`);
 
 const getQueue = (queueId: string) => api.get(`v1/queues/${queueId}`);
 
