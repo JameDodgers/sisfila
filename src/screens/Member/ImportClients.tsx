@@ -14,9 +14,9 @@ export const ImportClients = () => {
 
   const [data, setData] = useState("");
 
-  const { useGetGroups, useImportClients } = useGroupsQueries(organizationId);
+  const { useGetGroups, useImportClients } = useGroupsQueries();
 
-  const { data: groups = [] } = useGetGroups();
+  const { data: groups = [] } = useGetGroups(organizationId);
 
   const { mutate: importClients } = useImportClients();
 

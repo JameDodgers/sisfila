@@ -13,9 +13,9 @@ export const Groups = () => {
 
   const { organizationId } = useDrawer();
 
-  const { useGetGroups } = useGroupsQueries(organizationId);
+  const { useGetGroups } = useGroupsQueries();
 
-  const { data: groups = [], refetch } = useGetGroups();
+  const { data: groups = [], refetch } = useGetGroups(organizationId);
 
   useRefreshOnFocus(refetch);
 
