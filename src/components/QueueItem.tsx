@@ -11,26 +11,14 @@ import {
 import * as Clipboard from "expo-clipboard";
 
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import { ClientProps } from "./Client";
 
-export type QueueProps = {
-  id: string;
-  name: string;
-  description: string;
-  code: string;
-  priority: number;
-  createdAt: Date;
-  updatedAt: Date;
-  organizationId: string;
-  serviceId: string;
-  clients: ClientProps[];
-};
+import { Queue } from "../models/Queue";
 
 type Props = IPressableProps & {
-  item: QueueProps;
+  item: Queue;
 };
 
-export const Queue = ({ item, ...rest }: Props) => {
+export const QueueItem = ({ item, ...rest }: Props) => {
   const link = `entrar/${item.id}`;
 
   const handleCopyLink = async () => {

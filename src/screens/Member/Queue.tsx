@@ -1,10 +1,11 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Button, HStack, Checkbox, Text, VStack } from "native-base";
-import { useEffect, useState } from "react";
-import { GroupProps } from "../../components/Group";
+import { useState } from "react";
 
 import { useDrawer } from "../../contexts/drawer";
-import api from "../../services/api/config";
+
+import { useGroupsQueries } from "../../queries/groups";
+import { useQueuesQueries } from "../../queries/queues";
 
 export const Queue = () => {
   const route = useRoute();
@@ -16,32 +17,26 @@ export const Queue = () => {
 
   const [selectedGroupIds, setSelectedGroupIds] = useState([]);
 
-  const [groups, setGroups] = useState<GroupProps[]>([]);
+  const { useGetGroups } = useGroupsQueries();
 
-  useEffect(() => {
-    api
-      .get(`v1/groups/organizations/${organizationId}`)
-      .then(({ data }) => {
-        setGroups(data);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  }, []);
+  const { data: groups = [] } = useGetGroups(organizationId);
+
+  const { useAttachGroupsToQueue } = useQueuesQueries();
+
+  const { mutate: attachGroupsToQueue } = useAttachGroupsToQueue();
 
   const handleUpdateQueue = () => {
     const data = {
+      queueId,
+      organizationId,
       groups: selectedGroupIds,
     };
 
-    api
-      .patch(`v1/queues/${queueId}/organizations/${organizationId}`, data)
-      .then(() => {
+    attachGroupsToQueue(data, {
+      onSuccess: () => {
         navigation.goBack();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      },
+    });
   };
 
   return (

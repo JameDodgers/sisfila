@@ -3,6 +3,7 @@ import organizationsApi from "../services/api/organizations";
 import { Organization } from "../models/Organization";
 import { useUserQueries } from "./user";
 import { useUser } from "../store/auth";
+import queuesApi from "../services/api/queues";
 
 export const useOrganizationsQueries = () => {
   const queryClient = useQueryClient();
@@ -82,12 +83,20 @@ export const useOrganizationsQueries = () => {
       queryKey: organizationsKeys.list(),
     });
 
+  const useGetOrganizationQueues = (organizationId: string) =>
+    useQuery({
+      queryKey: queuesKeys.list(organizationId),
+      queryFn: () =>
+        queuesApi.getOne(organizationId).then((response) => response.data),
+    });
+
   return {
     useGetOrganization,
     useCreateOrganization,
     useUpdateOrganization,
     useDeleteOrganization,
     useGetOrganizations,
+    useGetOrganizationQueues,
   };
 };
 
@@ -96,4 +105,14 @@ export const organizationsKeys = {
   list: () => [...organizationsKeys.all, "list"],
   items: () => [...organizationsKeys.all, "item"],
   item: (id: string) => [...organizationsKeys.items(), id],
+};
+
+export const queuesKeys = {
+  all: (id: string) => [...organizationsKeys.item(id), "queues"],
+  list: (id: string) => [...queuesKeys.all(id), "list"],
+  items: (id: string) => [...queuesKeys.all(id), "item"],
+  item: (organizationId: string, queueId: string) => [
+    ...queuesKeys.items(organizationId),
+    queueId,
+  ],
 };
