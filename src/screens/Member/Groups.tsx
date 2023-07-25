@@ -1,16 +1,23 @@
-import { useCallback, useLayoutEffect, useState } from "react";
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { useLayoutEffect } from "react";
+import { useNavigation } from "@react-navigation/native";
 import { FlatList, VStack } from "native-base";
 import { IconButton } from "react-native-paper";
-import { Group, GroupProps } from "../../components/Group";
+import { GroupItem } from "../../components/GroupItem";
 import { useDrawer } from "../../contexts/drawer";
-import api from "../../services/api/config";
+
+import { useGroupsQueries } from "../../queries/groups";
+import { useRefreshOnFocus } from "../../hooks/useRefreshOnFocus";
 
 export const Groups = () => {
   const navigation = useNavigation();
+
   const { organizationId } = useDrawer();
 
-  const [groups, setQueues] = useState<GroupProps[]>();
+  const { useGetGroups } = useGroupsQueries(organizationId);
+
+  const { data: groups = [], refetch } = useGetGroups();
+
+  useRefreshOnFocus(refetch);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -25,25 +32,6 @@ export const Groups = () => {
     });
   }, [navigation]);
 
-  useFocusEffect(
-    useCallback(() => {
-      const fetchQueues = () => {
-        api
-          .get(`v1/groups/organizations/${organizationId}`)
-          .then(({ data }) => {
-            setQueues(data);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      };
-
-      if (organizationId) {
-        fetchQueues();
-      }
-    }, [organizationId])
-  );
-
   return (
     <VStack>
       <FlatList
@@ -53,7 +41,7 @@ export const Groups = () => {
         data={groups}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => {
-          return <Group item={item} />;
+          return <GroupItem item={item} />;
         }}
       />
     </VStack>

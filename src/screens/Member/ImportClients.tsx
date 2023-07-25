@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import { useDrawer } from "../../contexts/drawer";
 
 import { useNavigation } from "@react-navigation/native";
-import api from "../../services/api/config";
-import { GroupProps } from "../../components/Group";
+
+import { useGroupsQueries } from "../../queries/groups";
 
 export const ImportClients = () => {
   const navigation = useNavigation();
@@ -14,23 +14,25 @@ export const ImportClients = () => {
 
   const [data, setData] = useState("");
 
-  const [groups, setGroups] = useState<GroupProps[]>([]);
+  const { useGetGroups, useImportClients } = useGroupsQueries(organizationId);
+
+  const { data: groups = [] } = useGetGroups();
+
+  const { mutate: importClients } = useImportClients();
+
   const [selectedGroupId, setSelectedGroupId] = useState<string>();
 
   useEffect(() => {
-    api
-      .get(`v1/groups/organizations/${organizationId}`)
-      .then(({ data }) => {
-        console.log(data);
-        setGroups(data);
-        setSelectedGroupId(data[0].id);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  }, []);
+    if (groups[0]) {
+      setSelectedGroupId(groups[0].id);
+    }
+  }, [groups]);
 
   const handleImportClients = () => {
+    if (!selectedGroupId) {
+      return;
+    }
+
     const line = data.split("\n");
     let clients = [];
 
@@ -44,18 +46,17 @@ export const ImportClients = () => {
       });
     }
 
-    api
-      .post("v1/groups/import", {
-        clients,
-        organizationId,
-        groupId: selectedGroupId,
-      })
-      .then(() => {
+    const payload = {
+      clients,
+      organizationId,
+      groupId: selectedGroupId,
+    };
+
+    importClients(payload, {
+      onSuccess: () => {
         navigation.goBack();
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+      },
+    });
   };
 
   return (

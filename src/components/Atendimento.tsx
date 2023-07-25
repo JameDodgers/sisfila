@@ -6,7 +6,7 @@ import {
   FlatList,
 } from "native-base";
 
-import { Client } from "./Client";
+import { ClientItem } from "./ClientItem";
 
 import { QueueProps } from "./Queue";
 
@@ -22,7 +22,7 @@ export const Atendimento = ({ item, ...rest }: Props) => {
         <Text>{name}</Text>
         <FlatList
           data={clients}
-          renderItem={(props) => <Client {...props} />}
+          renderItem={(props) => <ClientItem {...props} />}
         />
       </VStack>
     </Pressable>

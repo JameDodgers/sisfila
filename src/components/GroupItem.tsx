@@ -1,18 +1,11 @@
 import { Text, VStack, IPressableProps, Pressable } from "native-base";
-
-export type GroupProps = {
-  id: string;
-  name: string;
-  createdAt: Date;
-  updatedAt: Date;
-  organizationId: string;
-};
+import { Group } from "../models/Group";
 
 type Props = IPressableProps & {
-  item: GroupProps;
+  item: Group;
 };
 
-export const Group = ({ item, ...rest }: Props) => {
+export const GroupItem = ({ item, ...rest }: Props) => {
   return (
     <Pressable {...rest}>
       <VStack bg="light.50" p={2} mb={4} shadow={5} rounded="md">
