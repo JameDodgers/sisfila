@@ -1,29 +1,15 @@
 import { FlatList, VStack } from "native-base";
-import { useEffect, useState } from "react";
-import { Service, ServiceProps } from "../../components/Service";
+
+import { ServiceItem } from "../../components/ServiceItem";
 import { useDrawer } from "../../contexts/drawer";
-import api from "../../services/api/config";
+import { useServicesQueries } from "../../queries/services";
 
 export const Services = () => {
   const { organizationId } = useDrawer();
-  const [services, setServices] = useState<ServiceProps[]>();
 
-  useEffect(() => {
-    const fetchServices = () => {
-      api
-        .get(`v1/services/organizations/${organizationId}`)
-        .then(({ data }) => {
-          setServices(data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    };
+  const { useGetServices } = useServicesQueries();
 
-    if (organizationId) {
-      fetchServices();
-    }
-  }, [organizationId]);
+  const { data: services = [] } = useGetServices(organizationId);
 
   return (
     <VStack>
@@ -34,7 +20,7 @@ export const Services = () => {
         data={services}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => {
-          return <Service item={item} />;
+          return <ServiceItem item={item} />;
         }}
       />
     </VStack>

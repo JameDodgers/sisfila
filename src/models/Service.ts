@@ -1,11 +1,14 @@
-export type Service = {
-  id: string;
+export type ServiceBase = {
   name: string;
   subscriptionToken: string;
   guestEnroll: boolean;
+  organizationId: string;
   opensAt: string;
   closesAt: string;
+};
+
+export type Service = ServiceBase & {
+  id: string;
   createdAt: string;
   updatedAt: string;
-  organizationId: string;
 };
