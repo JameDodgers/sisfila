@@ -1,48 +1,27 @@
 import { ScrollView, VStack } from "native-base";
 
-import {
-  useFocusEffect,
-  useNavigation,
-  useRoute,
-} from "@react-navigation/native";
-import { useCallback, useEffect, useState } from "react";
+import { useNavigation } from "@react-navigation/native";
+import { useEffect } from "react";
 import { DataTable } from "react-native-paper";
 import { Button, IconButton } from "react-native-paper";
 
-import api from "../../services/api/config";
 import { useDrawer } from "../../contexts/drawer";
-import { ClientProps } from "../../components/Client";
+import { useClientsQueries } from "../../queries/clients";
+import { useRefreshOnFocus } from "../../hooks/useRefreshOnFocus";
 
 export const Clients = () => {
   const navigation = useNavigation();
-  const route = useRoute();
 
   const { organizationId } = useDrawer();
 
-  const [clients, setClients] = useState<ClientProps[]>([]);
+  const { useGetOrganizationClients, useRemoveClient } = useClientsQueries();
 
-  useEffect(() => {
-    const clients = route.params?.clients;
-    if (clients) {
-      setClients(clients);
-    }
-  }, [route.params?.clients]);
+  const { data: clients = [], refetch } =
+    useGetOrganizationClients(organizationId);
 
-  useFocusEffect(
-    useCallback(() => {
-      const fetchClients = () => {
-        api
-          .get(`v1/clients/organizations/${organizationId}`)
-          .then(({ data }) => {
-            setClients(data);
-          })
-          .catch((e) => {
-            console.log(e);
-          });
-      };
-      fetchClients();
-    }, [organizationId])
-  );
+  const { mutate: removeClient } = useRemoveClient();
+
+  useRefreshOnFocus(refetch);
 
   const handleImport = () => {
     navigation.navigate("ImportClients");
@@ -55,13 +34,7 @@ export const Clients = () => {
   }, [navigation]);
 
   const handleDeleteClient = (clientId: string) => {
-    api
-      .delete(`v1/clients/${clientId}/organizations/${organizationId}`)
-      .then(() => {
-        setClients((clients) =>
-          clients.filter((client) => client.id !== clientId)
-        );
-      });
+    removeClient({ clientId, organizationId });
   };
 
   return (
