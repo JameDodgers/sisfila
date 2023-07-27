@@ -36,7 +36,7 @@ const create = (data: CreateGroupParams) =>
   api.post<CreateGroupResponse>("v1/groups", data);
 
 const importClients = (data: ImportClientsParams) =>
-  api.post("v1/groups/imports", data);
+  api.post("v1/groups/import", data);
 
 export default {
   getOrganizationGroups,
