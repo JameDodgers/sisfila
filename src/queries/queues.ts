@@ -19,7 +19,17 @@ export const useQueuesQueries = () => {
       mutationFn: queuesApi.attachGroupsToQueue,
     });
 
-  return { useGetQueue, useCreateQueue, useAttachGroupsToQueue };
+  const useEnterQueue = () =>
+    useMutation({
+      mutationFn: queuesApi.enter,
+    });
+
+  return {
+    useGetQueue,
+    useCreateQueue,
+    useAttachGroupsToQueue,
+    useEnterQueue,
+  };
 };
 
 export const queuesKeys = {

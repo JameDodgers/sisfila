@@ -26,6 +26,12 @@ interface GetOneResponse extends Array<Queue> {
   clients: Client[];
 }
 
+interface EnterQueueParams {
+  registrationId: string;
+  organizationId: string;
+  queueId: string;
+}
+
 const getOne = (organizationId: string) =>
   api.get<GetOneResponse>(`v1/queues/organizations/${organizationId}`);
 
@@ -41,9 +47,13 @@ const attachGroupsToQueue = ({
 }: AttachGroupsToQueueParams) =>
   api.patch(`v1/queues/${queueId}/organizations/${organizationId}`, data);
 
+const enter = (data: EnterQueueParams) =>
+  api.patch<CreateQueueResponse>("v1/queues/enter", data);
+
 export default {
   getOne,
   getQueue,
   create,
   attachGroupsToQueue,
+  enter,
 };
