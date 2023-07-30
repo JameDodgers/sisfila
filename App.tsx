@@ -15,6 +15,7 @@ import { focusManager } from "@tanstack/react-query";
 import { CombinedDefaultTheme } from "./src/styles/theme";
 import { useEffect } from "react";
 import { DataProvider } from "./src/contexts/data";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 const onAppStateChange = (status: AppStateStatus) => {
   if (Platform.OS !== "web") {
@@ -30,20 +31,22 @@ export default function App() {
   }, []);
 
   return (
-    <NativeBaseProvider>
-      <PaperProvider theme={CombinedDefaultTheme}>
-        <DataProvider>
-          <StatusBar style="auto" translucent={false} />
-          <SafeAreaView
-            style={{
-              flex: 1,
-            }}
-          >
-            <Routes />
-          </SafeAreaView>
-        </DataProvider>
-      </PaperProvider>
-    </NativeBaseProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <NativeBaseProvider>
+        <PaperProvider theme={CombinedDefaultTheme}>
+          <DataProvider>
+            <StatusBar style="auto" translucent={false} />
+            <SafeAreaView
+              style={{
+                flex: 1,
+              }}
+            >
+              <Routes />
+            </SafeAreaView>
+          </DataProvider>
+        </PaperProvider>
+      </NativeBaseProvider>
+    </GestureHandlerRootView>
   );
 }
 
