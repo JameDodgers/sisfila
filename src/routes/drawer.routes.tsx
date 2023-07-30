@@ -7,7 +7,6 @@ import { OrganizationRoutes } from "./organization.routes";
 import { HomeRoutes } from "./home.routes";
 
 import { Platform } from "react-native";
-import { AttendantsRoutes } from "./attendants.routes";
 import { GroupsRoutes } from "./groups.routes";
 import { QueuesRoutes } from "./queues.routes";
 import { ServicesRoutes } from "./services.routes";
@@ -79,13 +78,6 @@ export const DrawerRoutes = () => {
               title: "Grupos",
             }}
             component={GroupsRoutes}
-          />
-          <Screen
-            name="AttendantsRoutes"
-            options={{
-              title: "Atendentes",
-            }}
-            component={AttendantsRoutes}
           />
           <Screen
             name="ServicesRoutes"

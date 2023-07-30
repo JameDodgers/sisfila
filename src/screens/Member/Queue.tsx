@@ -1,6 +1,6 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Button, HStack, Checkbox, Text, VStack } from "native-base";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useDrawer } from "../../contexts/drawer";
 
@@ -21,7 +21,9 @@ export const Queue = () => {
 
   const { data: groups = [] } = useGetGroups(organizationId);
 
-  const { useAttachGroupsToQueue } = useQueuesQueries();
+  const { useAttachGroupsToQueue, useGetQueue } = useQueuesQueries();
+
+  const { data: queue } = useGetQueue(queueId);
 
   const { mutate: attachGroupsToQueue } = useAttachGroupsToQueue();
 
