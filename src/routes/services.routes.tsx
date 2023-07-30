@@ -1,3 +1,4 @@
+import { CreateService } from "../screens/Member/CreateService";
 import { Services } from "../screens/Member/Services";
 
 import { getStackAndScreensInsideDrawer } from "./helpers";
@@ -11,6 +12,13 @@ export const ServicesRoutes = getStackAndScreensInsideDrawer({
         title: "Serviços",
       },
       component: Services,
+    },
+    {
+      name: "CreateService",
+      options: {
+        title: "Criar serviço",
+      },
+      component: CreateService,
     },
   ],
 });

@@ -1,10 +1,10 @@
 export type ServiceBase = {
   name: string;
   subscriptionToken: string;
-  guestEnroll: boolean;
+  guestEnrollment: boolean;
   organizationId: string;
-  opensAt: string;
-  closesAt: string;
+  opensAt: Date;
+  closesAt: Date;
 };
 
 export type Service = ServiceBase & {
