@@ -3,21 +3,17 @@ import { useMemo } from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 
 import CustomDrawerContent from "../components/CustomDrawerContent";
-import { OrganizationRoutes } from "./organization.routes";
-import { HomeRoutes } from "./home.routes";
 
 import { Platform } from "react-native";
 import { GroupsRoutes } from "./groups.routes";
 import { QueuesRoutes } from "./queues.routes";
 import { ServicesRoutes } from "./services.routes";
 import { ClientsRoutes } from "./clients.routes";
-import { useToken } from "../store/auth";
+import { OrganizationDetails } from "../screens/Member/OrganizationDetails";
 
 const { Navigator, Screen } = createDrawerNavigator();
 
 export const DrawerRoutes = () => {
-  const token = useToken();
-
   const drawerType = useMemo(() => {
     switch (Platform.OS) {
       case "web":
@@ -32,7 +28,7 @@ export const DrawerRoutes = () => {
   return (
     <Navigator
       defaultStatus={Platform.OS === "web" ? "open" : "closed"}
-      initialRouteName="HomeStack"
+      initialRouteName="OrganizationDetails"
       screenOptions={{
         headerShown: false,
         swipeEnabled: false,
@@ -56,54 +52,42 @@ export const DrawerRoutes = () => {
       // })}
       drawerContent={(props) => <CustomDrawerContent {...props} />}
     >
-      {!!token ? (
-        <>
-          <Screen
-            name="ClientsRoutes"
-            options={{
-              title: "Clientes",
-            }}
-            component={ClientsRoutes}
-          />
-          <Screen
-            name="OrganizationRoutes"
-            options={{
-              title: "Organização",
-            }}
-            component={OrganizationRoutes}
-          />
-          <Screen
-            name="GroupsRoutes"
-            options={{
-              title: "Grupos",
-            }}
-            component={GroupsRoutes}
-          />
-          <Screen
-            name="ServicesRoutes"
-            options={{
-              title: "Serviços",
-            }}
-            component={ServicesRoutes}
-          />
-          <Screen
-            name="Queues"
-            options={{
-              title: "Filas",
-              headerShown: true,
-            }}
-            component={QueuesRoutes}
-          />
-        </>
-      ) : (
-        <Screen
-          name="HomeRoutes"
-          options={{
-            title: "Início",
-          }}
-          component={HomeRoutes}
-        />
-      )}
+      <Screen
+        name="OrganizationDetails"
+        options={{
+          title: "Organização",
+        }}
+        component={OrganizationDetails}
+      />
+      <Screen
+        name="ClientsRoutes"
+        options={{
+          title: "Clientes",
+        }}
+        component={ClientsRoutes}
+      />
+      <Screen
+        name="GroupsRoutes"
+        options={{
+          title: "Grupos",
+        }}
+        component={GroupsRoutes}
+      />
+      <Screen
+        name="ServicesRoutes"
+        options={{
+          title: "Serviços",
+        }}
+        component={ServicesRoutes}
+      />
+      <Screen
+        name="Queues"
+        options={{
+          title: "Filas",
+          headerShown: true,
+        }}
+        component={QueuesRoutes}
+      />
     </Navigator>
   );
 };
