@@ -2350,17 +2350,6 @@
     "@react-types/combobox" "^3.5.4"
     "@react-types/shared" "^3.15.0"
 
-"@react-aria/focus@3.2.3":
-  version "3.2.3"
-  resolved "https://registry.yarnpkg.com/@react-aria/focus/-/focus-3.2.3.tgz#3e4137498a7fb5235d056c30fd94ab4a82e73aea"
-  integrity sha512-+OWmJMivrq3f8ApWihH1KJYqYj3rZV34YJORacBohcAsF1Qd1V1/P+w3dMkf24kV0wqAiWePCF1FwgnrL/rYzQ==
-  dependencies:
-    "@babel/runtime" "^7.6.2"
-    "@react-aria/interactions" "^3.3.0"
-    "@react-aria/utils" "^3.4.0"
-    "@react-types/shared" "^3.3.0"
-    clsx "^1.1.1"
-
 "@react-aria/focus@^3.2.3", "@react-aria/focus@^3.9.0":
   version "3.9.0"
   resolved "https://registry.yarnpkg.com/@react-aria/focus/-/focus-3.9.0.tgz#fa4478eebdc3c199a0529470f1d7b36608ef0d10"
@@ -2386,7 +2375,7 @@
     "@react-aria/utils" "^3.14.0"
     "@react-types/shared" "^3.15.0"
 
-"@react-aria/interactions@^3.12.0", "@react-aria/interactions@^3.3.0", "@react-aria/interactions@^3.3.2":
+"@react-aria/interactions@^3.12.0", "@react-aria/interactions@^3.3.2":
   version "3.12.0"
   resolved "https://registry.yarnpkg.com/@react-aria/interactions/-/interactions-3.12.0.tgz#b16a392c3dc23351c8fd33a16cef0ef93dc4682d"
   integrity sha512-KcKurjPZwme9ggvGQjbjqZtZtuyXipTBVMHUah9a3+Dz7vXxhRg5vFaEdM79oQnNsrGFW5xS6SKBehl/JG6BMw==
@@ -2557,7 +2546,7 @@
     "@react-types/shared" "^3.15.0"
     "@react-types/switch" "^3.2.4"
 
-"@react-aria/utils@^3.14.0", "@react-aria/utils@^3.3.0", "@react-aria/utils@^3.4.0", "@react-aria/utils@^3.4.1", "@react-aria/utils@^3.6.0":
+"@react-aria/utils@^3.14.0", "@react-aria/utils@^3.3.0", "@react-aria/utils@^3.4.1", "@react-aria/utils@^3.6.0":
   version "3.14.0"
   resolved "https://registry.yarnpkg.com/@react-aria/utils/-/utils-3.14.0.tgz#87877e89e959c8b6299da953ec3a7167de2192c3"
   integrity sha512-DHgmwNBNEhnb6DEYYAfbt99wprBqJJOBBeIpQ2g3+pxwlw4BZ+v4Qr+rDD0ZibWV0mYzt8zOhZ9StpId7iTF0Q==
@@ -2589,7 +2578,7 @@
     "@react-stately/toggle" "^3.2.1"
     "@react-types/checkbox" "^3.2.1"
 
-"@react-native-aria/checkbox@^0.2.2":
+"@react-native-aria/checkbox@^0.2.3":
   version "0.2.3"
   resolved "https://registry.yarnpkg.com/@react-native-aria/checkbox/-/checkbox-0.2.3.tgz#b6c99c215677df872f1bb4e596b54573f1c7a5f0"
   integrity sha512-YtWtXGg5tvOaV6v1CmbusXoOZvGRAVYygms9qNeUF7/B8/iDNGSKjlxHE5LVOLRtJO/B9ndZnr6RkL326ceyng==
@@ -2643,10 +2632,10 @@
     "@react-types/listbox" "^3.1.1"
     "@react-types/shared" "^3.4.0"
 
-"@react-native-aria/overlays@0.3.3-rc.0":
-  version "0.3.3-rc.0"
-  resolved "https://registry.yarnpkg.com/@react-native-aria/overlays/-/overlays-0.3.3-rc.0.tgz#9041ddd6f151e6edb50c971d29920c458aa41459"
-  integrity sha512-RgaIYIHMltt0RdMrVwfXLAVxc22TIUY1Yx07HbQRMdt4LcSmU8pyp5CEtJ/MQCXceuqocnXfsUxyHOSnfhmfpA==
+"@react-native-aria/overlays@^0.3.3":
+  version "0.3.7"
+  resolved "https://registry.yarnpkg.com/@react-native-aria/overlays/-/overlays-0.3.7.tgz#4e9e9024947cc4219ec9c6461f96033e2cd7e779"
+  integrity sha512-R0egaQoQtwMG6HA4hAoLFHcQOMLfv2WBIjPdnF6OJHxqFW2+Kzw9j2WqwjV90/cP1evU/iWnzKX48ed83xAh9Q==
   dependencies:
     "@react-aria/interactions" "^3.3.2"
     "@react-aria/overlays" "^3.7.0"
@@ -3313,7 +3302,7 @@
   dependencies:
     "@react-types/shared" "^3.15.0"
 
-"@react-types/shared@^3.15.0", "@react-types/shared@^3.2.1", "@react-types/shared@^3.3.0", "@react-types/shared@^3.4.0":
+"@react-types/shared@^3.15.0", "@react-types/shared@^3.2.1", "@react-types/shared@^3.4.0":
   version "3.15.0"
   resolved "https://registry.yarnpkg.com/@react-types/shared/-/shared-3.15.0.tgz#a4a78f36bc8daaefe6e9a9df1f453271639c2233"
   integrity sha512-hwuE4BmgswqP+HRDSLMj7DcnYOCCK+ZRuKnc9AVhXS4LBrwRSkdUkNvXhgvqF5tav7IqTpG9pBYMR9wedehuhA==
@@ -3578,18 +3567,6 @@
   version "7.0.11"
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.11.tgz#d421b6c527a3037f7c84433fd2c4229e016863d3"
   integrity sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ==
-
-"@types/lodash.has@^4.5.6":
-  version "4.5.7"
-  resolved "https://registry.yarnpkg.com/@types/lodash.has/-/lodash.has-4.5.7.tgz#9e1c3da3ee67f68fadc3d168ffdf8e11a3f3ccd3"
-  integrity sha512-nfbAzRbsZBdzSAkL9iiLy4SQk89uuFcXBFwZ7pf6oZhBgPvNys8BY5Twp/w8XvZKGt1o6cAa85wX4QhqO3uQ7A==
-  dependencies:
-    "@types/lodash" "*"
-
-"@types/lodash@*":
-  version "4.14.186"
-  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.186.tgz#862e5514dd7bd66ada6c70ee5fce844b06c8ee97"
-  integrity sha512-eHcVlLXP0c2FlMPm56ITode2AgLMSa6aJ05JTTbYbI+7EMkCEE5qk2E41d5g2lCVTqRe0GnnRFurmlCsDODrPw==
 
 "@types/lodash@^4.14.175":
   version "4.14.189"
@@ -7625,6 +7602,11 @@ lodash.uniq@^4.5.0:
   resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
   integrity sha512-xfBaXQd9ryd9dlSDvnvI0lvxfLJlYAZzXomUYzLKtUeOQvOP5piqAWuGtrhWeqaXK9hhoM/iyJc5AV+XfsX3HQ==
 
+lodash.uniqueid@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/lodash.uniqueid/-/lodash.uniqueid-4.0.1.tgz#3268f26a7c88e4f4b1758d679271814e31fa5b26"
+  integrity sha512-GQQWaIeGlL6DIIr06kj1j6sSmBxyNMwI8kaX9aKpHR/XsMTiaXDVPNPAkiboOTK9OJpTJF/dXT3xYoFQnj386Q==
+
 lodash@4, lodash@^4.17.13, lodash@^4.17.20, lodash@^4.17.21, lodash@^4.17.4:
   version "4.17.21"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
@@ -8333,20 +8315,19 @@ nanoid@^3.3.4, nanoid@^3.3.6:
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.6.tgz#443380c856d6e9f9824267d960b4236ad583ea4c"
   integrity sha512-BGcqMMJuToF7i1rt+2PWSNVnWIkGCU78jBG3RxO/bZlnZPK2Cmi2QaffxGO/2RvWi9sL+FAiRiXMgsyxQ1DIDA==
 
-"native-base@git+https://github.com/GeekyAnts/NativeBase.git#fix/react-native-web0.18":
-  version "3.4.12"
-  resolved "git+https://github.com/GeekyAnts/NativeBase.git#3682e2298139c36e535062ca0b56443f04a1cf22"
+native-base@^3.4.28:
+  version "3.4.28"
+  resolved "https://registry.yarnpkg.com/native-base/-/native-base-3.4.28.tgz#81b174c8fab1a38fc4560abc12b63dc836c6a14a"
+  integrity sha512-EDg9UFDNmfYXPInpRbxce+4oWFEIGaM7aG6ey4hVllcvMC3PkgCvkiXEB+7EemgC7Qr8CuFjgMTx7P0vvnwZeQ==
   dependencies:
-    "@react-aria/focus" "3.2.3"
-    "@react-aria/utils" "^3.6.0"
     "@react-aria/visually-hidden" "^3.2.1"
     "@react-native-aria/button" "^0.2.4"
-    "@react-native-aria/checkbox" "^0.2.2"
+    "@react-native-aria/checkbox" "^0.2.3"
     "@react-native-aria/combobox" "^0.2.4-alpha.0"
     "@react-native-aria/focus" "^0.2.6"
     "@react-native-aria/interactions" "^0.2.2"
     "@react-native-aria/listbox" "^0.2.4-alpha.3"
-    "@react-native-aria/overlays" "0.3.3-rc.0"
+    "@react-native-aria/overlays" "^0.3.3"
     "@react-native-aria/radio" "^0.2.4"
     "@react-native-aria/slider" "^0.2.5-alpha.1"
     "@react-native-aria/tabs" "^0.2.7"
@@ -8358,7 +8339,7 @@ nanoid@^3.3.4, nanoid@^3.3.6:
     "@react-stately/slider" "3.0.1"
     "@react-stately/tabs" "3.0.0-alpha.1"
     "@react-stately/toggle" "3.2.1"
-    "@types/lodash.has" "^4.5.6"
+    inline-style-prefixer "^6.0.1"
     lodash.clonedeep "^4.5.0"
     lodash.get "^4.4.2"
     lodash.has "^4.5.2"
@@ -8370,11 +8351,10 @@ nanoid@^3.3.4, nanoid@^3.3.6:
     lodash.omit "^4.5.0"
     lodash.omitby "^4.6.0"
     lodash.pick "^4.4.0"
-    normalize-css-color "^1.0.2"
-    react-native-keyboard-aware-scroll-view "^0.9.5"
+    lodash.uniqueid "^4.0.1"
     stable-hash "^0.0.2"
     tinycolor2 "^1.4.2"
-    to-style "^1.3.3"
+    use-sync-external-store "^1.2.0"
 
 ncp@~2.0.0:
   version "2.0.0"
@@ -9292,7 +9272,7 @@ prompts@^2.3.2, prompts@^2.4.0:
     kleur "^3.0.3"
     sisteransi "^1.0.5"
 
-prop-types@*, prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@*, prop-types@^15.7.2:
   version "15.8.1"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
   integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
@@ -9510,18 +9490,10 @@ react-native-gesture-handler@~2.12.0:
     lodash "^4.17.21"
     prop-types "^15.7.2"
 
-react-native-iphone-x-helper@^1.0.3, react-native-iphone-x-helper@^1.3.1:
+react-native-iphone-x-helper@^1.3.1:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.3.1.tgz#20c603e9a0e765fd6f97396638bdeb0e5a60b010"
   integrity sha512-HOf0jzRnq2/aFUcdCJ9w9JGzN3gdEg0zFE4FyYlp4jtidqU03D5X7ZegGKfT1EWteR0gPBGp9ye5T5FvSWi9Yg==
-
-react-native-keyboard-aware-scroll-view@^0.9.5:
-  version "0.9.5"
-  resolved "https://registry.yarnpkg.com/react-native-keyboard-aware-scroll-view/-/react-native-keyboard-aware-scroll-view-0.9.5.tgz#e2e9665d320c188e6b1f22f151b94eb358bf9b71"
-  integrity sha512-XwfRn+T/qBH9WjTWIBiJD2hPWg0yJvtaEw6RtPCa5/PYHabzBaWxYBOl0usXN/368BL1XktnZPh8C2lmTpOREA==
-  dependencies:
-    prop-types "^15.6.2"
-    react-native-iphone-x-helper "^1.0.3"
 
 react-native-paper@^4.12.5:
   version "4.12.5"
@@ -10731,11 +10703,6 @@ to-regex-range@^5.0.1:
   integrity sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==
   dependencies:
     is-number "^7.0.0"
-
-to-style@^1.3.3:
-  version "1.3.3"
-  resolved "https://registry.yarnpkg.com/to-style/-/to-style-1.3.3.tgz#63a2b70a6f4a7d4fdc2ed57a0be4e7235cb6699c"
-  integrity sha512-9K8KYegr9hrdm8yPpu5iZjJp5t6RPAp4gFDU5hD9zR8hwqgF4fsoSitMtkRKQG2qkP5j/uG3wajbgV09rjmIqg==
 
 toidentifier@1.0.1:
   version "1.0.1"
