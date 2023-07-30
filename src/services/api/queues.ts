@@ -22,9 +22,7 @@ interface AttachGroupsToQueueParams {
   groups: Group[];
 }
 
-interface GetOneResponse extends Array<Queue> {
-  clients: Client[];
-}
+interface GetOneResponse extends Array<Queue> {}
 
 interface EnterQueueParams {
   registrationId: string;
@@ -35,10 +33,10 @@ interface EnterQueueParams {
 const getOne = (organizationId: string) =>
   api.get<GetOneResponse>(`v1/queues/organizations/${organizationId}`);
 
-const getQueue = (queueId: string) => api.get(`v1/queues/${queueId}`);
+const getQueue = (queueId: string) => api.get<Queue>(`v1/queues/${queueId}`);
 
 const create = (data: CreateQueueParams) =>
-  api.post<CreateQueueResponse>("v1/create", data);
+  api.post<CreateQueueResponse>("v1/queues", data);
 
 const attachGroupsToQueue = ({
   queueId,

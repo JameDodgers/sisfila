@@ -5,6 +5,8 @@ import { useDrawer } from "../../contexts/drawer";
 
 import { useOrganizationsQueries } from "../../queries/organizations";
 import { QueueItem } from "../../components/QueueItem";
+import { useEffect, useLayoutEffect } from "react";
+import { IconButton } from "react-native-paper";
 
 export const Queues = () => {
   const navigation = useNavigation();
@@ -13,6 +15,19 @@ export const Queues = () => {
   const { useGetOrganizationQueues } = useOrganizationsQueries();
 
   const { data: queues = [] } = useGetOrganizationQueues(organizationId);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <IconButton
+          icon="plus"
+          onPress={() => {
+            navigation.navigate("CreateQueue");
+          }}
+        />
+      ),
+    });
+  }, [navigation]);
 
   const handleOpenQueue = (queueId: string) => {
     navigation.navigate("Queue", {
