@@ -3,8 +3,8 @@ export type ServiceBase = {
   subscriptionToken: string;
   guestEnrollment: boolean;
   organizationId: string;
-  opensAt: Date;
-  closesAt: Date;
+  opensAt: string;
+  closesAt: string;
 };
 
 export type Service = ServiceBase & {

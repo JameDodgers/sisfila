@@ -50,8 +50,8 @@ export const CreateService = () => {
       name,
       subscriptionToken,
       guestEnrollment,
-      opensAt,
-      closesAt,
+      opensAt: opensAt.toISOString(),
+      closesAt: closesAt.toISOString(),
     };
 
     createService(payload, {
