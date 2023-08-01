@@ -31,12 +31,12 @@ export const getStackAndScreensInsideDrawer = ({
         headerBackTitleVisible: false,
       }}
     >
-      {screensProps.map((props: any) => (
+      {screensProps.map((props: any, index) => (
         <Screen
           {...props}
           key={props.name}
           options={({ navigation }) => ({
-            ...screensProps[0].options,
+            ...screensProps[index].options,
             ...(Platform.OS !== "web" && {
               headerLeft: ({ tintColor, canGoBack }) => {
                 if (canGoBack) {

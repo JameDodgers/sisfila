@@ -84,7 +84,6 @@ export const DrawerRoutes = () => {
         name="Queues"
         options={{
           title: "Filas",
-          headerShown: true,
         }}
         component={QueuesRoutes}
       />
