@@ -1,67 +1,39 @@
-import { useNavigation, useRoute } from "@react-navigation/native";
-import { Button, HStack, Checkbox, Text, VStack } from "native-base";
-import { useEffect, useState } from "react";
+import { useRoute } from "@react-navigation/native";
+import { Button, FlatList, Text, VStack } from "native-base";
 
 import { useDrawer } from "../../contexts/drawer";
 
-import { useGroupsQueries } from "../../queries/groups";
-import { useQueuesQueries } from "../../queries/queues";
+import { ClientItem } from "../../components/ClientItem";
+import { useOrganizationsQueries } from "../../queries/organizations";
 
 export const Queue = () => {
   const route = useRoute();
-  const navigation = useNavigation();
-
   const queueId = route.params?.queueId;
 
   const { organizationId } = useDrawer();
 
-  const [selectedGroupIds, setSelectedGroupIds] = useState([]);
+  const { useGetQueue, useCallNext } = useOrganizationsQueries();
 
-  const { useGetGroups } = useGroupsQueries();
+  const { data: queue } = useGetQueue(queueId, organizationId);
 
-  const { data: groups = [] } = useGetGroups(organizationId);
+  const { mutate: callNext } = useCallNext();
 
-  const { useAttachGroupsToQueue, useGetQueue } = useQueuesQueries();
-
-  const { data: queue } = useGetQueue(queueId);
-
-  const { mutate: attachGroupsToQueue } = useAttachGroupsToQueue();
-
-  const handleUpdateQueue = () => {
-    const data = {
-      queueId,
-      organizationId,
-      groups: selectedGroupIds,
-    };
-
-    attachGroupsToQueue(data, {
-      onSuccess: () => {
-        navigation.goBack();
-      },
-    });
+  const handleCallNext = () => {
+    callNext({ organizationId, queueId });
   };
 
   return (
-    <VStack flex={1} p={3} alignItems="center">
-      <VStack
-        _web={{
-          w: "50%",
+    <VStack p={4} space={4}>
+      <FlatList
+        data={queue?.clients}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item, index }) => {
+          return <ClientItem item={item} index={index} />;
         }}
-        w="100%"
-        space={4}
-      >
-        <Text>Grupos</Text>
-        <Checkbox.Group value={selectedGroupIds} onChange={setSelectedGroupIds}>
-          {groups.map((group) => (
-            <Checkbox key={group.id} value={group.id}>
-              <Text>{group.name}</Text>
-            </Checkbox>
-          ))}
-        </Checkbox.Group>
-        <Button onPress={handleUpdateQueue}>
-          <Text>Salvar</Text>
-        </Button>
-      </VStack>
+      />
+      <Button onPress={handleCallNext}>
+        <Text>Chamar próximo</Text>
+      </Button>
     </VStack>
   );
 };

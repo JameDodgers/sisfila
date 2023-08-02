@@ -1,8 +1,7 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { VStack, Button, Text, Input, Toast } from "native-base";
 import { useState } from "react";
-
-import { useQueuesQueries } from "../queries/queues";
+import { useQueuesQueries } from "../../queries/queues";
 
 export const Atendimento = () => {
   const route = useRoute();

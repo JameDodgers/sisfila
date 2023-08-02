@@ -81,7 +81,7 @@ export const DrawerRoutes = () => {
         component={ServicesRoutes}
       />
       <Screen
-        name="Queues"
+        name="QueuesRoutes"
         options={{
           title: "Filas",
         }}

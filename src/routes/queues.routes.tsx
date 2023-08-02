@@ -3,6 +3,7 @@ import { Queue } from "../screens/Member/Queue";
 
 import { getStackAndScreensInsideDrawer } from "./helpers";
 import { CreateQueue } from "../screens/Member/CreateQueue";
+import { QueueSettings } from "../screens/Member/QueueSettings";
 
 export const QueuesRoutes = getStackAndScreensInsideDrawer({
   initialRouteName: "Queues",
@@ -12,6 +13,11 @@ export const QueuesRoutes = getStackAndScreensInsideDrawer({
       name: "Queue",
       options: { title: "Fila" },
       component: Queue,
+    },
+    {
+      name: "QueueSettings",
+      options: { title: "Configurações" },
+      component: QueueSettings,
     },
     {
       name: "CreateQueue",

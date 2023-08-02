@@ -30,6 +30,11 @@ interface EnterQueueParams {
   queueId: string;
 }
 
+interface CallNextParams {
+  organizationId: string;
+  queueId: string;
+}
+
 const getOne = (organizationId: string) =>
   api.get<GetOneResponse>(`v1/queues/organizations/${organizationId}`);
 
@@ -48,10 +53,13 @@ const attachGroupsToQueue = ({
 const enter = (data: EnterQueueParams) =>
   api.patch<CreateQueueResponse>("v1/queues/enter", data);
 
+const callNext = (data: CallNextParams) => api.patch("v1/queues/next", data);
+
 export default {
   getOne,
   getQueue,
   create,
+  callNext,
   attachGroupsToQueue,
   enter,
 };

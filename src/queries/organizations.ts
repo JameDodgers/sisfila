@@ -5,6 +5,7 @@ import { useUserQueries } from "./user";
 import { useUser } from "../store/auth";
 import { useDrawer } from "../contexts/drawer";
 import queuesApi from "../services/api/queues";
+import { Queue } from "../models/Queue";
 
 export const useOrganizationsQueries = () => {
   const queryClient = useQueryClient();
@@ -94,6 +95,65 @@ export const useOrganizationsQueries = () => {
         queuesApi.getOne(organizationId).then((response) => response.data),
     });
 
+  const useGetQueue = (queueId: string, organizationId: string) =>
+    useQuery({
+      queryKey: queuesKeys.item(organizationId, queueId),
+      queryFn: () =>
+        queuesApi.getQueue(queueId).then((response) => response.data),
+    });
+
+  const useCallNext = () =>
+    useMutation({
+      mutationFn: queuesApi.callNext,
+      onMutate: async ({ organizationId, queueId }) => {
+        await queryClient.cancelQueries({
+          queryKey: queuesKeys.item(organizationId, queueId),
+        });
+
+        const oldQueue = queryClient.getQueryData<Queue>(
+          queuesKeys.item(organizationId, queueId)
+        );
+
+        if (oldQueue) {
+          queryClient.setQueryData<Queue>(
+            queuesKeys.item(organizationId, queueId),
+            {
+              ...oldQueue,
+              clients: oldQueue.clients.slice(1),
+            }
+          );
+        }
+
+        return { oldQueue };
+      },
+      onError: (_err, variables, context) => {
+        if (context?.oldQueue) {
+          queryClient.setQueryData(
+            queuesKeys.item(variables.organizationId, variables.queueId),
+            context.oldQueue
+          );
+        }
+      },
+      onSettled: (_data, _error, variables) => {
+        queryClient.invalidateQueries({
+          queryKey: queuesKeys.item(
+            variables.organizationId,
+            variables.queueId
+          ),
+        });
+      },
+    });
+
+  const useCreateQueue = () =>
+    useMutation({
+      mutationFn: queuesApi.create,
+    });
+
+  const useAttachGroupsToQueue = () =>
+    useMutation({
+      mutationFn: queuesApi.attachGroupsToQueue,
+    });
+
   return {
     useGetOrganization,
     useCreateOrganization,
@@ -101,6 +161,10 @@ export const useOrganizationsQueries = () => {
     useDeleteOrganization,
     useGetOrganizations,
     useGetOrganizationQueues,
+    useGetQueue,
+    useCreateQueue,
+    useAttachGroupsToQueue,
+    useCallNext,
   };
 };
 

@@ -9,16 +9,6 @@ export const useQueuesQueries = () => {
         queuesApi.getQueue(queueId).then((response) => response.data),
     });
 
-  const useCreateQueue = () =>
-    useMutation({
-      mutationFn: queuesApi.create,
-    });
-
-  const useAttachGroupsToQueue = () =>
-    useMutation({
-      mutationFn: queuesApi.attachGroupsToQueue,
-    });
-
   const useEnterQueue = () =>
     useMutation({
       mutationFn: queuesApi.enter,
@@ -26,8 +16,6 @@ export const useQueuesQueries = () => {
 
   return {
     useGetQueue,
-    useCreateQueue,
-    useAttachGroupsToQueue,
     useEnterQueue,
   };
 };
