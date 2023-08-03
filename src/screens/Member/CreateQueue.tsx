@@ -6,9 +6,9 @@ import { useNavigation } from "@react-navigation/native";
 
 import { useDrawer } from "../../contexts/drawer";
 
-import { useQueuesQueries } from "../../queries/queues";
 import { useServicesQueries } from "../../queries/services";
 import _ from "lodash";
+import { useOrganizationsQueries } from "../../queries/organizations";
 
 export const CreateQueue = () => {
   const navigation = useNavigation();
@@ -20,7 +20,7 @@ export const CreateQueue = () => {
   const [code, setCode] = useState("");
   const [priority, setPriority] = useState("");
 
-  const { useCreateQueue } = useQueuesQueries();
+  const { useCreateQueue } = useOrganizationsQueries();
 
   const { useGetServices } = useServicesQueries();
 
