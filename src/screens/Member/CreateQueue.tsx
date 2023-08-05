@@ -4,27 +4,26 @@ import { Button, Input } from "native-base";
 
 import { useNavigation } from "@react-navigation/native";
 
-import { useDrawer } from "../../contexts/drawer";
-
 import { useServicesQueries } from "../../queries/services";
 import _ from "lodash";
 import { useOrganizationsQueries } from "../../queries/organizations";
+import { useOrganizerStore } from "../../store/organizer";
 
 export const CreateQueue = () => {
   const navigation = useNavigation();
-
-  const { organizationId } = useDrawer();
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [code, setCode] = useState("");
   const [priority, setPriority] = useState("");
 
+  const { currentOrganizationId = "" } = useOrganizerStore();
+
   const { useCreateQueue } = useOrganizationsQueries();
 
   const { useGetServices } = useServicesQueries();
 
-  const { data: services = [] } = useGetServices(organizationId);
+  const { data: services = [] } = useGetServices(currentOrganizationId);
 
   const [selectedServiceId, setSelectedServiceId] = useState<string>("");
 
@@ -41,7 +40,7 @@ export const CreateQueue = () => {
       code,
       priority: Number(priority),
       serviceId: selectedServiceId,
-      organizationId,
+      organizationId: currentOrganizationId,
     };
 
     createQueue(payload, {

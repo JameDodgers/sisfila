@@ -5,19 +5,20 @@ import { useEffect } from "react";
 import { DataTable } from "react-native-paper";
 import { Button, IconButton } from "react-native-paper";
 
-import { useDrawer } from "../../contexts/drawer";
 import { useClientsQueries } from "../../queries/clients";
 import { useRefreshOnFocus } from "../../hooks/useRefreshOnFocus";
+import { useOrganizerStore } from "../../store/organizer";
 
 export const Clients = () => {
   const navigation = useNavigation();
 
-  const { organizationId } = useDrawer();
-
   const { useGetOrganizationClients, useRemoveClient } = useClientsQueries();
 
-  const { data: clients = [], refetch } =
-    useGetOrganizationClients(organizationId);
+  const { currentOrganizationId = "" } = useOrganizerStore();
+
+  const { data: clients = [], refetch } = useGetOrganizationClients(
+    currentOrganizationId
+  );
 
   const { mutate: removeClient } = useRemoveClient();
 
@@ -34,7 +35,7 @@ export const Clients = () => {
   }, [navigation]);
 
   const handleDeleteClient = (clientId: string) => {
-    removeClient({ clientId, organizationId });
+    removeClient({ clientId, organizationId: currentOrganizationId });
   };
 
   return (

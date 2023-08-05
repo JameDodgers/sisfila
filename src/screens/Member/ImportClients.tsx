@@ -1,22 +1,21 @@
 import { VStack, Text, Button, Input, Select, CheckIcon } from "native-base";
 import { useEffect, useState } from "react";
 
-import { useDrawer } from "../../contexts/drawer";
-
 import { useNavigation } from "@react-navigation/native";
 
 import { useGroupsQueries } from "../../queries/groups";
+import { useOrganizerStore } from "../../store/organizer";
 
 export const ImportClients = () => {
   const navigation = useNavigation();
 
-  const { organizationId } = useDrawer();
+  const { currentOrganizationId = "" } = useOrganizerStore();
 
   const [data, setData] = useState("");
 
   const { useGetGroups, useImportClients } = useGroupsQueries();
 
-  const { data: groups = [] } = useGetGroups(organizationId);
+  const { data: groups = [] } = useGetGroups(currentOrganizationId);
 
   const { mutate: importClients } = useImportClients();
 
@@ -42,13 +41,13 @@ export const ImportClients = () => {
       clients.push({
         name: client[1],
         registrationId: client[0],
-        organizationId,
+        organizationId: currentOrganizationId,
       });
     }
 
     const payload = {
       clients,
-      organizationId,
+      organizationId: currentOrganizationId,
       groupId: selectedGroupId,
     };
 

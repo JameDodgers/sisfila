@@ -5,15 +5,12 @@ import { useCallback, useLayoutEffect } from "react";
 import { OrganizationItem } from "../../components/OrganizationItem";
 import { IconButton } from "react-native-paper";
 
-import { useDrawer } from "../../contexts/drawer";
-
 import { useOrganizationsQueries } from "../../queries/organizations";
 import { useRefreshOnFocus } from "../../hooks/useRefreshOnFocus";
+import { setCurrentOrganizationId } from "../../store/organizer";
 
 export const Organizations = () => {
   const navigation = useNavigation();
-
-  const { setOrganizationId } = useDrawer();
 
   const { useGetOrganizations } = useOrganizationsQueries();
 
@@ -44,10 +41,8 @@ export const Organizations = () => {
   );
 
   const handleOpenOrganization = (id: string) => {
-    setOrganizationId(id);
-    navigation.navigate("Drawer", {
-      screen: "OrganizationRoutes",
-    });
+    setCurrentOrganizationId(id);
+    navigation.navigate("Drawer");
   };
 
   return (

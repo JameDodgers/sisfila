@@ -1,25 +1,25 @@
 import { useRoute } from "@react-navigation/native";
 import { Button, FlatList, Text, VStack } from "native-base";
 
-import { useDrawer } from "../../contexts/drawer";
-
 import { ClientItem } from "../../components/ClientItem";
 import { useOrganizationsQueries } from "../../queries/organizations";
+import { useOrganizerStore } from "../../store/organizer";
 
 export const Queue = () => {
   const route = useRoute();
   const queueId = route.params?.queueId;
 
-  const { organizationId } = useDrawer();
+  const { currentOrganizationId = "" } = useOrganizerStore();
 
   const { useGetQueue, useCallNext } = useOrganizationsQueries();
 
-  const { data: queue } = useGetQueue(queueId, organizationId);
+  const { data: queue } = useGetQueue(queueId, currentOrganizationId);
 
+  console.log(queue?.clients.length);
   const { mutate: callNext } = useCallNext();
 
   const handleCallNext = () => {
-    callNext({ organizationId, queueId });
+    callNext({ organizationId: currentOrganizationId, queueId });
   };
 
   return (

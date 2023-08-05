@@ -7,15 +7,16 @@ import { useDrawer } from "../../contexts/drawer";
 
 import { useGroupsQueries } from "../../queries/groups";
 import { useRefreshOnFocus } from "../../hooks/useRefreshOnFocus";
+import { useOrganizerStore } from "../../store/organizer";
 
 export const Groups = () => {
   const navigation = useNavigation();
 
-  const { organizationId } = useDrawer();
+  const { currentOrganizationId = "" } = useOrganizerStore();
 
   const { useGetGroups } = useGroupsQueries();
 
-  const { data: groups = [], refetch } = useGetGroups(organizationId);
+  const { data: groups = [], refetch } = useGetGroups(currentOrganizationId);
 
   useRefreshOnFocus(refetch);
 

@@ -2,10 +2,9 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { Button, Checkbox, Text, VStack } from "native-base";
 import { useState } from "react";
 
-import { useDrawer } from "../../contexts/drawer";
-
 import { useGroupsQueries } from "../../queries/groups";
 import { useOrganizationsQueries } from "../../queries/organizations";
+import { useOrganizerStore } from "../../store/organizer";
 
 export const QueueSettings = () => {
   const route = useRoute();
@@ -13,13 +12,13 @@ export const QueueSettings = () => {
 
   const queueId = route.params?.queueId;
 
-  const { organizationId } = useDrawer();
+  const { currentOrganizationId = "" } = useOrganizerStore();
 
   const [selectedGroupIds, setSelectedGroupIds] = useState([]);
 
   const { useGetGroups } = useGroupsQueries();
 
-  const { data: groups = [] } = useGetGroups(organizationId);
+  const { data: groups = [] } = useGetGroups(currentOrganizationId);
 
   const { useAttachGroupsToQueue } = useOrganizationsQueries();
 
@@ -28,7 +27,7 @@ export const QueueSettings = () => {
   const handleUpdateQueue = () => {
     const data = {
       queueId,
-      organizationId,
+      organizationId: currentOrganizationId,
       groups: selectedGroupIds,
     };
 

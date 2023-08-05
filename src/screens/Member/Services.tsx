@@ -1,20 +1,22 @@
 import { FlatList, VStack } from "native-base";
 
 import { ServiceItem } from "../../components/ServiceItem";
-import { useDrawer } from "../../contexts/drawer";
+
 import { useServicesQueries } from "../../queries/services";
 
 import { useEffect, useLayoutEffect } from "react";
 import { IconButton } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
+import { useOrganizerStore } from "../../store/organizer";
 
 export const Services = () => {
   const navigation = useNavigation();
-  const { organizationId } = useDrawer();
+
+  const { currentOrganizationId = "" } = useOrganizerStore();
 
   const { useGetServices } = useServicesQueries();
 
-  const { data: services = [] } = useGetServices(organizationId);
+  const { data: services = [] } = useGetServices(currentOrganizationId);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -30,7 +32,7 @@ export const Services = () => {
   }, [navigation]);
 
   return (
-    <VStack>
+    <Center>
       <FlatList
         _contentContainerStyle={{
           m: "4",
@@ -41,6 +43,6 @@ export const Services = () => {
           return <ServiceItem item={item} />;
         }}
       />
-    </VStack>
+    </Center>
   );
 };

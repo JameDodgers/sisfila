@@ -8,13 +8,14 @@ import { useServicesQueries } from "../../queries/services";
 import { Button as PaperButton, Switch } from "react-native-paper";
 
 import { DatePickerModal } from "react-native-paper-dates";
-import { useDrawer } from "../../contexts/drawer";
+
 import { RangeChange } from "react-native-paper-dates/lib/typescript/Date/Calendar";
+import { useOrganizerStore } from "../../store/organizer";
 
 export const CreateService = () => {
   const navigation = useNavigation();
 
-  const { organizationId } = useDrawer();
+  const { currentOrganizationId = "" } = useOrganizerStore();
 
   const [name, setName] = useState("");
   const [subscriptionToken, setSubscriptionToken] = useState("");
@@ -46,7 +47,7 @@ export const CreateService = () => {
     }
 
     const payload = {
-      organizationId,
+      organizationId: currentOrganizationId,
       name,
       subscriptionToken,
       guestEnrollment,

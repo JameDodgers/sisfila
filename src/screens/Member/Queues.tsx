@@ -1,20 +1,20 @@
 import { useNavigation } from "@react-navigation/native";
 import { FlatList, VStack } from "native-base";
 
-import { useDrawer } from "../../contexts/drawer";
-
 import { useOrganizationsQueries } from "../../queries/organizations";
 import { QueueItem } from "../../components/QueueItem";
 import { useEffect, useLayoutEffect } from "react";
 import { IconButton } from "react-native-paper";
+import { useOrganizerStore } from "../../store/organizer";
 
 export const Queues = () => {
   const navigation = useNavigation();
-  const { organizationId } = useDrawer();
+
+  const { currentOrganizationId = "" } = useOrganizerStore();
 
   const { useGetOrganizationQueues } = useOrganizationsQueries();
 
-  const { data: queues = [] } = useGetOrganizationQueues(organizationId);
+  const { data: queues = [] } = useGetOrganizationQueues(currentOrganizationId);
 
   useLayoutEffect(() => {
     navigation.setOptions({

@@ -7,6 +7,7 @@ import {
 
 import { useToken } from "../store/auth";
 import { useUserQueries } from "../queries/user";
+import { OrganizationSelector } from "./OrganizationSelector";
 
 type Props = DrawerContentComponentProps & {};
 
@@ -17,14 +18,7 @@ const CustomDrawerContent = ({ ...props }: Props) => {
 
   return (
     <DrawerContentScrollView {...props}>
-      {!!token && (
-        <DrawerItem
-          label="Minhas organizações"
-          onPress={() => {
-            props.navigation.navigate("Organizations");
-          }}
-        />
-      )}
+      <OrganizationSelector />
       <DrawerItemList {...props} />
       {!!token ? (
         <DrawerItem label="Sair" onPress={signOut} />
