@@ -1,4 +1,3 @@
-import { useMemo } from "react";
 // import { CommonActions, DrawerActions } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 
@@ -13,26 +12,20 @@ import { ClientsRoutes } from "./clients.routes";
 const { Navigator, Screen } = createDrawerNavigator();
 
 export const DrawerRoutes = () => {
-  const drawerType = useMemo(() => {
-    switch (Platform.OS) {
-      case "web":
-        return "permanent";
-      case "ios":
-        return "slide";
-      case "android":
-        return "front";
-    }
-  }, []);
-
   return (
     <Navigator
-      defaultStatus={Platform.OS === "web" ? "open" : "closed"}
       initialRouteName="ClientsRoutes"
+      defaultStatus={Platform.select({
+        web: "open",
+        default: "closed",
+      })}
       screenOptions={{
         headerShown: false,
-        swipeEnabled: false,
-        drawerType,
-        // drawerType: Platform.OS === "android" ? "front" : "slide",
+        drawerType: Platform.select({
+          web: "permanent",
+          ios: "slide",
+          android: "front",
+        }),
         ...(Platform.OS === "web" && {
           overlayColor: "transparent",
         }),
