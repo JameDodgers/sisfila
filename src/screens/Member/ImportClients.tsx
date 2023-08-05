@@ -79,7 +79,7 @@ export const ImportClients = () => {
           onValueChange={(id) => setSelectedGroupId(id)}
         >
           {groups.map((group) => (
-            <Select.Item label={group.name} value={group.id} />
+            <Select.Item key={group.id} label={group.name} value={group.id} />
           ))}
         </Select>
 

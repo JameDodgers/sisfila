@@ -54,7 +54,7 @@ export const Clients = () => {
             </DataTable.Header>
             {clients.map((client: any) => {
               return (
-                <DataTable.Row>
+                <DataTable.Row key={client.id}>
                   <DataTable.Cell>{client.name}</DataTable.Cell>
                   <DataTable.Cell>{client.registrationId}</DataTable.Cell>
                   <DataTable.Cell>

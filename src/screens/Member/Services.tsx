@@ -1,4 +1,4 @@
-import { FlatList, VStack } from "native-base";
+import { Center, FlatList } from "native-base";
 
 import { ServiceItem } from "../../components/ServiceItem";
 
