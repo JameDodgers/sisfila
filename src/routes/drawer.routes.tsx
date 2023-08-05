@@ -9,7 +9,6 @@ import { GroupsRoutes } from "./groups.routes";
 import { QueuesRoutes } from "./queues.routes";
 import { ServicesRoutes } from "./services.routes";
 import { ClientsRoutes } from "./clients.routes";
-import { OrganizationDetails } from "../screens/Member/OrganizationDetails";
 
 const { Navigator, Screen } = createDrawerNavigator();
 
@@ -28,7 +27,7 @@ export const DrawerRoutes = () => {
   return (
     <Navigator
       defaultStatus={Platform.OS === "web" ? "open" : "closed"}
-      initialRouteName="OrganizationDetails"
+      initialRouteName="ClientsRoutes"
       screenOptions={{
         headerShown: false,
         swipeEnabled: false,
@@ -52,13 +51,6 @@ export const DrawerRoutes = () => {
       // })}
       drawerContent={(props) => <CustomDrawerContent {...props} />}
     >
-      <Screen
-        name="OrganizationDetails"
-        options={{
-          title: "Organização",
-        }}
-        component={OrganizationDetails}
-      />
       <Screen
         name="ClientsRoutes"
         options={{
