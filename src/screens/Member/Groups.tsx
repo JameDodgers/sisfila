@@ -3,7 +3,6 @@ import { useNavigation } from "@react-navigation/native";
 import { FlatList, VStack } from "native-base";
 import { IconButton } from "react-native-paper";
 import { GroupItem } from "../../components/GroupItem";
-import { useDrawer } from "../../contexts/drawer";
 
 import { useGroupsQueries } from "../../queries/groups";
 import { useRefreshOnFocus } from "../../hooks/useRefreshOnFocus";

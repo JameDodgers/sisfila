@@ -2,28 +2,32 @@ import { Text, VStack } from "native-base";
 import { useState } from "react";
 import { Button, Input } from "native-base";
 
-import api from "../../services/api/config";
 import { useNavigation } from "@react-navigation/native";
-import { useDrawer } from "../../contexts/drawer";
+import { useOrganizerStore } from "../../store/organizer";
+
+import { useGroupsQueries } from "../../queries/groups";
 
 export const CreateGroup = () => {
-  const { organizationId } = useDrawer();
+  const { currentOrganizationId = "" } = useOrganizerStore();
+
   const navigation = useNavigation();
+
+  const { useCreateGroup } = useGroupsQueries();
+
+  const { mutate: createGroup } = useCreateGroup();
 
   const [name, setName] = useState("");
 
   const handleCreateGroup = () => {
-    api
-      .post("v1/groups", {
-        name,
-        organizationId,
-      })
-      .then(() => {
+    const payload = {
+      name,
+      organizationId: currentOrganizationId,
+    };
+    createGroup(payload, {
+      onSuccess: () => {
         navigation.goBack();
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+      },
+    });
   };
 
   return (
