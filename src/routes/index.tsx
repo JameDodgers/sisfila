@@ -1,15 +1,11 @@
 import * as Linking from "expo-linking";
 
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-const { Navigator, Screen } = createNativeStackNavigator();
-
-import { DrawerStack } from "./drawerStack.routes";
-import { SignIn } from "../screens/SignIn";
-import { SignUp } from "../screens/SignUp";
 import { CombinedDefaultTheme } from "../styles/theme";
 import { useToken } from "../store/auth";
+import { AuthRoutes } from "./auth.routes";
+import { AppRoutes } from "./app.routes";
 
 const prefix = Linking.createURL("/");
 
@@ -34,32 +30,7 @@ export const Routes = () => {
 
   return (
     <NavigationContainer linking={linking} theme={CombinedDefaultTheme}>
-      <Navigator initialRouteName="DrawerStack">
-        <Screen
-          name="DrawerStack"
-          options={{ headerShown: false }}
-          component={DrawerStack}
-        />
-
-        {!token && (
-          <>
-            <Screen
-              name="SignIn"
-              options={{
-                title: "Entrar",
-              }}
-              component={SignIn}
-            />
-            <Screen
-              name="SignUp"
-              options={{
-                title: "Cadastro",
-              }}
-              component={SignUp}
-            />
-          </>
-        )}
-      </Navigator>
+      {token ? <AppRoutes /> : <AuthRoutes />}
     </NavigationContainer>
   );
 };
