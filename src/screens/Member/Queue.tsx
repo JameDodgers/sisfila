@@ -5,7 +5,11 @@ import { useOrganizationsQueries } from "../../queries/organizations";
 import { useOrganizerStore } from "../../store/organizer";
 import { QueuesStackScreenProps } from "../../../@types/navigation";
 
-export const Queue = ({ route }: QueuesStackScreenProps<"Queue">) => {
+type Props = {
+  route: QueuesStackScreenProps<"Queue">["route"];
+};
+
+export const Queue = ({ route }: Props) => {
   const queueId = route.params?.queueId;
 
   const { currentOrganizationId = "" } = useOrganizerStore();

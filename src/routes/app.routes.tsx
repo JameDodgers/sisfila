@@ -7,8 +7,9 @@ import { CreateOrganization } from "../screens/Member/CreateOrganization";
 
 import { Atendimento } from "../screens/Guest/Atendimento";
 import { useOrganizerStore } from "../store/organizer";
+import { AppStackParamList } from "../../@types/navigation";
 
-const { Navigator, Screen } = createNativeStackNavigator();
+const { Navigator, Screen } = createNativeStackNavigator<AppStackParamList>();
 
 export const AppRoutes = () => {
   const { currentOrganizationId } = useOrganizerStore();

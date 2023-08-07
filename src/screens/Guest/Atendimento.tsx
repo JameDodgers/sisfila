@@ -3,9 +3,11 @@ import { useState } from "react";
 import { useQueuesQueries } from "../../queries/queues";
 import { RootNavigatorScreenProps } from "../../../@types/navigation";
 
-export const Atendimento = ({
-  route,
-}: RootNavigatorScreenProps<"Atendimento">) => {
+type Props = {
+  route: RootNavigatorScreenProps<"Atendimento">["route"];
+};
+
+export const Atendimento = ({ route }: Props) => {
   const { queueId } = route.params;
 
   const [registrationId, setRegistrationId] = useState<string>("");

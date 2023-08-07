@@ -5,11 +5,16 @@ import { useGroupsQueries } from "../../queries/groups";
 import { useOrganizationsQueries } from "../../queries/organizations";
 import { useOrganizerStore } from "../../store/organizer";
 import { QueuesStackScreenProps } from "../../../@types/navigation";
+import { useNavigation } from "@react-navigation/native";
 
-export const QueueSettings = ({
-  navigation,
-  route,
-}: QueuesStackScreenProps<"QueueSettings">) => {
+type Props = {
+  route: QueuesStackScreenProps<"QueueSettings">["route"];
+};
+
+export const QueueSettings = ({ route }: Props) => {
+  const navigation =
+    useNavigation<QueuesStackScreenProps<"QueueSettings">["navigation"]>();
+
   const queueId = route.params?.queueId;
 
   const { currentOrganizationId = "" } = useOrganizerStore();
