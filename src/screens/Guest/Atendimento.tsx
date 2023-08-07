@@ -1,13 +1,12 @@
-import { useNavigation, useRoute } from "@react-navigation/native";
 import { VStack, Button, Text, Input, Toast } from "native-base";
 import { useState } from "react";
 import { useQueuesQueries } from "../../queries/queues";
+import { RootNavigatorScreenProps } from "../../../@types/navigation";
 
-export const Atendimento = () => {
-  const route = useRoute();
-  const navigation = useNavigation();
-
-  const { queueId } = route.params || {};
+export const Atendimento = ({
+  route,
+}: RootNavigatorScreenProps<"Atendimento">) => {
+  const { queueId } = route.params;
 
   const [registrationId, setRegistrationId] = useState<string>("");
 

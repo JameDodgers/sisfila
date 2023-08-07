@@ -1,15 +1,15 @@
-import { useNavigation, useRoute } from "@react-navigation/native";
 import { Button, Checkbox, Text, VStack } from "native-base";
 import { useState } from "react";
 
 import { useGroupsQueries } from "../../queries/groups";
 import { useOrganizationsQueries } from "../../queries/organizations";
 import { useOrganizerStore } from "../../store/organizer";
+import { QueuesStackScreenProps } from "../../../@types/navigation";
 
-export const QueueSettings = () => {
-  const route = useRoute();
-  const navigation = useNavigation();
-
+export const QueueSettings = ({
+  navigation,
+  route,
+}: QueuesStackScreenProps<"QueueSettings">) => {
   const queueId = route.params?.queueId;
 
   const { currentOrganizationId = "" } = useOrganizerStore();

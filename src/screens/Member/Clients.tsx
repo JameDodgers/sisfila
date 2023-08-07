@@ -8,9 +8,10 @@ import { Button, IconButton } from "react-native-paper";
 import { useClientsQueries } from "../../queries/clients";
 import { useRefreshOnFocus } from "../../hooks/useRefreshOnFocus";
 import { useOrganizerStore } from "../../store/organizer";
+import { ClientsStackNavigationProp } from "../../../@types/navigation";
 
 export const Clients = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<ClientsStackNavigationProp<"Clients">>();
 
   const { useGetOrganizationClients, useRemoveClient } = useClientsQueries();
 

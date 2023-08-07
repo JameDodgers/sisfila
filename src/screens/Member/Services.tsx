@@ -4,13 +4,14 @@ import { ServiceItem } from "../../components/ServiceItem";
 
 import { useServicesQueries } from "../../queries/services";
 
-import { useEffect, useLayoutEffect } from "react";
+import { useLayoutEffect } from "react";
 import { IconButton } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { useOrganizerStore } from "../../store/organizer";
+import { ServicesStackNavigationProp } from "../../../@types/navigation";
 
 export const Services = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<ServicesStackNavigationProp<"Services">>();
 
   const { currentOrganizationId = "" } = useOrganizerStore();
 

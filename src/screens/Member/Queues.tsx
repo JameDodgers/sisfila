@@ -1,15 +1,14 @@
-import { useNavigation } from "@react-navigation/native";
 import { FlatList, VStack } from "native-base";
 
 import { useOrganizationsQueries } from "../../queries/organizations";
 import { QueueItem } from "../../components/QueueItem";
 import { useEffect, useLayoutEffect } from "react";
+import { useLayoutEffect } from "react";
 import { IconButton } from "react-native-paper";
 import { useOrganizerStore } from "../../store/organizer";
+import { QueuesStackScreenProps } from "../../../@types/navigation";
 
-export const Queues = () => {
-  const navigation = useNavigation();
-
+export const Queues = ({ navigation }: QueuesStackScreenProps<"Queues">) => {
   const { currentOrganizationId = "" } = useOrganizerStore();
 
   const { useGetOrganizationQueues } = useOrganizationsQueries();

@@ -7,9 +7,10 @@ import { GroupItem } from "../../components/GroupItem";
 import { useGroupsQueries } from "../../queries/groups";
 import { useRefreshOnFocus } from "../../hooks/useRefreshOnFocus";
 import { useOrganizerStore } from "../../store/organizer";
+import { GroupsStackNavigationProp } from "../../../@types/navigation";
 
 export const Groups = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<GroupsStackNavigationProp<"Groups">>();
 
   const { currentOrganizationId = "" } = useOrganizerStore();
 

@@ -1,12 +1,11 @@
-import { useRoute } from "@react-navigation/native";
 import { Button, FlatList, Text, VStack } from "native-base";
 
 import { ClientItem } from "../../components/ClientItem";
 import { useOrganizationsQueries } from "../../queries/organizations";
 import { useOrganizerStore } from "../../store/organizer";
+import { QueuesStackScreenProps } from "../../../@types/navigation";
 
-export const Queue = () => {
-  const route = useRoute();
+export const Queue = ({ route }: QueuesStackScreenProps<"Queue">) => {
   const queueId = route.params?.queueId;
 
   const { currentOrganizationId = "" } = useOrganizerStore();
