@@ -7,6 +7,8 @@ export const useQueuesQueries = () => {
       queryKey: queuesKeys.item(queueId),
       queryFn: () =>
         queuesApi.getQueue(queueId).then((response) => response.data),
+      refetchInterval: 1000 * 5,
+      refetchIntervalInBackground: true,
     });
 
   const useEnterQueue = () =>
