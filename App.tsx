@@ -5,6 +5,7 @@ import {
   Platform,
   SafeAreaView,
   StyleSheet,
+  View,
 } from "react-native";
 import { Provider as PaperProvider } from "react-native-paper";
 import { NativeBaseProvider } from "native-base";
@@ -13,9 +14,18 @@ import { Routes } from "./src/routes";
 import { focusManager } from "@tanstack/react-query";
 
 import { CombinedDefaultTheme } from "./src/styles/theme";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { DataProvider } from "./src/contexts/data";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import {
+  useFonts,
+  Montserrat_500Medium,
+  Montserrat_400Regular,
+  Montserrat_700Bold,
+} from "@expo-google-fonts/montserrat";
+import * as SplashScreen from "expo-splash-screen";
+
+SplashScreen.preventAutoHideAsync();
 
 const onAppStateChange = (status: AppStateStatus) => {
   if (Platform.OS !== "web") {
@@ -24,29 +34,47 @@ const onAppStateChange = (status: AppStateStatus) => {
 };
 
 export default function App() {
+  const [fontsLoaded] = useFonts({
+    Montserrat_500Medium,
+    Montserrat_400Regular,
+    Montserrat_700Bold,
+  });
+
   useEffect(() => {
     const subscription = AppState.addEventListener("change", onAppStateChange);
 
     return () => subscription.remove();
   }, []);
 
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      await SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <NativeBaseProvider>
-        <PaperProvider theme={CombinedDefaultTheme}>
-          <DataProvider>
-            <StatusBar style="auto" translucent={false} />
-            <SafeAreaView
-              style={{
-                flex: 1,
-              }}
-            >
-              <Routes />
-            </SafeAreaView>
-          </DataProvider>
-        </PaperProvider>
-      </NativeBaseProvider>
-    </GestureHandlerRootView>
+    <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <NativeBaseProvider>
+          <PaperProvider theme={CombinedDefaultTheme}>
+            <DataProvider>
+              <StatusBar style="auto" translucent={false} />
+              <SafeAreaView
+                style={{
+                  flex: 1,
+                }}
+              >
+                <Routes />
+              </SafeAreaView>
+            </DataProvider>
+          </PaperProvider>
+        </NativeBaseProvider>
+      </GestureHandlerRootView>
+    </View>
   );
 }
 
