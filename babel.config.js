@@ -6,6 +6,7 @@ module.exports = function (api) {
       "transform-inline-environment-variables",
       "@babel/plugin-proposal-export-namespace-from",
       "react-native-reanimated/plugin",
+      "nativewind/babel",
     ],
     env: {
       production: {
