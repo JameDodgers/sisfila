@@ -1,6 +1,8 @@
 // Learn more https://docs.expo.io/guides/customizing-metro
 const { getDefaultConfig } = require("expo/metro-config");
 
+const withNativewind = require("nativewind/metro");
+
 /** @type {import('expo/metro-config').MetroConfig} */
 const config = getDefaultConfig(__dirname, {
   // [Web-only]: Enables CSS support in Metro.
@@ -9,4 +11,4 @@ const config = getDefaultConfig(__dirname, {
 
 config.resolver.sourceExts.push("mjs", "cjs");
 
-module.exports = config;
+module.exports = withNativewind(config);

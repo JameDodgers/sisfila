@@ -1,3 +1,4 @@
+const nativewind = require("nativewind/tailwind");
 module.exports = {
   content: [
     "./App.{js,jsx,ts,tsx}",
@@ -6,5 +7,5 @@ module.exports = {
   theme: {
     extend: {},
   },
-  plugins: [],
+  presets: [nativewind],
 };
