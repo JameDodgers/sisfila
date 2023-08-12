@@ -1,26 +1,32 @@
 import {
+  MD3LightTheme,
+  MD3DarkTheme,
+  adaptNavigationTheme,
+} from "react-native-paper";
+
+import {
   DarkTheme as NavigationDarkTheme,
   DefaultTheme as NavigationDefaultTheme,
 } from "@react-navigation/native";
-import {
-  DarkTheme as PaperDarkTheme,
-  DefaultTheme as PaperDefaultTheme,
-} from "react-native-paper";
+
+const { LightTheme, DarkTheme } = adaptNavigationTheme({
+  reactNavigationLight: NavigationDefaultTheme,
+  reactNavigationDark: NavigationDarkTheme,
+});
 
 export const CombinedDefaultTheme = {
-  ...PaperDefaultTheme,
-  ...NavigationDefaultTheme,
+  ...MD3LightTheme,
+  ...LightTheme,
   colors: {
-    ...PaperDefaultTheme.colors,
-    ...NavigationDefaultTheme.colors,
+    ...MD3LightTheme.colors,
+    ...LightTheme.colors,
   },
 };
-
 export const CombinedDarkTheme = {
-  ...PaperDarkTheme,
-  ...NavigationDarkTheme,
+  ...MD3DarkTheme,
+  ...DarkTheme,
   colors: {
-    ...PaperDarkTheme.colors,
-    ...NavigationDarkTheme.colors,
+    ...MD3DarkTheme.colors,
+    ...DarkTheme.colors,
   },
 };
