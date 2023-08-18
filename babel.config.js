@@ -3,7 +3,6 @@ module.exports = function (api) {
   return {
     presets: ["babel-preset-expo", "nativewind/babel"],
     plugins: [
-      "transform-inline-environment-variables",
       "@babel/plugin-proposal-export-namespace-from",
       "react-native-reanimated/plugin",
     ],
