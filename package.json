@@ -4,9 +4,11 @@
   "main": "index.js",
   "scripts": {
     "start": "npx expo start",
-    "android": "npx expo start --android",
-    "ios": "npx expo start --ios",
-    "web": "npx expo start --web"
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "web": "npx expo start --web",
+    "predeploy": "expo export",
+    "deploy-hosting": "npm run predeploy && firebase deploy --only hosting"
   },
   "resolutions": {
     "react-error-overlay": "6.0.9"
