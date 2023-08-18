@@ -1,5 +1,3 @@
-import { ScrollView, VStack } from "native-base";
-
 import { useNavigation } from "@react-navigation/native";
 import { useEffect } from "react";
 import { DataTable } from "react-native-paper";
@@ -9,6 +7,7 @@ import { useClientsQueries } from "../../queries/clients";
 import { useRefreshOnFocus } from "../../hooks/useRefreshOnFocus";
 import { useOrganizerStore } from "../../store/organizer";
 import { ClientsStackNavigationProp } from "../../../@types/navigation";
+import { ScrollView, View } from "react-native";
 
 export const Clients = () => {
   const navigation = useNavigation<ClientsStackNavigationProp<"Clients">>();
@@ -40,7 +39,7 @@ export const Clients = () => {
   };
 
   return (
-    <VStack flex={1}>
+    <View className="flex-1">
       {clients.length > 0 && (
         <DataTable
           style={{
@@ -70,6 +69,6 @@ export const Clients = () => {
           </ScrollView>
         </DataTable>
       )}
-    </VStack>
+    </View>
   );
 };

@@ -11,14 +11,14 @@ PODS:
     - ExpoModulesCore
   - EXConstants (14.4.2):
     - ExpoModulesCore
-  - EXFileSystem (15.4.2):
+  - EXFileSystem (15.4.3):
     - ExpoModulesCore
   - EXFont (11.4.0):
     - ExpoModulesCore
   - EXJSONUtils (0.7.1)
   - EXManifests (0.7.1):
     - ExpoModulesCore
-  - Expo (49.0.4):
+  - Expo (49.0.7):
     - ExpoModulesCore
   - expo-dev-client (2.4.6):
     - EXManifests
@@ -75,9 +75,9 @@ PODS:
     - expo-dev-menu/SafeAreaView
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
-  - ExpoAdapterGoogleSignIn (8.2.1):
+  - ExpoAdapterGoogleSignIn (8.2.2):
     - ExpoModulesCore
-    - GoogleSignIn
+    - GoogleSignIn (~> 6.2)
     - React-Core
   - ExpoClipboard (4.3.1):
     - ExpoModulesCore
@@ -85,7 +85,7 @@ PODS:
     - ExpoModulesCore
   - ExpoKeepAwake (12.3.0):
     - ExpoModulesCore
-  - ExpoModulesCore (1.5.7):
+  - ExpoModulesCore (1.5.9):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
     - React-NativeModulesApple
@@ -546,7 +546,7 @@ PODS:
     - React-Core
   - RNGestureHandler (2.12.0):
     - React-Core
-  - RNGoogleSignin (8.2.1):
+  - RNGoogleSignin (8.2.2):
     - GoogleSignIn (~> 6.2)
     - React-Core
   - RNReanimated (3.3.0):
@@ -600,7 +600,7 @@ DEPENDENCIES:
   - expo-dev-launcher (from `../node_modules/expo-dev-launcher`)
   - expo-dev-menu (from `../node_modules/expo-dev-menu`)
   - expo-dev-menu-interface (from `../node_modules/expo-dev-menu-interface/ios`)
-  - "ExpoAdapterGoogleSignIn (from `../node_modules/@react-native-google-signin/google-signin/ios`)"
+  - "ExpoAdapterGoogleSignIn (from `../node_modules/@react-native-google-signin/google-signin/expo/ios`)"
   - ExpoClipboard (from `../node_modules/expo-clipboard/ios`)
   - ExpoCrypto (from `../node_modules/expo-crypto/ios`)
   - ExpoKeepAwake (from `../node_modules/expo-keep-awake/ios`)
@@ -696,7 +696,7 @@ EXTERNAL SOURCES:
   expo-dev-menu-interface:
     :path: "../node_modules/expo-dev-menu-interface/ios"
   ExpoAdapterGoogleSignIn:
-    :path: "../node_modules/@react-native-google-signin/google-signin/ios"
+    :path: "../node_modules/@react-native-google-signin/google-signin/expo/ios"
   ExpoClipboard:
     :path: "../node_modules/expo-clipboard/ios"
   ExpoCrypto:
@@ -813,20 +813,20 @@ SPEC CHECKSUMS:
   DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
   EXApplication: 02655a251434d564bb0e73291f5a490c74b5b76f
   EXConstants: ce5bbea779da8031ac818c36bea41b10e14d04e1
-  EXFileSystem: d7f59869885cfeab3ac771e2a8d0f5ed98cd3fdb
+  EXFileSystem: 941b273758aee14be2ecc671dacb4f10dd28c833
   EXFont: 738c44c390953ebcbab075a4848bfbef025fd9ee
   EXJSONUtils: 6802be4282d42b97c51682468ddc1026a06f8276
   EXManifests: 8a4a480e3b58891d5657d3996a39229e5c96d912
-  Expo: 57e6a756328a9dfe6e1342a1f048a26e98b27b08
+  Expo: d310f3b84bd30843324d41f23ea7cc5e4273abf1
   expo-dev-client: 4f773679557bc150e44eea1a1e3a3fd65ab82a5a
   expo-dev-launcher: de065738958421c704ee024f4fe1bf14b2d8a713
   expo-dev-menu: 9b3792cc2241011b63747cc77d06b0dcbcc57780
   expo-dev-menu-interface: bda969497e73dadc2663c479e0fa726ca79a306e
-  ExpoAdapterGoogleSignIn: c1740208e5c85db43daf7ed429fbe8f6c5889d34
+  ExpoAdapterGoogleSignIn: b7792934ab1b5d559a3eee31334d752a73f0366e
   ExpoClipboard: 695f274f8e028cd113837f917da40c76850877eb
   ExpoCrypto: a382ab9a2fa91f0b511ce1fe4d6baecee40a1615
   ExpoKeepAwake: be4cbd52d9b177cde0fd66daa1913afa3161fc1d
-  ExpoModulesCore: f8f3cac222bb0f574c77664d7e05817eaa97434b
+  ExpoModulesCore: e4e437139259c5a73530a8895af69774ff8ec12d
   ExpoSecureStore: 57db3b6da8b59046e2057e95bf7738a8027b47c3
   ExpoWebBrowser: 2c788f9c07718a780fe6d8bf2f6195c47609faaa
   EXSplashScreen: c0e7f2d4a640f3b875808ed0b88575538daf6d82
@@ -877,7 +877,7 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: ddc4ee162bfd41b0d2c68bf2d95acd81dd7f1f93
   RNCPicker: 0bc2f0a29abcca7b7ed44a2d036aac9ab6d25700
   RNGestureHandler: dec4645026e7401a0899f2846d864403478ff6a5
-  RNGoogleSignin: 3db2d849581299f425f5b61b90cb482a9e68c7af
+  RNGoogleSignin: 81521697b2c8f97f9a586ac7257b1a1d9b51b115
   RNReanimated: 9f7068e43b9358a46a688d94a5a3adb258139457
   RNScreens: 50ffe2fa2342eabb2d0afbe19f7c1af286bc7fb3
   RNSVG: 53c661b76829783cdaf9b7a57258f3d3b4c28315

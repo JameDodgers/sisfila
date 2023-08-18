@@ -1,10 +1,12 @@
-import { VStack, Text, Button, Input, Select, CheckIcon } from "native-base";
 import { useEffect, useState } from "react";
 
 import { useNavigation } from "@react-navigation/native";
 
 import { useGroupsQueries } from "../../queries/groups";
 import { useOrganizerStore } from "../../store/organizer";
+import { View } from "react-native";
+import { Button, TextInput } from "react-native-paper";
+import { Picker } from "../../components/Picker";
 
 export const ImportClients = () => {
   const navigation = useNavigation();
@@ -59,40 +61,30 @@ export const ImportClients = () => {
   };
 
   return (
-    <VStack flex={1} p={3} alignItems="center">
-      <VStack
-        _web={{
-          w: "50%",
-        }}
-        w="100%"
-        space={4}
-      >
-        <Select
+    <View className="flex-1 p-4">
+      <View className="flex-1 g-4">
+        <Picker
+          label="Grupo"
+          mode="dropdown"
           selectedValue={selectedGroupId}
-          accessibilityLabel="Escolha um grupo"
-          placeholder="Escolha um grupo"
-          _selectedItem={{
-            bg: "teal.600",
-            endIcon: <CheckIcon size="5" />,
-          }}
-          mt={1}
-          onValueChange={(id) => setSelectedGroupId(id)}
+          onValueChange={(value) => setSelectedGroupId(value)}
         >
           {groups.map((group) => (
-            <Select.Item key={group.id} label={group.name} value={group.id} />
+            <Picker.Item key={group.id} label={group.name} value={group.id} />
           ))}
-        </Select>
-
-        <Input
+        </Picker>
+        <TextInput
+          label="Dados (TSV)"
+          mode="outlined"
           multiline
           numberOfLines={5}
           value={data}
           onChangeText={setData}
         />
-        <Button onPress={handleImportClients}>
-          <Text>Importar</Text>
-        </Button>
-      </VStack>
-    </VStack>
+      </View>
+      <Button mode="contained" onPress={handleImportClients}>
+        Importar
+      </Button>
+    </View>
   );
 };

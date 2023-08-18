@@ -1,6 +1,5 @@
 import { useLayoutEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { FlatList, VStack } from "native-base";
 import { IconButton } from "react-native-paper";
 import { GroupItem } from "../../components/GroupItem";
 
@@ -8,6 +7,8 @@ import { useGroupsQueries } from "../../queries/groups";
 import { useRefreshOnFocus } from "../../hooks/useRefreshOnFocus";
 import { useOrganizerStore } from "../../store/organizer";
 import { GroupsStackNavigationProp } from "../../../@types/navigation";
+import { View } from "react-native";
+import { FlatList } from "../../libs/styled";
 
 export const Groups = () => {
   const navigation = useNavigation<GroupsStackNavigationProp<"Groups">>();
@@ -34,17 +35,13 @@ export const Groups = () => {
   }, [navigation]);
 
   return (
-    <VStack>
+    <View className="flex-1 p-4">
       <FlatList
-        _contentContainerStyle={{
-          m: "4",
-        }}
+        contentContainerStyle="g-3"
         data={groups}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => {
-          return <GroupItem item={item} />;
-        }}
+        keyExtractor={(item: any) => item.id.toString()}
+        renderItem={({ item }: any) => <GroupItem item={item} />}
       />
-    </VStack>
+    </View>
   );
 };

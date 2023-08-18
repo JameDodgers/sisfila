@@ -4,11 +4,9 @@ import {
   AppStateStatus,
   Platform,
   SafeAreaView,
-  StyleSheet,
   View,
 } from "react-native";
 import { Provider as PaperProvider } from "react-native-paper";
-import { NativeBaseProvider } from "native-base";
 
 import { Routes } from "./src/routes";
 import { focusManager } from "@tanstack/react-query";
@@ -61,23 +59,19 @@ export default function App() {
   return (
     <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
       <GestureHandlerRootView style={{ flex: 1 }}>
-        <NativeBaseProvider>
-          <PaperProvider theme={CombinedDefaultTheme}>
-            <DataProvider>
-              <StatusBar style="auto" translucent={false} />
-              <SafeAreaView
-                style={{
-                  flex: 1,
-                }}
-              >
-                <Routes />
-              </SafeAreaView>
-            </DataProvider>
-          </PaperProvider>
-        </NativeBaseProvider>
+        <PaperProvider theme={CombinedDefaultTheme}>
+          <DataProvider>
+            <StatusBar style="auto" translucent={false} />
+            <SafeAreaView
+              style={{
+                flex: 1,
+              }}
+            >
+              <Routes />
+            </SafeAreaView>
+          </DataProvider>
+        </PaperProvider>
       </GestureHandlerRootView>
     </View>
   );
 }
-
-const styles = StyleSheet.create({});

@@ -1,5 +1,3 @@
-import { FlatList, VStack } from "native-base";
-
 import { useOrganizationsQueries } from "../../queries/organizations";
 import { QueueItem } from "../../components/QueueItem";
 import { useLayoutEffect } from "react";
@@ -7,6 +5,8 @@ import { IconButton } from "react-native-paper";
 import { useOrganizerStore } from "../../store/organizer";
 import { QueuesStackScreenProps } from "../../../@types/navigation";
 import { useNavigation } from "@react-navigation/native";
+import { FlatList } from "../../libs/styled";
+import { View } from "react-native";
 
 export const Queues = () => {
   const navigation =
@@ -38,19 +38,15 @@ export const Queues = () => {
   };
 
   return (
-    <VStack>
+    <View className="flex-1 p-4">
       <FlatList
-        _contentContainerStyle={{
-          m: "4",
-        }}
+        contentContainerStyle="g-3"
         data={queues}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => {
-          return (
-            <QueueItem item={item} onPress={() => handleOpenQueue(item.id)} />
-          );
-        }}
+        keyExtractor={(item: any) => item.id.toString()}
+        renderItem={({ item }: any) => (
+          <QueueItem item={item} onPress={() => handleOpenQueue(item.id)} />
+        )}
       />
-    </VStack>
+    </View>
   );
 };

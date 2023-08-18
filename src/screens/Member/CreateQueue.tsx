@@ -1,6 +1,4 @@
-import { CheckIcon, Select, VStack } from "native-base";
 import { useState } from "react";
-import { Button, Input } from "native-base";
 
 import { useNavigation } from "@react-navigation/native";
 
@@ -8,6 +6,11 @@ import { useServicesQueries } from "../../queries/services";
 import _ from "lodash";
 import { useOrganizationsQueries } from "../../queries/organizations";
 import { useOrganizerStore } from "../../store/organizer";
+import { View } from "react-native";
+
+import { Button, TextInput } from "react-native-paper";
+import { Picker } from "../../components/Picker";
+import { ScrollView } from "../../libs/styled";
 
 export const CreateQueue = () => {
   const navigation = useNavigation();
@@ -51,69 +54,63 @@ export const CreateQueue = () => {
   };
 
   return (
-    <VStack flex={1} p={4}>
-      <VStack flex={1} space={3}>
-        <Input
-          size="2xl"
-          placeholder="Nome"
-          value={name}
-          onChangeText={setName}
-        />
-        <Input
-          size="2xl"
-          placeholder="Descrição"
-          value={description}
-          onChangeText={setDescription}
-        />
-        <Input
-          size="2xl"
-          placeholder="Código"
-          value={code}
-          onChangeText={setCode}
-        />
+    <View className="flex-1">
+      <ScrollView className="p-4">
+        <View className="g-2">
+          <TextInput
+            mode="outlined"
+            label="Nome"
+            value={name}
+            onChangeText={setName}
+          />
+          <TextInput
+            mode="outlined"
+            label="Descrição"
+            value={description}
+            onChangeText={setDescription}
+          />
+          <TextInput
+            mode="outlined"
+            label="Código"
+            value={code}
+            onChangeText={setCode}
+          />
 
-        <Select
-          size="2xl"
-          selectedValue={priority}
-          accessibilityLabel="Escolha uma prioridade"
-          placeholder="Prioridade"
-          _selectedItem={{
-            bg: "teal.600",
-            endIcon: <CheckIcon size="5" />,
-          }}
-          mt={1}
-          onValueChange={(id) => setPriority(id)}
-        >
-          {_.range(1, 11).map((priority) => (
-            <Select.Item
-              key={priority}
-              label={priority.toString()}
-              value={priority.toString()}
-            />
-          ))}
-        </Select>
-        <Select
-          size="2xl"
-          selectedValue={selectedServiceId}
-          accessibilityLabel="Escolha um serviço"
-          placeholder="Escolha um serviço"
-          _selectedItem={{
-            bg: "teal.600",
-            endIcon: <CheckIcon size="5" />,
-          }}
-          mt={1}
-          onValueChange={(id) => setSelectedServiceId(id)}
-        >
-          {services.map((service) => (
-            <Select.Item
-              key={service.id}
-              label={service.name}
-              value={service.id}
-            />
-          ))}
-        </Select>
-      </VStack>
-      <Button onPress={handleCreateQueue}>Criar</Button>
-    </VStack>
+          <Picker
+            label="Prioridade"
+            mode="dropdown"
+            selectedValue={priority}
+            onValueChange={(value) => setPriority(value)}
+          >
+            {_.range(1, 11).map((priority) => (
+              <Picker.Item
+                key={priority}
+                label={priority.toString()}
+                value={priority.toString()}
+              />
+            ))}
+          </Picker>
+          <Picker
+            label="Serviço"
+            mode="dropdown"
+            selectedValue={selectedServiceId}
+            onValueChange={(id) => setSelectedServiceId(id)}
+          >
+            {services.map((service) => (
+              <Picker.Item
+                key={service.id}
+                label={service.name}
+                value={service.id}
+              />
+            ))}
+          </Picker>
+        </View>
+      </ScrollView>
+      <View className="p-4">
+        <Button mode="contained" onPress={handleCreateQueue}>
+          Criar
+        </Button>
+      </View>
+    </View>
   );
 };

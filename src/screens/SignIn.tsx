@@ -1,26 +1,18 @@
 import { useEffect, useRef, useState } from "react";
-import { Platform, TextInput } from "react-native";
 import {
-  Button,
-  Text,
-  VStack,
-  Center,
-  Box,
-  Heading,
-  FormControl,
-  Link,
-  Input,
-  HStack,
-  ScrollView,
   KeyboardAvoidingView,
-} from "native-base";
+  Platform,
+  ScrollView,
+  View,
+  TextInput as RNTextInput,
+} from "react-native";
 
 import * as Google from "expo-auth-session/providers/google";
 import { useNavigation } from "@react-navigation/native";
-import * as AuthSession from "expo-auth-session";
 import * as WebBrowser from "expo-web-browser";
 import Constants from "expo-constants";
 import { useUserQueries } from "../queries/user";
+import { Button, Text, TextInput } from "react-native-paper";
 
 const EXPO_CLIENT_ID = process.env.EXPO_PUBLIC_EXPO_CLIENT_ID;
 const IOS_CLIENT_ID = process.env.EXPO_PUBLIC_ANDROID_CLIENT_ID;
@@ -43,7 +35,7 @@ WebBrowser.maybeCompleteAuthSession();
 export const SignIn = () => {
   const navigation = useNavigation();
 
-  const passwordInputRef = useRef<TextInput>();
+  const passwordInputRef = useRef<RNTextInput>(null);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -76,99 +68,72 @@ export const SignIn = () => {
 
   return (
     <KeyboardAvoidingView
-      flex={1}
+      className="flex-1 p-4"
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <ScrollView>
-        <Center w="100%">
-          <Box safeArea p="2" py="8" w="90%" maxW="290">
-            <Heading
-              size="lg"
-              fontWeight="600"
-              color="coolGray.800"
-              _dark={{
-                color: "warmGray.50",
-              }}
-            >
-              Bem-vindo
-            </Heading>
-            <VStack space={3} mt="5">
-              <FormControl>
-                <FormControl.Label>E-mail</FormControl.Label>
-                <Input
-                  keyboardType="email-address"
-                  returnKeyType="next"
-                  autoCapitalize="none"
-                  value={email}
-                  onChangeText={setEmail}
-                  onSubmitEditing={() => {
-                    passwordInputRef.current?.focus();
-                  }}
-                  blurOnSubmit={false}
-                />
-              </FormControl>
-              <FormControl>
-                <FormControl.Label>Senha</FormControl.Label>
-                <Input
-                  ref={passwordInputRef}
-                  returnKeyType="next"
-                  autoCapitalize="none"
-                  type="password"
-                  value={password}
-                  onChangeText={setPassword}
-                  onSubmitEditing={handleSignIn}
-                  blurOnSubmit={false}
-                />
-                <Link
-                  _text={{
-                    fontSize: "xs",
-                    fontWeight: "500",
-                    color: "indigo.500",
-                  }}
-                  alignSelf="flex-end"
-                  mt="1"
-                >
-                  Esqueceu sua senha?
-                </Link>
-              </FormControl>
-              <Button mt="8" onPress={handleSignInWithGoogle}>
-                <Text>Entrar com o Google</Text>
-              </Button>
-
-              <Button
-                mt="2"
-                colorScheme="indigo"
-                isDisabled={!email || !password}
-                onPress={handleSignIn}
+        <View className="items-center">
+          <View className="w-11/12 sm:max-w-290">
+            <Text variant="displaySmall">Bem-vindo</Text>
+            <View className="g-3 mt-5">
+              <TextInput
+                mode="outlined"
+                label="E-mail"
+                value={email}
+                onChangeText={setEmail}
+                keyboardType="email-address"
+                autoComplete="email"
+                returnKeyType="next"
+                onSubmitEditing={() => {
+                  passwordInputRef.current?.focus();
+                }}
+                blurOnSubmit={false}
+              />
+              <TextInput
+                mode="outlined"
+                label="Senha"
+                ref={passwordInputRef}
+                returnKeyType="next"
+                secureTextEntry
+                autoComplete="current-password"
+                value={password}
+                onChangeText={setPassword}
+                onSubmitEditing={handleSignIn}
+                blurOnSubmit={false}
+              />
+              <Text
+                variant="bodyMedium"
+                className="underline self-end mt-1 text-indigo-500"
               >
-                Entrar
-              </Button>
-              <HStack mt="6" justifyContent="center">
-                <Text
-                  fontSize="sm"
-                  color="coolGray.600"
-                  _dark={{
-                    color: "warmGray.200",
-                  }}
+                Esqueceu sua senha?
+              </Text>
+              <View className="g-2 mt-8">
+                <Button onPress={handleSignInWithGoogle}>
+                  <Text>Entrar com o Google</Text>
+                </Button>
+                <Button
+                  mode="contained-tonal"
+                  disabled={!email || !password}
+                  onPress={handleSignIn}
                 >
-                  Ainda não tem uma conta?{" "}
-                </Text>
-                <Link
-                  _text={{
-                    color: "indigo.500",
-                    fontWeight: "medium",
-                    fontSize: "sm",
-                  }}
+                  Entrar
+                </Button>
+              </View>
+              <View className="flex-row mt-6">
+                <Text variant="bodyMedium">Ainda não tem uma conta? </Text>
+                <Text
+                  variant="bodyMedium"
+                  className="underline text-indigo-500"
                   onPress={() => {
                     navigation.navigate("SignUp");
                   }}
                 >
                   Cadastre-se
-                </Link>
-              </HStack>
-            </VStack>
-          </Box>
-        </Center>
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
       </ScrollView>
     </KeyboardAvoidingView>
   );

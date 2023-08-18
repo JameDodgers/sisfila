@@ -1,17 +1,15 @@
-import React, { FC } from "react";
+import React from "react";
 import { Platform } from "react-native";
 
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { DrawerToggleButton } from "@react-navigation/drawer";
-import { Button, Icon, IconButton, Text } from "native-base";
 
-import Feather from "@expo/vector-icons/Feather";
+import { IconButton } from "react-native-paper";
 
 const { Navigator, Screen } = createNativeStackNavigator();
 
 type ScreenProp = {
   name: string;
-  component: FC;
+  component: any;
   options?: any;
 };
 
@@ -45,9 +43,9 @@ export const getStackAndScreensInsideDrawer = ({
 
                 return (
                   <IconButton
-                    size="sm"
-                    variant="link"
-                    icon={<Feather name="menu" size={24} color={tintColor} />}
+                    icon="menu"
+                    iconColor={tintColor}
+                    size={24}
                     onPress={() => {
                       navigation.toggleDrawer();
                     }}

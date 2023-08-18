@@ -1,13 +1,13 @@
-import { VStack, FlatList, Center, Text } from "native-base";
-
 import { useNavigation } from "@react-navigation/native";
 import { useCallback, useLayoutEffect } from "react";
 import { OrganizationItem } from "../../components/OrganizationItem";
-import { IconButton } from "react-native-paper";
+import { IconButton, Text } from "react-native-paper";
 
 import { useOrganizationsQueries } from "../../queries/organizations";
 import { useRefreshOnFocus } from "../../hooks/useRefreshOnFocus";
 import { setCurrentOrganizationId } from "../../store/organizer";
+import { View } from "react-native";
+import { FlatList } from "../../libs/styled";
 
 export const Organizations = () => {
   const navigation = useNavigation();
@@ -33,9 +33,9 @@ export const Organizations = () => {
 
   const ListEmptyComponent = useCallback(
     () => (
-      <Center>
+      <View className="items-center">
         <Text>Você ainda não possui organizações</Text>
-      </Center>
+      </View>
     ),
     []
   );
@@ -46,23 +46,21 @@ export const Organizations = () => {
   };
 
   return (
-    <VStack flex={1}>
+    <View className="flex-1">
       <FlatList
-        _contentContainerStyle={{
-          px: 2,
-          pt: 2,
-        }}
+        contentContainerStyle="px-2 pt-2"
         data={organizations}
+        numColumns={3}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={ListEmptyComponent}
-        keyExtractor={(item) => String(item.id)}
-        renderItem={({ item }) => (
+        keyExtractor={(item: any) => String(item.id)}
+        renderItem={({ item }: any) => (
           <OrganizationItem
             item={item}
             onPress={() => handleOpenOrganization(item.id)}
           />
         )}
       />
-    </VStack>
+    </View>
   );
 };

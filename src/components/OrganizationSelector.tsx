@@ -1,12 +1,20 @@
-import { Menu, Text, ChevronDownIcon, HStack, Pressable } from "native-base";
+import { Menu, Text } from "react-native-paper";
 import { useOrganizationsQueries } from "../queries/organizations";
-
+import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import {
   setCurrentOrganizationId,
   useOrganizerStore,
 } from "../store/organizer";
+import { useState } from "react";
+import { Pressable, View } from "react-native";
 
 export const OrganizationSelector = () => {
+  const [visible, setVisible] = useState(false);
+
+  const openMenu = () => setVisible(true);
+
+  const closeMenu = () => setVisible(false);
+
   const { useGetOrganizations, useGetOrganization } = useOrganizationsQueries();
 
   const { currentOrganizationId = "" } = useOrganizerStore();
@@ -15,35 +23,29 @@ export const OrganizationSelector = () => {
 
   const { data: organization } = useGetOrganization(currentOrganizationId);
 
-  const onChange = (value: string) => {
-    setCurrentOrganizationId(value);
-  };
 
   return (
     <Menu
-      trigger={(triggerProps) => {
-        return (
-          <Pressable alignSelf="flex-star" {...triggerProps}>
-            <HStack space={2} p={3} alignItems="center">
-              <Text suppressHighlighting={true}>{organization?.name}</Text>
-              <ChevronDownIcon size={3} />
-            </HStack>
-          </Pressable>
-        );
-      }}
+      visible={visible}
+      onDismiss={closeMenu}
+      anchor={
+        <Pressable onPress={openMenu}>
+          <View className="flex-row g-2 p-3 justify-between items-center">
+            <Text variant="titleSmall" suppressHighlighting={true}>
+              {organization?.name}
+            </Text>
+            <Icon size={20} name="chevron-down" />
+          </View>
+        </Pressable>
+      }
     >
-      <Menu.OptionGroup
-        type="radio"
-        defaultValue={currentOrganizationId}
-        title="Organização"
-        onChange={onChange}
-      >
-        {organizations.map(({ id, name }) => (
-          <Menu.ItemOption key={id} value={id}>
-            {name}
-          </Menu.ItemOption>
-        ))}
-      </Menu.OptionGroup>
+      {organizations.map(({ id, name }) => (
+        <Menu.Item
+          key={id}
+          onPress={() => setCurrentOrganizationId(id)}
+          title={name}
+        />
+      ))}
     </Menu>
   );
 };

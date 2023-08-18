@@ -1,14 +1,27 @@
-import { VStack, Button, Text, Input, Toast } from "native-base";
 import { useState } from "react";
 import { useQueuesQueries } from "../../queries/queues";
 import { RootNavigatorScreenProps } from "../../../@types/navigation";
+import {
+  FAB,
+  Button,
+  Text,
+  TextInput,
+  Portal,
+  Dialog,
+} from "react-native-paper";
+import { View } from "react-native";
+import { FlatList } from "react-native";
+import { ClientItem } from "../../components/ClientItem";
 
 type Props = {
   route: RootNavigatorScreenProps<"Atendimento">["route"];
 };
 
 export const Atendimento = ({ route }: Props) => {
-  const { queueId } = route.params;
+  const { queueId = "f2625359-49ed-4cbf-b8f3-6efbd87ab646" } =
+    route.params || {};
+
+  const [visible, setVisible] = useState(false);
 
   const [registrationId, setRegistrationId] = useState<string>("");
 
@@ -17,6 +30,10 @@ export const Atendimento = ({ route }: Props) => {
   const { data: queue } = useGetQueue(queueId);
 
   const { mutate: enterQueue } = useEnterQueue();
+
+  const openModal = () => setVisible(true);
+
+  const closeModal = () => setVisible(false);
 
   const handleEnterQueue = () => {
     const data = {
@@ -30,29 +47,57 @@ export const Atendimento = ({ route }: Props) => {
           duration: 3000,
           description: "Você entrou na fila",
         });
-        navigation.navigate("Atendimentos", { queueId });
       },
     });
   };
 
   return (
-    <VStack flex={1} p={3} alignItems="center">
-      <VStack
-        _web={{
-          w: "50%",
-        }}
-        w="100%"
-        space={4}
-      >
-        <Input
-          placeholder="Número de matrícula"
-          value={registrationId}
-          onChangeText={setRegistrationId}
+    <>
+      <View className="flex-1 p-4">
+        <Text variant="headlineLarge">{queue?.name}</Text>
+        <Text variant="labelLarge">{queue?.description}</Text>
+        <View className="mt-8 mb-4">
+          <Text variant="labelLarge">Em atendimento</Text>
+          {queue?.lastClientCalled && (
+            <View>
+              <ClientItem item={queue?.lastClientCalled} index={0} />
+            </View>
+          )}
+        </View>
+        <View>
+          <Text variant="labelLarge">Aguardando</Text>
+          <FlatList
+            data={queue?.clients}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item, index }) => (
+              <ClientItem key={index} item={item} index={index} />
+            )}
+          />
+        </View>
+        <FAB
+          className="absolute bottom-4 right-4"
+          icon="arrow-left-bottom"
+          size="medium"
+          onPress={openModal}
         />
-        <Button disabled={!registrationId} onPress={handleEnterQueue}>
-          <Text color="white">Entrar na fila</Text>
-        </Button>
-      </VStack>
-    </VStack>
+      </View>
+      <Portal>
+        <Dialog visible={visible} onDismiss={closeModal}>
+          <Dialog.Title>Entrar na fila</Dialog.Title>
+          <Dialog.Content>
+            <TextInput
+              mode="outlined"
+              label="Número de matrícula"
+              value={registrationId}
+              onChangeText={setRegistrationId}
+            />
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button onPress={closeModal}>Cancelar</Button>
+            <Button onPress={handleEnterQueue}>Entrar</Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
+    </>
   );
 };

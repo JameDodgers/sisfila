@@ -11,4 +11,5 @@ export type Queue = {
   organizationId: string;
   serviceId: string;
   clients: Client[];
+  lastClientCalled: Client;
 };

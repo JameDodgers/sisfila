@@ -1,17 +1,18 @@
-import { HStack, IPressableProps, Pressable, Text } from "native-base";
+import { Pressable, PressableProps, View } from "react-native";
 import { Organization } from "../models/Organization";
+import { Text } from "react-native-paper";
 
-type Props = IPressableProps & {
+type Props = PressableProps & {
   item: Organization;
 };
 
 export const OrganizationItem = ({ item, ...props }: Props) => {
   return (
-    <Pressable bg="white" m={2} p={2} shadow={2} rounded={4} {...props}>
-      <HStack justifyContent="space-between">
+    <Pressable className="m-1 p-2 shadow-sm rounded-md" {...props}>
+      <View className="justify-between">
         <Text>{item.name}</Text>
         <Text>{item.code}</Text>
-      </HStack>
+      </View>
     </Pressable>
   );
 };

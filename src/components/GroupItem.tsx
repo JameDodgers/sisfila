@@ -1,16 +1,15 @@
-import { Text, VStack, IPressableProps, Pressable } from "native-base";
+import { Pressable, PressableProps } from "react-native";
 import { Group } from "../models/Group";
+import { Text } from "react-native-paper";
 
-type Props = IPressableProps & {
+type Props = PressableProps & {
   item: Group;
 };
 
 export const GroupItem = ({ item, ...rest }: Props) => {
   return (
-    <Pressable {...rest}>
-      <VStack bg="light.50" p={2} mb={4} shadow={5} rounded="md">
-        <Text>{item.name}</Text>
-      </VStack>
+    <Pressable className="shadow-sm bg-stone-50 p-2 rounded-md" {...rest}>
+      <Text>{item.name}</Text>
     </Pressable>
   );
 };

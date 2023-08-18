@@ -1,9 +1,10 @@
-import { Button, FlatList, Text, VStack } from "native-base";
-
 import { ClientItem } from "../../components/ClientItem";
 import { useOrganizationsQueries } from "../../queries/organizations";
 import { useOrganizerStore } from "../../store/organizer";
 import { QueuesStackScreenProps } from "../../../@types/navigation";
+
+import { Button } from "react-native-paper";
+import { View, FlatList } from "react-native";
 
 type Props = {
   route: QueuesStackScreenProps<"Queue">["route"];
@@ -18,7 +19,6 @@ export const Queue = ({ route }: Props) => {
 
   const { data: queue } = useGetQueue(queueId, currentOrganizationId);
 
-  console.log(queue?.clients.length);
   const { mutate: callNext } = useCallNext();
 
   const handleCallNext = () => {
@@ -26,7 +26,7 @@ export const Queue = ({ route }: Props) => {
   };
 
   return (
-    <VStack p={4} space={4}>
+    <View className="flex-1 p-4 g-4 justify-between">
       <FlatList
         data={queue?.clients}
         keyExtractor={(item) => item.id.toString()}
@@ -34,9 +34,9 @@ export const Queue = ({ route }: Props) => {
           return <ClientItem item={item} index={index} />;
         }}
       />
-      <Button onPress={handleCallNext}>
-        <Text>Chamar próximo</Text>
+      <Button mode="contained" onPress={handleCallNext}>
+        Chamar próximo
       </Button>
-    </VStack>
+    </View>
   );
 };

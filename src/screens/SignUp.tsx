@@ -1,30 +1,23 @@
 import { useRef } from "react";
-import { Platform, TextInput } from "react-native";
-
 import {
-  Center,
-  Box,
-  Heading,
-  VStack,
-  FormControl,
-  Input,
-  Button,
-  Link,
-  Text,
-  HStack,
   KeyboardAvoidingView,
+  Platform,
   ScrollView,
-} from "native-base";
+  View,
+  TextInput as RNTextInput,
+} from "react-native";
+
 import { useNavigation } from "@react-navigation/native";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { useUserQueries } from "../queries/user";
+import { Button, HelperText, Text, TextInput } from "react-native-paper";
 
 export const SignUp = () => {
-  const nameInputRef = useRef<TextInput>(null);
-  const emailInputRef = useRef<TextInput>(null);
-  const passwordInputRef = useRef<TextInput>(null);
-  const confirmPasswordInputRef = useRef<TextInput>(null);
+  const nameInputRef = useRef<RNTextInput>(null);
+  const emailInputRef = useRef<RNTextInput>(null);
+  const passwordInputRef = useRef<RNTextInput>(null);
+  const confirmPasswordInputRef = useRef<RNTextInput>(null);
 
   const navigation = useNavigation();
 
@@ -49,34 +42,16 @@ export const SignUp = () => {
 
   return (
     <KeyboardAvoidingView
-      flex={1}
+      className="flex-1"
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <ScrollView>
-        <Center w="100%">
-          <Box safeArea p="2" w="90%" maxW="290" py="8">
-            <Heading
-              size="lg"
-              color="coolGray.800"
-              _dark={{
-                color: "warmGray.50",
-              }}
-              fontWeight="semibold"
-            >
-              Bem-vindo
-            </Heading>
-            <Heading
-              mt="1"
-              color="coolGray.600"
-              _dark={{
-                color: "warmGray.200",
-              }}
-              fontWeight="medium"
-              size="xs"
-            >
-              Cadastre-se para continuar!
-            </Heading>
-            <VStack space={3} mt="5">
+        <View className="items-center">
+          <View className="p-2 w-10/12 sm:max-w-290">
+            <Text className="mt-1" variant="headlineSmall">
+              Cadastre-se para continuar
+            </Text>
+            <View className="g-3 mt-5">
               <Formik
                 initialValues={{
                   name: "",
@@ -98,122 +73,121 @@ export const SignUp = () => {
                   handleSubmit,
                 }) => {
                   return (
-                    <VStack>
-                      <FormControl isInvalid={touched.name && !!errors.name}>
-                        <FormControl.Label>Nome</FormControl.Label>
-                        <Input
-                          ref={nameInputRef}
-                          value={values.name}
-                          onChangeText={handleChange("name")}
-                          onBlur={handleBlur("name")}
-                          returnKeyType="next"
-                          onSubmitEditing={() => {
-                            emailInputRef.current?.focus();
-                          }}
-                          blurOnSubmit={false}
-                        />
-                        <FormControl.ErrorMessage>
-                          {errors.name}
-                        </FormControl.ErrorMessage>
-                      </FormControl>
-                      <FormControl isInvalid={touched.email && !!errors.email}>
-                        <FormControl.Label>E-mail</FormControl.Label>
-                        <Input
-                          ref={emailInputRef}
-                          value={values.email}
-                          keyboardType="email-address"
-                          returnKeyType="next"
-                          autoCapitalize="none"
-                          onChangeText={handleChange("email")}
-                          onBlur={handleBlur("email")}
-                          onSubmitEditing={() => {
-                            passwordInputRef.current?.focus();
-                          }}
-                          blurOnSubmit={false}
-                        />
-                        <FormControl.ErrorMessage>
-                          {errors.email}
-                        </FormControl.ErrorMessage>
-                      </FormControl>
-                      <FormControl
-                        isInvalid={touched.password && !!errors.password}
+                    <View>
+                      <TextInput
+                        mode="outlined"
+                        label="Nome"
+                        error={touched.email && !!errors.email}
+                        ref={nameInputRef}
+                        value={values.name}
+                        onChangeText={handleChange("name")}
+                        onBlur={handleBlur("name")}
+                        returnKeyType="next"
+                        onSubmitEditing={() => {
+                          emailInputRef.current?.focus();
+                        }}
+                        blurOnSubmit={false}
+                      />
+                      <HelperText
+                        type="error"
+                        visible={touched.email && !!errors.email}
                       >
-                        <FormControl.Label>Senha</FormControl.Label>
-                        <Input
-                          ref={passwordInputRef}
-                          value={values.password}
-                          returnKeyType="next"
-                          autoCapitalize="none"
-                          onChangeText={handleChange("password")}
-                          onBlur={handleBlur("password")}
-                          onSubmitEditing={() => {
-                            confirmPasswordInputRef.current?.focus();
-                          }}
-                          blurOnSubmit={false}
-                          type="password"
-                        />
-                        <FormControl.ErrorMessage>
-                          {errors.password}
-                        </FormControl.ErrorMessage>
-                      </FormControl>
-                      <FormControl
-                        isInvalid={
+                        {errors.name}
+                      </HelperText>
+                      <TextInput
+                        mode="outlined"
+                        label="E-mail"
+                        error={touched.email && !!errors.email}
+                        ref={emailInputRef}
+                        value={values.email}
+                        keyboardType="email-address"
+                        returnKeyType="next"
+                        autoCapitalize="none"
+                        onChangeText={handleChange("email")}
+                        onBlur={handleBlur("email")}
+                        onSubmitEditing={() => {
+                          passwordInputRef.current?.focus();
+                        }}
+                        blurOnSubmit={false}
+                      />
+                      <HelperText
+                        type="error"
+                        visible={touched.email && !!errors.email}
+                      >
+                        {errors.email}
+                      </HelperText>
+                      <TextInput
+                        mode="outlined"
+                        label="Senha"
+                        error={touched.password && !!errors.password}
+                        ref={passwordInputRef}
+                        value={values.password}
+                        returnKeyType="next"
+                        autoCapitalize="none"
+                        onChangeText={handleChange("password")}
+                        onBlur={handleBlur("password")}
+                        onSubmitEditing={() => {
+                          confirmPasswordInputRef.current?.focus();
+                        }}
+                        blurOnSubmit={false}
+                        secureTextEntry
+                      />
+                      <HelperText
+                        type="error"
+                        visible={touched.password && !!errors.password}
+                      >
+                        {errors.password}
+                      </HelperText>
+                      <TextInput
+                        mode="outlined"
+                        label="Confirmar senha"
+                        error={
+                          touched.confirmPassword && !!errors.confirmPassword
+                        }
+                        ref={confirmPasswordInputRef}
+                        value={values.confirmPassword}
+                        returnKeyType="done"
+                        autoCapitalize="none"
+                        onChangeText={handleChange("confirmPassword")}
+                        onBlur={handleBlur("confirmPassword")}
+                        onSubmitEditing={() => handleSubmit()}
+                        secureTextEntry
+                      />
+                      <HelperText
+                        type="error"
+                        visible={
                           touched.confirmPassword && !!errors.confirmPassword
                         }
                       >
-                        <FormControl.Label>Confirmar senha</FormControl.Label>
-                        <Input
-                          ref={confirmPasswordInputRef}
-                          value={values.confirmPassword}
-                          returnKeyType="done"
-                          autoCapitalize="none"
-                          onChangeText={handleChange("confirmPassword")}
-                          onBlur={handleBlur("confirmPassword")}
-                          onSubmitEditing={() => handleSubmit()}
-                          type="password"
-                        />
-                        <FormControl.ErrorMessage>
-                          {errors.confirmPassword}
-                        </FormControl.ErrorMessage>
-                      </FormControl>
+                        {errors.confirmPassword}
+                      </HelperText>
                       <Button
-                        mt="8"
-                        colorScheme="indigo"
-                        isLoading={isLoading}
+                        mode="contained"
+                        className="mt-8"
+                        loading={isLoading}
                         onPress={() => handleSubmit()}
                       >
                         Cadastrar
                       </Button>
-                    </VStack>
+                    </View>
                   );
                 }}
               </Formik>
-              <HStack mt="6">
+              <View className="mt-6 flex-row">
+                <Text variant="bodyMedium">Já possui uma conta? </Text>
                 <Text
-                  fontSize="sm"
-                  color="coolGray.600"
-                  _dark={{
-                    color: "warmGray.200",
-                  }}
-                >
-                  Já possui uma conta?{" "}
-                </Text>
-                <Link
-                  _text={{
-                    color: "indigo.500",
-                    fontWeight: "medium",
-                    fontSize: "sm",
-                  }}
+                  variant="bodyMedium"
+                  className="underline text-indigo-500"
                   onPress={() => {
                     navigation.navigate("SignIn");
                   }}
                 >
                   Entrar
-                </Link>
-              </HStack>
-            </VStack>
-          </Box>
-        </Center>
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
       </ScrollView>
     </KeyboardAvoidingView>
   );

@@ -1,10 +1,10 @@
-import { VStack } from "native-base";
 import { useState } from "react";
-import { Button, Input } from "native-base";
 
 import { useNavigation } from "@react-navigation/native";
 
 import { useOrganizationsQueries } from "../../queries/organizations";
+import { Button, TextInput } from "react-native-paper";
+import { View } from "react-native";
 
 export const CreateOrganization = () => {
   const navigation = useNavigation();
@@ -27,22 +27,22 @@ export const CreateOrganization = () => {
   };
 
   return (
-    <VStack flex={1} p={4}>
-      <VStack flex={1} space={3}>
-        <Input
-          size="2xl"
+    <View className="flex-1 p-4">
+      <View className="flex-1 g-3">
+        <TextInput
+          mode="outlined"
           placeholder="Nome"
           value={name}
           onChangeText={setName}
         />
-        <Input
-          size="2xl"
+        <TextInput
+          mode="outlined"
           placeholder="TAG"
           value={code}
           onChangeText={setCode}
         />
-      </VStack>
+      </View>
       <Button onPress={handleCreateOrganization}>Criar</Button>
-    </VStack>
+    </View>
   );
 };

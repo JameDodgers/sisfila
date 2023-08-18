@@ -1,4 +1,4 @@
-import { Text, VStack } from "native-base";
+import { Avatar, List, useTheme } from "react-native-paper";
 import { Client } from "../models/Client";
 
 type Props = {
@@ -7,11 +7,16 @@ type Props = {
 };
 
 export const ClientItem = ({ item, index }: Props) => {
+  const theme = useTheme();
+
   return (
-    <VStack bg="light.50">
-      <Text>
-        {index + 1} - {item.name}
-      </Text>
-    </VStack>
+    <List.Item
+      style={{
+        backgroundColor: theme.colors.primaryContainer,
+      }}
+      className="px-4"
+      title={item.name}
+      left={() => <Avatar.Text size={48} label={item.name[0]} />}
+    />
   );
 };

@@ -1,5 +1,3 @@
-import { Center, FlatList } from "native-base";
-
 import { ServiceItem } from "../../components/ServiceItem";
 
 import { useServicesQueries } from "../../queries/services";
@@ -9,6 +7,8 @@ import { IconButton } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { useOrganizerStore } from "../../store/organizer";
 import { ServicesStackNavigationProp } from "../../../@types/navigation";
+import { View } from "react-native";
+import { FlatList } from "../../libs/styled";
 
 export const Services = () => {
   const navigation = useNavigation<ServicesStackNavigationProp<"Services">>();
@@ -33,17 +33,13 @@ export const Services = () => {
   }, [navigation]);
 
   return (
-    <Center>
+    <View className="flex-1 p-4">
       <FlatList
-        _contentContainerStyle={{
-          m: "4",
-        }}
         data={services}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => {
-          return <ServiceItem item={item} />;
-        }}
+        contentContainerStyle="g-3"
+        keyExtractor={(item: any) => item.id.toString()}
+        renderItem={({ item }: any) => <ServiceItem item={item} />}
       />
-    </Center>
+    </View>
   );
 };

@@ -1,16 +1,21 @@
-import { Text, VStack } from "native-base";
 import { useCallback, useState } from "react";
-import { Button, Input } from "native-base";
 
 import { useNavigation } from "@react-navigation/native";
 
 import { useServicesQueries } from "../../queries/services";
-import { Button as PaperButton, Switch } from "react-native-paper";
+import {
+  Button,
+  Button as PaperButton,
+  Switch,
+  Text,
+  TextInput,
+} from "react-native-paper";
 
 import { DatePickerModal } from "react-native-paper-dates";
 
 import { RangeChange } from "react-native-paper-dates/lib/typescript/Date/Calendar";
 import { useOrganizerStore } from "../../store/organizer";
+import { View } from "react-native";
 
 export const CreateService = () => {
   const navigation = useNavigation();
@@ -65,16 +70,16 @@ export const CreateService = () => {
   const toggleguestEnrollment = () => setguestEnrollment((value) => !value);
 
   return (
-    <VStack flex={1} p={4}>
-      <VStack flex={1} space={3}>
-        <Input
-          size="2xl"
+    <View className="flex-1 p-4">
+      <View className="flex-1 g-3">
+        <TextInput
+          mode="outlined"
           placeholder="Nome"
           value={name}
           onChangeText={setName}
         />
-        <Input
-          size="2xl"
+        <TextInput
+          mode="outlined"
           placeholder="Token"
           value={subscriptionToken}
           onChangeText={setSubscriptionToken}
@@ -93,8 +98,10 @@ export const CreateService = () => {
           endDate={closesAt}
           onConfirm={onConfirm}
         />
-      </VStack>
-      <Button onPress={handleCreateService}>Criar</Button>
-    </VStack>
+      </View>
+      <Button mode="contained" onPress={handleCreateService}>
+        Criar
+      </Button>
+    </View>
   );
 };
