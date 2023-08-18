@@ -1,5 +1,3 @@
-import { Client } from "../../models/Client";
-import { Group } from "../../models/Group";
 import { Queue } from "../../models/Queue";
 import api from "./config";
 
@@ -19,7 +17,7 @@ interface CreateQueueResponse {
 interface AttachGroupsToQueueParams {
   queueId: string;
   organizationId: string;
-  groups: Group[];
+  groups: string[];
 }
 
 interface GetOneResponse extends Array<Queue> {}
