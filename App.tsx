@@ -22,10 +22,13 @@ import {
   Montserrat_700Bold,
 } from "@expo-google-fonts/montserrat";
 import * as SplashScreen from "expo-splash-screen";
-
-import "./global.css";
+import { NativeWindStyleSheet } from "nativewind";
 
 SplashScreen.preventAutoHideAsync();
+
+NativeWindStyleSheet.setOutput({
+  default: "native",
+});
 
 const onAppStateChange = (status: AppStateStatus) => {
   if (Platform.OS !== "web") {
