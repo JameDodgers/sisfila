@@ -1,24 +1,54 @@
-import { PickerProps, Picker } from "@react-native-picker/picker";
-import { ReactNode } from "react";
-import { View } from "react-native";
-import { Text } from "react-native-paper";
+import DropDownPicker, {
+  DropDownPickerProps,
+  ValueType,
+} from "react-native-dropdown-picker";
+import { StyleSheet } from "react-native";
+import { useTheme } from "react-native-paper";
 
-interface Props<T> extends PickerProps<T> {
-  label: string;
-  children: ReactNode;
-}
+type Props = DropDownPickerProps<ValueType>;
 
-const CustomPicker = ({ label, children }: Props<string>) => {
+export const Picker = (props: Props) => {
+  const { fonts, colors } = useTheme();
+
+  const style = [
+    styles.base,
+    {
+      borderColor: colors.outline,
+    },
+  ];
+
+  const textStyle = [
+    fonts.bodyLarge,
+    {
+      color: colors.onSurfaceVariant,
+    },
+  ];
+
+  const dropDownContainerStyle = [
+    styles.dropDownContainerStyle,
+    {
+      borderColor: colors.outline,
+    },
+  ];
+
   return (
-    <View>
-      <Text variant="bodyLarge">{label}</Text>
-      <View className="border rounded ios:border-0 ios:rounded-none">
-        <Picker mode="dropdown">{children}</Picker>
-      </View>
-    </View>
+    <DropDownPicker
+      style={style}
+      dropDownContainerStyle={dropDownContainerStyle}
+      arrowIconStyle={{ tintColor: colors.outline }}
+      textStyle={textStyle}
+      listMode="SCROLLVIEW"
+      {...props}
+    />
   );
 };
 
-CustomPicker.Item = Picker.Item;
-
-export { CustomPicker as Picker };
+const styles = StyleSheet.create({
+  base: {
+    backgroundColor: "transparent",
+    borderRadius: 4,
+  },
+  dropDownContainerStyle: {
+    borderRadius: 4,
+  },
+});

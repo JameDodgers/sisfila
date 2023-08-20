@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useNavigation } from "@react-navigation/native";
 
@@ -15,11 +15,6 @@ import { ScrollView } from "../../libs/styled";
 export const CreateQueue = () => {
   const navigation = useNavigation();
 
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [code, setCode] = useState("");
-  const [priority, setPriority] = useState("");
-
   const { currentOrganizationId = "" } = useOrganizerStore();
 
   const { useCreateQueue } = useOrganizationsQueries();
@@ -32,6 +27,30 @@ export const CreateQueue = () => {
 
   const { mutate: createQueue } = useCreateQueue();
 
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [code, setCode] = useState("");
+  const [selectedPriority, setSelectedPriority] = useState("");
+
+  const [openPriorityPicker, setOpenPriorityPicker] = useState(false);
+  const onOpenPriorityPicker = () => {
+    setOpenServicePicker(false);
+  };
+  const [priorityPickerItems, setPriorityPickerItems] = useState(
+    _.range(1, 11).map((priority) => ({
+      value: priority.toString(),
+      label: priority.toString(),
+    }))
+  );
+
+  const [openServicePicker, setOpenServicePicker] = useState(false);
+  const [servicePickerItems, setServicePickerItems] = useState(
+    services.map((service) => ({ value: service.id, label: service.name }))
+  );
+  const onOpenServicePicker = () => {
+    setOpenPriorityPicker(false);
+  };
+
   const handleCreateQueue = () => {
     if (!name || !description || !code) {
       return;
@@ -41,7 +60,7 @@ export const CreateQueue = () => {
       name,
       description,
       code,
-      priority: Number(priority),
+      priority: Number(selectedPriority),
       serviceId: selectedServiceId,
       organizationId: currentOrganizationId,
     };
@@ -75,35 +94,28 @@ export const CreateQueue = () => {
             value={code}
             onChangeText={setCode}
           />
-
           <Picker
-            label="Prioridade"
-            mode="dropdown"
-            selectedValue={priority}
-            onValueChange={(value) => setPriority(value)}
-          >
-            {_.range(1, 11).map((priority) => (
-              <Picker.Item
-                key={priority}
-                label={priority.toString()}
-                value={priority.toString()}
-              />
-            ))}
-          </Picker>
+            placeholder="Selecione uma prioridade"
+            open={openPriorityPicker}
+            onOpen={onOpenPriorityPicker}
+            value={selectedPriority}
+            items={priorityPickerItems}
+            setOpen={setOpenPriorityPicker}
+            setValue={setSelectedPriority}
+            setItems={setPriorityPickerItems}
+            zIndex={2}
+          />
           <Picker
-            label="Serviço"
-            mode="dropdown"
-            selectedValue={selectedServiceId}
-            onValueChange={(id) => setSelectedServiceId(id)}
-          >
-            {services.map((service) => (
-              <Picker.Item
-                key={service.id}
-                label={service.name}
-                value={service.id}
-              />
-            ))}
-          </Picker>
+            placeholder="Selecione um serviço"
+            open={openServicePicker}
+            onOpen={onOpenServicePicker}
+            value={selectedServiceId}
+            items={servicePickerItems}
+            setOpen={setOpenServicePicker}
+            setValue={setSelectedServiceId}
+            setItems={setServicePickerItems}
+            zIndex={1}
+          />
         </View>
       </ScrollView>
       <View className="p-4">

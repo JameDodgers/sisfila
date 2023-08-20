@@ -21,7 +21,12 @@ export const ImportClients = () => {
 
   const { mutate: importClients } = useImportClients();
 
-  const [selectedGroupId, setSelectedGroupId] = useState<string>();
+  const [selectedGroupId, setSelectedGroupId] = useState<string>("");
+
+  const [openGroupPicker, setOpenGroupPicker] = useState(false);
+  const [groupPickerItems, setGroupPickerItems] = useState(
+    groups.map((group) => ({ value: group.id, label: group.name }))
+  );
 
   useEffect(() => {
     if (groups[0]) {
@@ -64,15 +69,14 @@ export const ImportClients = () => {
     <View className="flex-1 p-4">
       <View className="flex-1 g-4">
         <Picker
-          label="Grupo"
-          mode="dropdown"
-          selectedValue={selectedGroupId}
-          onValueChange={(value) => setSelectedGroupId(value)}
-        >
-          {groups.map((group) => (
-            <Picker.Item key={group.id} label={group.name} value={group.id} />
-          ))}
-        </Picker>
+          placeholder="Selecione um grupo"
+          open={openGroupPicker}
+          value={selectedGroupId}
+          items={groupPickerItems}
+          setOpen={setOpenGroupPicker}
+          setValue={setSelectedGroupId}
+          setItems={setGroupPickerItems}
+        />
         <TextInput
           label="Dados (TSV)"
           mode="outlined"
