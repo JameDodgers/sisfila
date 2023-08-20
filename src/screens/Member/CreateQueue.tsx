@@ -75,7 +75,7 @@ export const CreateQueue = () => {
   return (
     <View className="flex-1">
       <ScrollView className="p-4">
-        <View className="g-2">
+        <View className="web:sm:max-w-screen-sm">
           <TextInput
             mode="outlined"
             label="Nome"
@@ -119,7 +119,11 @@ export const CreateQueue = () => {
         </View>
       </ScrollView>
       <View className="p-4">
-        <Button mode="contained" onPress={handleCreateQueue}>
+        <Button
+          className="web:self-end"
+          mode="contained"
+          onPress={handleCreateQueue}
+        >
           Criar
         </Button>
       </View>
