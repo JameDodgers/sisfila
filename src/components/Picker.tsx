@@ -46,6 +46,7 @@ export const Picker = (props: Props) => {
 const styles = StyleSheet.create({
   base: {
     backgroundColor: "transparent",
+    marginTop: 6,
     borderRadius: 4,
   },
   dropDownContainerStyle: {
