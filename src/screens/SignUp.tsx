@@ -51,7 +51,7 @@ export const SignUp = () => {
             <Text className="mt-1" variant="headlineSmall">
               Cadastre-se para continuar
             </Text>
-            <View className="g-3 mt-5">
+            <View className="gap-y-3 mt-5">
               <Formik
                 initialValues={{
                   name: "",

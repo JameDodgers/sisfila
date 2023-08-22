@@ -53,7 +53,7 @@ export const QueueSettings = ({ route }: Props) => {
 
   return (
     <View className="flex-1 p-4">
-      <ScrollView className="flex-1 g-4">
+      <ScrollView className="flex-1 gap-y-4">
         <Text>Grupos</Text>
         <View>
           {groups.map((group) => (

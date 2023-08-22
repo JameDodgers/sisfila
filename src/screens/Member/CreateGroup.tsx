@@ -31,7 +31,7 @@ export const CreateGroup = () => {
   };
 
   return (
-    <View className="flex-1 p-4 g-3">
+    <View className="flex-1 p-4">
       <View className="flex-1">
         <TextInput
           mode="outlined"

@@ -26,7 +26,7 @@ export const Queue = ({ route }: Props) => {
   };
 
   return (
-    <View className="flex-1 p-4 g-4 justify-between">
+    <View className="flex-1 p-4 gap-4 justify-between">
       <FlatList
         data={queue?.clients}
         keyExtractor={(item) => item.id.toString()}

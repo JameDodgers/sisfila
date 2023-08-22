@@ -75,7 +75,7 @@ export const SignIn = () => {
         <View className="items-center">
           <View className="w-11/12 sm:max-w-290">
             <Text variant="displaySmall">Bem-vindo</Text>
-            <View className="g-3 mt-5">
+            <View className="gap-y-3 mt-5">
               <TextInput
                 mode="outlined"
                 label="E-mail"
@@ -107,7 +107,7 @@ export const SignIn = () => {
               >
                 Esqueceu sua senha?
               </Text>
-              <View className="g-2 mt-8">
+              <View className="gap-y-2 mt-8">
                 <Button onPress={handleSignInWithGoogle}>
                   <Text>Entrar com o Google</Text>
                 </Button>

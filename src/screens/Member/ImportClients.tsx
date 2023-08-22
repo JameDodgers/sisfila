@@ -67,7 +67,7 @@ export const ImportClients = () => {
 
   return (
     <View className="flex-1 p-4">
-      <View className="flex-1 g-4">
+      <View className="flex-1 gap-y-4">
         <Picker
           placeholder="Selecione um grupo"
           open={openGroupPicker}

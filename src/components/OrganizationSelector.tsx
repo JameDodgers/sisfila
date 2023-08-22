@@ -30,7 +30,7 @@ export const OrganizationSelector = () => {
       onDismiss={closeMenu}
       anchor={
         <Pressable onPress={openMenu}>
-          <View className="flex-row g-2 p-3 justify-between items-center">
+          <View className="flex-row gap-2 p-3 justify-between items-center">
             <Text variant="titleSmall" suppressHighlighting={true}>
               {organization?.name}
             </Text>

@@ -28,7 +28,7 @@ export const CreateOrganization = () => {
 
   return (
     <View className="flex-1 p-4">
-      <View className="flex-1 g-3">
+      <View className="flex-1 gap-3">
         <TextInput
           mode="outlined"
           placeholder="Nome"

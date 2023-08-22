@@ -36,7 +36,6 @@ export const Services = () => {
     <View className="flex-1 p-4">
       <FlatList
         data={services}
-        contentContainerStyle="g-3"
         keyExtractor={(item: any) => item.id.toString()}
         renderItem={({ item }: any) => <ServiceItem item={item} />}
       />
