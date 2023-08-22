@@ -29,7 +29,6 @@ module.exports = {
     },
     web: {
       favicon: "./assets/favicon.png",
-      bundler: "metro",
     },
     extra: {
       expoClientId: process.env.EXPO_PUBLIC_EXPO_CLIENT_ID,
