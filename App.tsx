@@ -24,6 +24,10 @@ import {
 import * as SplashScreen from "expo-splash-screen";
 import { NativeWindStyleSheet } from "nativewind";
 
+import { pt, registerTranslation } from "react-native-paper-dates";
+
+registerTranslation("pt", pt);
+
 SplashScreen.preventAutoHideAsync();
 
 NativeWindStyleSheet.setOutput({
