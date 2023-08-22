@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { useEffect } from "react";
+import { useLayoutEffect } from "react";
 import { DataTable } from "react-native-paper";
 import { Button, IconButton } from "react-native-paper";
 
@@ -28,7 +28,7 @@ export const Clients = () => {
     navigation.navigate("ImportClients");
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => <Button onPress={handleImport}>Importar</Button>,
     });
@@ -41,23 +41,19 @@ export const Clients = () => {
   return (
     <View className="flex-1">
       {clients.length > 0 && (
-        <DataTable
-          style={{
-            flex: 1,
-            justifyContent: "space-between",
-          }}
-        >
+        <DataTable className="flex-1 justify-between">
           <ScrollView>
             <DataTable.Header>
               <DataTable.Title>Nome</DataTable.Title>
               <DataTable.Title>Matrícula</DataTable.Title>
+              <View className="flex-1" />
             </DataTable.Header>
-            {clients.map((client: any) => {
+            {clients.map((client) => {
               return (
                 <DataTable.Row key={client.id}>
                   <DataTable.Cell>{client.name}</DataTable.Cell>
                   <DataTable.Cell>{client.registrationId}</DataTable.Cell>
-                  <DataTable.Cell>
+                  <DataTable.Cell className="justify-end">
                     <IconButton
                       icon="delete"
                       onPress={() => handleDeleteClient(client.id)}
