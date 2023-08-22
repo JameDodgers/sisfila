@@ -1,15 +1,20 @@
-import { Pressable, PressableProps } from "react-native";
-import { Service } from "../models/Service";
-import { Text } from "react-native-paper";
+import { Card, Text } from "react-native-paper";
 
-type Props = PressableProps & {
+import { format, parseISO } from "date-fns";
+import { Service } from "../models/Service";
+
+type Props = {
   item: Service;
 };
 
-export const ServiceItem = ({ item, ...rest }: Props) => {
+export const ServiceItem = ({ item }: Props) => {
   return (
-    <Pressable className="shadow-sm bg-stone-50 p-2 rounded-md" {...rest}>
-      <Text>{item.name}</Text>
-    </Pressable>
+    <Card className="web:sm:w-[640]" mode="contained">
+      <Card.Title title={item.name} />
+      <Card.Content>
+        <Text>{format(parseISO(item.opensAt), "dd/MM/yyyy")}</Text>
+        <Text>{format(parseISO(item.closesAt), "dd/MM/yyyy")}</Text>
+      </Card.Content>
+    </Card>
   );
 };

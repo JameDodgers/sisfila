@@ -33,11 +33,13 @@ export const Services = () => {
   }, [navigation]);
 
   return (
-    <View className="flex-1 p-4">
+    <View className="flex-1">
       <FlatList
         data={services}
-        keyExtractor={(item: any) => item.id.toString()}
         renderItem={({ item }: any) => <ServiceItem item={item} />}
+        keyExtractor={(item: any) => item.id.toString()}
+        contentContainerStyle="p-4 web:items-center"
+        ItemSeparatorComponent={() => <View className="h-3" />}
       />
     </View>
   );
