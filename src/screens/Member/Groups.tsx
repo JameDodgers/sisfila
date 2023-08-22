@@ -1,6 +1,6 @@
 import { useLayoutEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { IconButton } from "react-native-paper";
+import { Divider, IconButton } from "react-native-paper";
 import { GroupItem } from "../../components/GroupItem";
 
 import { useGroupsQueries } from "../../queries/groups";
@@ -35,10 +35,11 @@ export const Groups = () => {
   }, [navigation]);
 
   return (
-    <View className="flex-1 p-4">
+    <View className="flex-1">
       <FlatList
-        contentContainerStyle="g-3"
         data={groups}
+        contentContainerStyle="p-4"
+        ItemSeparatorComponent={() => <Divider />}
         keyExtractor={(item: any) => item.id.toString()}
         renderItem={({ item }: any) => <GroupItem item={item} />}
       />
