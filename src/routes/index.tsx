@@ -14,7 +14,7 @@ const config = {
     DrawerStack: {
       screens: {
         initialRouteName: "Atendimentos",
-        Atendimento: "entrar/:queueId",
+        Atendimento: "queue/:queueId",
       },
     },
   },

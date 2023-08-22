@@ -21,12 +21,12 @@ export const QueueItem = ({ item, openSettings, openQueue }: Props) => {
 
   const onDismissSnackBar = () => setVisible(false);
 
-  const link = `entrar/${item.id}`;
-
   const handleCopyLink = async () => {
     await Clipboard.setStringAsync(link);
     onShowSnackBar();
   };
+
+  const link = Linking.createURL(`queue/${item.id}`);
 
   return (
     <>
