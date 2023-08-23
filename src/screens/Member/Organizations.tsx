@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { useCallback, useLayoutEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { OrganizationItem } from "../../components/OrganizationItem";
 import { IconButton, Text } from "react-native-paper";
 
@@ -18,7 +18,7 @@ export const Organizations = () => {
 
   useRefreshOnFocus(refetch);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
         <IconButton
