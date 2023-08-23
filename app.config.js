@@ -31,10 +31,10 @@ module.exports = {
       favicon: "./assets/favicon.png",
     },
     extra: {
-      expoClientId: process.env.EXPO_PUBLIC_EXPO_CLIENT_ID,
-      iosClientId: process.env.EXPO_PUBLIC_IOS_CLIENT_ID,
-      androidClientId: process.env.EXPO_PUBLIC_ANDROID_CLIENT_ID,
-      webClientId: process.env.EXPO_PUBLIC_WEB_CLIENT_ID,
+      expoClientId: process.env.EXPO_CLIENT_ID,
+      iosClientId: process.env.IOS_CLIENT_ID,
+      androidClientId: process.env.ANDROID_CLIENT_ID,
+      webClientId: process.env.WEB_CLIENT_ID,
       eas: {
         projectId: "515731f1-e512-42a3-9ed7-d338898e50aa",
       },

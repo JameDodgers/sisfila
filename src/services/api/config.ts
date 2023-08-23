@@ -2,7 +2,7 @@ import axios from "axios";
 import { useAuthStore } from "../../store/auth";
 
 export const api = axios.create({
-  baseURL: process.env.EXPO_PUBLIC_API_URL,
+  baseURL: process.env.API_URL,
 });
 
 api.interceptors.request.use(
