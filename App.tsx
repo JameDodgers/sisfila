@@ -6,7 +6,7 @@ import {
   SafeAreaView,
   View,
 } from "react-native";
-import { Provider as PaperProvider } from "react-native-paper";
+import { Provider as PaperProvider, Snackbar } from "react-native-paper";
 
 import { Routes } from "./src/routes";
 import { focusManager } from "@tanstack/react-query";
@@ -25,6 +25,7 @@ import * as SplashScreen from "expo-splash-screen";
 import { NativeWindStyleSheet } from "nativewind";
 
 import { pt, registerTranslation } from "react-native-paper-dates";
+import { useMessageStore } from "./src/store/message";
 
 registerTranslation("pt", pt);
 
@@ -41,6 +42,8 @@ const onAppStateChange = (status: AppStateStatus) => {
 };
 
 export default function App() {
+  const messageStore = useMessageStore();
+
   const [fontsLoaded] = useFonts({
     Montserrat_500Medium,
     Montserrat_400Regular,
@@ -75,6 +78,12 @@ export default function App() {
               }}
             >
               <Routes />
+              <Snackbar
+                visible={messageStore.visible}
+                onDismiss={messageStore.dismiss}
+              >
+                {messageStore.message}
+              </Snackbar>
             </SafeAreaView>
           </DataProvider>
         </PaperProvider>

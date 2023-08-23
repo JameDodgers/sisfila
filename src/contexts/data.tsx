@@ -1,12 +1,11 @@
 import React, { ReactNode } from "react";
 
-import { QueryClient } from "@tanstack/react-query";
+import { MutationCache, QueryClient } from "@tanstack/react-query";
 import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
 import { createAsyncStoragePersister } from "@tanstack/query-async-storage-persister";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
-export const queryClient = new QueryClient();
+import { useMessageStore } from "../store/message";
 
 const asyncStoragePersister = createAsyncStoragePersister({
   storage: AsyncStorage,
@@ -15,6 +14,14 @@ const asyncStoragePersister = createAsyncStoragePersister({
 interface DataProviderProps {
   children: ReactNode;
 }
+
+const mutationCache = new MutationCache({
+  onError: (_error, _variables, _context, _mutation) => {
+    useMessageStore.getState().show("Ocorreu um erro");
+  },
+});
+
+const queryClient = new QueryClient({ mutationCache });
 
 export const DataProvider = ({ children }: DataProviderProps) => {
   return (
