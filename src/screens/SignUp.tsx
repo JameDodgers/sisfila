@@ -47,7 +47,7 @@ export const SignUp = () => {
     >
       <ScrollView>
         <View className="items-center">
-          <View className="p-2 w-10/12 sm:max-w-290">
+          <View className="p-2 web:sm:w-96">
             <Text className="mt-1" variant="headlineSmall">
               Cadastre-se para continuar
             </Text>

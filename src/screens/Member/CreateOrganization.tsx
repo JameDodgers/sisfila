@@ -38,7 +38,7 @@ export const CreateOrganization = () => {
   });
 
   return (
-    <View className="flex-1 p-4">
+    <View className="flex-1 p-4 web:items-center">
       <Formik
         initialValues={{
           name: "",
@@ -49,7 +49,7 @@ export const CreateOrganization = () => {
       >
         {({ handleSubmit }) => {
           return (
-            <View className="flex-1 justify-between">
+            <View className="flex-1 ios:justify-between android:justify-between web:sm:w-96">
               <View>
                 <FormikTextInput
                   fieldName="name"
@@ -62,7 +62,11 @@ export const CreateOrganization = () => {
                   label="Código"
                 />
               </View>
-              <Button mode="contained" onPress={() => handleSubmit()}>
+              <Button
+                className="web:self-end"
+                mode="contained"
+                onPress={() => handleSubmit()}
+              >
                 Criar
               </Button>
             </View>

@@ -46,11 +46,12 @@ export const Organizations = () => {
   };
 
   return (
-    <View className="flex-1">
+    <View className="flex-1 web:items-center">
       <FlatList
-        contentContainerStyle="px-2 pt-2"
+        className="web:sm:w-[640]"
+        contentContainerStyle="p-4"
         data={organizations}
-        numColumns={3}
+        ItemSeparatorComponent={() => <View className="h-3" />}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={ListEmptyComponent}
         keyExtractor={(item: any) => String(item.id)}

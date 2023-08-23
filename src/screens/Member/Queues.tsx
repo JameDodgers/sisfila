@@ -5,7 +5,8 @@ import { IconButton } from "react-native-paper";
 import { useOrganizerStore } from "../../store/organizer";
 import { QueuesStackScreenProps } from "../../../@types/navigation";
 import { useNavigation } from "@react-navigation/native";
-import { FlatList, View } from "react-native";
+import { View } from "react-native";
+import { FlatList } from "../../libs/styled";
 
 export const Queues = () => {
   const navigation =
@@ -43,9 +44,10 @@ export const Queues = () => {
   };
 
   return (
-    <View className="flex-1 p-4">
+    <View className="flex-1 web:items-center">
       <FlatList
-        className="overflow-visible"
+        className="web:sm:w-[640]"
+        contentContainerStyle="p-4"
         data={queues}
         keyExtractor={(item: any) => item.id.toString()}
         ItemSeparatorComponent={() => <View className="h-3" />}

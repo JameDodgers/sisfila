@@ -66,29 +66,36 @@ export const ImportClients = () => {
   };
 
   return (
-    <View className="flex-1 p-4">
-      <View className="flex-1 gap-y-4">
-        <Picker
-          placeholder="Selecione um grupo"
-          open={openGroupPicker}
-          value={selectedGroupId}
-          items={groupPickerItems}
-          setOpen={setOpenGroupPicker}
-          setValue={setSelectedGroupId}
-          setItems={setGroupPickerItems}
-        />
-        <TextInput
-          label="Dados (TSV)"
-          mode="outlined"
-          multiline
-          numberOfLines={5}
-          value={data}
-          onChangeText={setData}
-        />
+    <View className="flex-1 p-4 web:items-center">
+      <View className="flex-1 ios:justify-between android:justify-between web:sm:w-96">
+        <View>
+          <Picker
+            placeholder="Selecione um grupo"
+            open={openGroupPicker}
+            value={selectedGroupId}
+            items={groupPickerItems}
+            setOpen={setOpenGroupPicker}
+            setValue={setSelectedGroupId}
+            setItems={setGroupPickerItems}
+          />
+          <TextInput
+            className="mt-7"
+            label="Dados (TSV)"
+            mode="outlined"
+            multiline
+            numberOfLines={5}
+            value={data}
+            onChangeText={setData}
+          />
+        </View>
+        <Button
+          className="mt-7 web:self-end"
+          mode="contained"
+          onPress={handleImportClients}
+        >
+          Importar
+        </Button>
       </View>
-      <Button mode="contained" onPress={handleImportClients}>
-        Importar
-      </Button>
     </View>
   );
 };

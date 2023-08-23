@@ -73,7 +73,7 @@ export const SignIn = () => {
     >
       <ScrollView>
         <View className="items-center">
-          <View className="w-11/12 sm:max-w-290">
+          <View className="web:sm:w-96">
             <Text variant="displaySmall">Bem-vindo</Text>
             <View className="gap-y-3 mt-5">
               <TextInput

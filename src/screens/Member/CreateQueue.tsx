@@ -112,9 +112,9 @@ export const CreateQueue = () => {
           };
 
           return (
-            <View className="flex-1 justify-between">
-              <ScrollView className="p-4" contentContainerStyle="items-center">
-                <View className="web:sm:w-[640]">
+            <View className="flex-1">
+              <ScrollView contentContainerStyle="web:self-center web:sm:w-96  p-4 ios:justify-between android:justify-between">
+                <View>
                   <FormikTextInput
                     fieldName="name"
                     mode="outlined"
@@ -167,16 +167,14 @@ export const CreateQueue = () => {
                     zIndex={1}
                   />
                 </View>
-              </ScrollView>
-              <View className="p-4">
                 <Button
-                  className="web:self-end"
+                  className="mt-7 web:self-end"
                   mode="contained"
                   onPress={() => handleSubmit()}
                 >
                   Criar
                 </Button>
-              </View>
+              </ScrollView>
             </View>
           );
         }}
