@@ -3,47 +3,47 @@ import { useCallback, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 
 import { useServicesQueries } from "../../queries/services";
-import { Button, Switch, Text, TextInput } from "react-native-paper";
-
+import {
+  Button,
+  HelperText,
+  Switch,
+  Text,
+  TextInput,
+} from "react-native-paper";
+import * as Yup from "yup";
 import { DatePickerModal } from "react-native-paper-dates";
-import { format, parseISO } from "date-fns";
+import { format } from "date-fns";
 import { RangeChange } from "react-native-paper-dates/lib/typescript/Date/Calendar";
 import { useOrganizerStore } from "../../store/organizer";
 import { View } from "react-native";
+import { Formik } from "formik";
+import { FormikTextInput } from "../../components/FormikTextInput";
+
+interface FormValues {
+  name: string;
+  opensAt?: Date;
+  closesAt?: Date;
+}
 
 export const CreateService = () => {
   const navigation = useNavigation();
 
   const { currentOrganizationId = "" } = useOrganizerStore();
 
-  const [name, setName] = useState("");
   const [subscriptionToken, setSubscriptionToken] = useState("");
   const [guestEnrollment, setguestEnrollment] = useState(false);
   const { useCreateService } = useServicesQueries();
-  const [opensAt, setOpensAt] = useState<Date | undefined>();
-  const [closesAt, setClosesAt] = useState<Date | undefined>();
 
   const [open, setOpen] = useState(false);
 
-  const onDismiss = useCallback(() => {
+  const closeDatePickerModal = () => {
     setOpen(false);
-  }, [setOpen]);
-
-  const onConfirm = useCallback<RangeChange>(
-    ({ startDate, endDate }) => {
-      setOpen(false);
-      setOpensAt(startDate);
-      setClosesAt(endDate);
-    },
-    [setOpen, setOpensAt, setClosesAt]
-  );
+  };
 
   const { mutate: createService } = useCreateService();
 
-  const handleCreateService = () => {
-    if (!name || !subscriptionToken || !opensAt || !closesAt) {
-      return;
-    }
+  const handleCreateService = ({ name, opensAt, closesAt }: FormValues) => {
+    if (!opensAt || !closesAt) return;
 
     const payload = {
       organizationId: currentOrganizationId,
@@ -63,61 +63,124 @@ export const CreateService = () => {
 
   const toggleguestEnrollment = () => setguestEnrollment((value) => !value);
 
+  const validationSchema = Yup.object().shape({
+    name: Yup.string()
+      .min(2, "Escolha um nome maior")
+      .required("Nome é um campo obrigatório"),
+    opensAt: Yup.date().required("Selecione uma data de início"),
+    closesAt: Yup.date().required("Selecione uma data de término"),
+  });
+
   return (
-    <>
-      <View className="flex-1 p-4">
-        <View className="flex-1 gap-y-6">
-          <TextInput
-            mode="outlined"
-            placeholder="Nome"
-            value={name}
-            onChangeText={setName}
-          />
-          <TextInput
-            mode="outlined"
-            placeholder="Token"
-            value={subscriptionToken}
-            onChangeText={setSubscriptionToken}
-          />
-          <View className="flex-row items-center justify-between">
-            <Text variant="titleMedium">Entrada anônima</Text>
-            <Switch
-              value={guestEnrollment}
-              onValueChange={toggleguestEnrollment}
-            />
-          </View>
-          <View className="flex-row items-center justify-between">
-            <View>
-              <Text variant="titleMedium">Intervalo</Text>
-              <Text variant="bodySmall">
-                {!opensAt && !closesAt
-                  ? "Nenhuma data selecionada"
-                  : [
-                      opensAt ? format(opensAt, "dd/MM/yyyy") : "",
-                      closesAt ? format(closesAt, "dd/MM/yyyy") : "",
-                    ].join(" - ")}
-              </Text>
-            </View>
-            <Button mode="contained-tonal" onPress={() => setOpen(true)}>
-              Escolher datas
-            </Button>
-          </View>
-        </View>
-        <Button mode="contained" onPress={handleCreateService}>
-          Criar
-        </Button>
-      </View>
-      <DatePickerModal
-        locale="pt"
-        startLabel="Início"
-        endLabel="Término"
-        mode="range"
-        visible={open}
-        onDismiss={onDismiss}
-        startDate={opensAt}
-        endDate={closesAt}
-        onConfirm={onConfirm}
-      />
-    </>
+    <View className="flex-1 p-4">
+      <Formik
+        initialValues={{
+          name: "",
+          opensAt: undefined,
+          closesAt: undefined,
+        }}
+        validationSchema={validationSchema}
+        onSubmit={handleCreateService}
+      >
+        {({
+          values,
+          errors,
+          touched,
+          setFieldValue,
+          setFieldTouched,
+          handleSubmit,
+        }) => {
+          const onConfirm = useCallback<RangeChange>(
+            ({ startDate, endDate }) => {
+              setOpen(false);
+              setFieldValue("opensAt", startDate);
+              setFieldValue("closesAt", endDate);
+            },
+            [setOpen]
+          );
+
+          const onDismiss = () => {
+            closeDatePickerModal();
+            setFieldTouched("opensAt", true);
+            setFieldTouched("closesAt", true);
+          };
+
+          return (
+            <>
+              <View className="flex-1 justify-between">
+                <View className="flex-1">
+                  <FormikTextInput
+                    fieldName="name"
+                    mode="outlined"
+                    label="Nome"
+                  />
+                  <TextInput
+                    mode="outlined"
+                    placeholder="Token"
+                    value={subscriptionToken}
+                    onChangeText={setSubscriptionToken}
+                  />
+                  <View className="flex-row items-center justify-between mt-6">
+                    <Text variant="titleMedium">Entrada anônima</Text>
+                    <Switch
+                      value={guestEnrollment}
+                      onValueChange={toggleguestEnrollment}
+                    />
+                  </View>
+                  <View className="flex-row items-center justify-between mt-6">
+                    <View>
+                      <Text variant="titleMedium">Intervalo*</Text>
+                      <Text variant="bodySmall">
+                        {!values.opensAt && !values.closesAt
+                          ? "Nenhuma data selecionada"
+                          : [
+                              values.opensAt
+                                ? format(values.opensAt, "dd/MM/yyyy")
+                                : "",
+                              values.closesAt
+                                ? format(values.closesAt, "dd/MM/yyyy")
+                                : "",
+                            ].join(" - ")}
+                      </Text>
+                    </View>
+                    <Button
+                      mode="contained-tonal"
+                      onPress={() => setOpen(true)}
+                    >
+                      Escolher datas
+                    </Button>
+                  </View>
+                  <HelperText
+                    padding="none"
+                    type={errors.opensAt || errors.closesAt ? "error" : "info"}
+                  >
+                    {((touched.opensAt || touched.closesAt) &&
+                      (errors.opensAt || errors.closesAt)) ||
+                      " "}
+                  </HelperText>
+                </View>
+                <Button mode="contained" onPress={() => handleSubmit()}>
+                  Criar
+                </Button>
+              </View>
+              <DatePickerModal
+                locale="pt"
+                startLabel="Início"
+                endLabel="Término"
+                mode="range"
+                visible={open}
+                validRange={{
+                  startDate: new Date(),
+                }}
+                onDismiss={onDismiss}
+                startDate={values.opensAt}
+                endDate={values.closesAt}
+                onConfirm={onConfirm}
+              />
+            </>
+          );
+        }}
+      </Formik>
+    </View>
   );
 };

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { useNavigation } from "@react-navigation/native";
 
@@ -7,10 +7,18 @@ import _ from "lodash";
 import { useOrganizationsQueries } from "../../queries/organizations";
 import { useOrganizerStore } from "../../store/organizer";
 import { View } from "react-native";
-
+import * as Yup from "yup";
 import { Button, TextInput } from "react-native-paper";
 import { Picker } from "../../components/Picker";
 import { ScrollView } from "../../libs/styled";
+import { Formik } from "formik";
+import { FormikTextInput } from "../../components/FormikTextInput";
+
+interface FormValues {
+  name: string;
+  priority: string;
+  code: string;
+}
 
 export const CreateQueue = () => {
   const navigation = useNavigation();
@@ -27,15 +35,10 @@ export const CreateQueue = () => {
 
   const { mutate: createQueue } = useCreateQueue();
 
-  const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [code, setCode] = useState("");
-  const [selectedPriority, setSelectedPriority] = useState("");
 
   const [openPriorityPicker, setOpenPriorityPicker] = useState(false);
-  const onOpenPriorityPicker = () => {
-    setOpenServicePicker(false);
-  };
+
   const [priorityPickerItems, setPriorityPickerItems] = useState(
     _.range(1, 11).map((priority) => ({
       value: priority.toString(),
@@ -43,24 +46,27 @@ export const CreateQueue = () => {
     }))
   );
 
+  const onOpenPriorityPicker = () => {
+    setOpenPriorityPicker(true);
+  };
+
   const [openServicePicker, setOpenServicePicker] = useState(false);
   const [servicePickerItems, setServicePickerItems] = useState(
     services.map((service) => ({ value: service.id, label: service.name }))
   );
+
   const onOpenServicePicker = () => {
     setOpenPriorityPicker(false);
   };
 
-  const handleCreateQueue = () => {
-    if (!name || !description || !code) {
-      return;
-    }
+  const handleCreateQueue = ({ name, code, priority }: FormValues) => {
+    if (!priority) return;
 
     const payload = {
       name,
       description,
       code,
-      priority: Number(selectedPriority),
+      priority: Number(priority),
       serviceId: selectedServiceId,
       organizationId: currentOrganizationId,
     };
@@ -72,61 +78,109 @@ export const CreateQueue = () => {
     });
   };
 
+  const validationSchema = Yup.object().shape({
+    name: Yup.string()
+      .min(2, "Escolha um nome maior")
+      .required("Nome é um campo obrigatório"),
+    priority: Yup.string().required(),
+    code: Yup.string()
+      .min(2, "Mínimo de 2 caracteres")
+      .required("Código é um campo obrigatório"),
+  });
+
   return (
     <View className="flex-1">
-      <ScrollView className="p-4">
-        <View className="web:sm:max-w-screen-sm">
-          <TextInput
-            mode="outlined"
-            label="Nome"
-            value={name}
-            onChangeText={setName}
-          />
-          <TextInput
-            mode="outlined"
-            label="Descrição"
-            value={description}
-            onChangeText={setDescription}
-          />
-          <TextInput
-            mode="outlined"
-            label="Código"
-            value={code}
-            onChangeText={setCode}
-          />
-          <Picker
-            placeholder="Selecione uma prioridade"
-            open={openPriorityPicker}
-            onOpen={onOpenPriorityPicker}
-            value={selectedPriority}
-            items={priorityPickerItems}
-            setOpen={setOpenPriorityPicker}
-            setValue={setSelectedPriority}
-            setItems={setPriorityPickerItems}
-            zIndex={2}
-          />
-          <Picker
-            placeholder="Selecione um serviço"
-            open={openServicePicker}
-            onOpen={onOpenServicePicker}
-            value={selectedServiceId}
-            items={servicePickerItems}
-            setOpen={setOpenServicePicker}
-            setValue={setSelectedServiceId}
-            setItems={setServicePickerItems}
-            zIndex={1}
-          />
-        </View>
-      </ScrollView>
-      <View className="p-4">
-        <Button
-          className="web:self-end"
-          mode="contained"
-          onPress={handleCreateQueue}
-        >
-          Criar
-        </Button>
-      </View>
+      <Formik
+        initialValues={{
+          name: "",
+          priority: "",
+          code: "",
+        }}
+        validationSchema={validationSchema}
+        onSubmit={handleCreateQueue}
+      >
+        {({
+          values,
+          errors,
+          touched,
+          setFieldValue,
+          setFieldTouched,
+          handleSubmit,
+        }) => {
+          const onClosePriorityPicker = () => {
+            setFieldTouched("priority", true);
+          };
+
+          return (
+            <View className="flex-1 justify-between">
+              <ScrollView className="p-4" contentContainerStyle="items-center">
+                <View className="web:sm:w-[640]">
+                  <FormikTextInput
+                    fieldName="name"
+                    mode="outlined"
+                    label="Nome"
+                  />
+                  <TextInput
+                    mode="outlined"
+                    label="Descrição"
+                    value={description}
+                    onChangeText={setDescription}
+                  />
+                  <FormikTextInput
+                    className="mt-6"
+                    fieldName="code"
+                    mode="outlined"
+                    label="Código"
+                  />
+                  <Picker
+                    placeholder="Selecione uma prioridade*"
+                    error={!!(touched.priority && errors.priority)}
+                    open={openPriorityPicker}
+                    onOpen={onOpenPriorityPicker}
+                    onClose={onClosePriorityPicker}
+                    value={values.priority}
+                    items={priorityPickerItems}
+                    setOpen={setOpenPriorityPicker}
+                    //https://github.com/hossein-zare/react-native-dropdown-picker/issues/255
+                    setValue={(state) => {
+                      let newState = state;
+
+                      if (typeof state === "function") {
+                        newState = state(values.priority);
+                      }
+
+                      setFieldValue("priority", newState);
+                    }}
+                    setItems={setPriorityPickerItems}
+                    zIndex={2}
+                  />
+                  <View className="mt-7" />
+                  <Picker
+                    placeholder="Selecione um serviço"
+                    open={openServicePicker}
+                    onOpen={onOpenServicePicker}
+                    value={selectedServiceId}
+                    items={servicePickerItems}
+                    setOpen={setOpenServicePicker}
+                    setValue={setSelectedServiceId}
+                    setItems={setServicePickerItems}
+                    zIndex={1}
+                  />
+                </View>
+              </ScrollView>
+              <View className="p-4">
+                <Button
+                  className="web:self-end"
+                  mode="contained"
+                  onPress={() => handleSubmit()}
+                >
+                  Criar
+                </Button>
+              </View>
+            </View>
+          );
+        }}
+      </Formik>
     </View>
   );
 };

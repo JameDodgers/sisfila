@@ -5,16 +5,19 @@ import DropDownPicker, {
 import { StyleSheet } from "react-native";
 import { useTheme } from "react-native-paper";
 
-type Props = DropDownPickerProps<ValueType>;
+type Props = DropDownPickerProps<ValueType> & {
+  error?: boolean;
+};
 
-export const Picker = (props: Props) => {
+export const Picker = ({ error, ...props }: Props) => {
   const { fonts, colors } = useTheme();
 
   const style = [
     styles.base,
     {
-      borderColor: colors.outline,
+      borderColor: error ? colors.error : colors.outline,
     },
+    props.style,
   ];
 
   const textStyle = [
@@ -24,6 +27,8 @@ export const Picker = (props: Props) => {
     },
   ];
 
+  const placeholderStyle = [error && { color: colors.error }];
+
   const dropDownContainerStyle = [
     styles.dropDownContainerStyle,
     {
@@ -31,11 +36,15 @@ export const Picker = (props: Props) => {
     },
   ];
 
+  const arrowIconStyle = { tintColor: error ? colors.error : colors.outline };
+
   return (
     <DropDownPicker
       style={style}
+      className={error && "border-2"}
+      placeholderStyle={placeholderStyle}
       dropDownContainerStyle={dropDownContainerStyle}
-      arrowIconStyle={{ tintColor: colors.outline }}
+      arrowIconStyle={arrowIconStyle}
       textStyle={textStyle}
       listMode="SCROLLVIEW"
       {...props}

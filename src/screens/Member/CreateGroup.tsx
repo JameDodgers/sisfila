@@ -1,11 +1,17 @@
-import { useState } from "react";
-
 import { useNavigation } from "@react-navigation/native";
 import { useOrganizerStore } from "../../store/organizer";
 
 import { useGroupsQueries } from "../../queries/groups";
-import { Button, Text, TextInput } from "react-native-paper";
+import { Button } from "react-native-paper";
 import { View } from "react-native";
+import { Formik } from "formik";
+
+import * as Yup from "yup";
+import { FormikTextInput } from "../../components/FormikTextInput";
+
+interface FormValues {
+  name: string;
+}
 
 export const CreateGroup = () => {
   const { currentOrganizationId = "" } = useOrganizerStore();
@@ -16,9 +22,7 @@ export const CreateGroup = () => {
 
   const { mutate: createGroup } = useCreateGroup();
 
-  const [name, setName] = useState("");
-
-  const handleCreateGroup = () => {
+  const handleCreateGroup = ({ name }: FormValues) => {
     const payload = {
       name,
       organizationId: currentOrganizationId,
@@ -30,19 +34,38 @@ export const CreateGroup = () => {
     });
   };
 
+  const validationSchema = Yup.object().shape({
+    name: Yup.string()
+      .min(2, "Escolha um nome maior")
+      .required("Nome é um campo obrigatório"),
+  });
+
   return (
     <View className="flex-1 p-4">
-      <View className="flex-1">
-        <TextInput
-          mode="outlined"
-          placeholder="Nome"
-          value={name}
-          onChangeText={setName}
-        />
-      </View>
-      <Button mode="contained" onPress={handleCreateGroup}>
-        Criar grupo
-      </Button>
+      <Formik
+        initialValues={{
+          name: "",
+        }}
+        validationSchema={validationSchema}
+        onSubmit={handleCreateGroup}
+      >
+        {({ handleSubmit }) => {
+          return (
+            <View className="flex-1 justify-between">
+              <View>
+                <FormikTextInput
+                  fieldName="name"
+                  mode="outlined"
+                  label="Nome"
+                />
+              </View>
+              <Button mode="contained" onPress={() => handleSubmit()}>
+                Criar grupo
+              </Button>
+            </View>
+          );
+        }}
+      </Formik>
     </View>
   );
 };
