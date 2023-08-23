@@ -1,18 +1,15 @@
-import { Pressable, PressableProps, View } from "react-native";
 import { Organization } from "../models/Organization";
-import { Text } from "react-native-paper";
+import { Card } from "react-native-paper";
 
-type Props = PressableProps & {
+type Props = {
   item: Organization;
+  onPress: () => void;
 };
 
-export const OrganizationItem = ({ item, ...props }: Props) => {
+export const OrganizationItem = ({ item, onPress }: Props) => {
   return (
-    <Pressable className="m-1 p-2 shadow-sm rounded-md" {...props}>
-      <View className="justify-between">
-        <Text>{item.name}</Text>
-        <Text>{item.code}</Text>
-      </View>
-    </Pressable>
+    <Card onPress={onPress}>
+      <Card.Title title={item.name} subtitle={item.code} />
+    </Card>
   );
 };
