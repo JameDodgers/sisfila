@@ -3,9 +3,16 @@ import * as Clipboard from "expo-clipboard";
 import * as Linking from "expo-linking";
 
 import { Queue } from "../models/Queue";
-import { Text } from "react-native";
 import { View } from "react-native";
-import { Button, Card, IconButton, Portal, Snackbar } from "react-native-paper";
+import {
+  Button,
+  Card,
+  IconButton,
+  Portal,
+  Snackbar,
+  Text,
+  useTheme,
+} from "react-native-paper";
 import { useState } from "react";
 
 type Props = {
@@ -15,6 +22,7 @@ type Props = {
 };
 
 export const QueueItem = ({ item, openSettings, openQueue }: Props) => {
+  const theme = useTheme();
   const [visible, setVisible] = useState(false);
 
   const onShowSnackBar = () => setVisible(true);
@@ -33,22 +41,31 @@ export const QueueItem = ({ item, openSettings, openQueue }: Props) => {
       <Card>
         <Card.Title
           title={item.name}
+          subtitle={item.description}
+          subtitleNumberOfLines={2}
           right={(props) => (
             <IconButton {...props} icon="cog" onPress={openSettings} />
           )}
         />
         <Card.Content>
-          <View className="bg-zinc-200 pr-2 flex-row active:bg-zinc-300 rounded-sm items-center">
-            <IconButton
-              icon="content-copy"
-              size={20}
-              onPress={handleCopyLink}
-            />
-            <Text className="flex-1">{link}</Text>
+          <View
+            style={{ backgroundColor: theme.colors.surfaceVariant }}
+            className="mt-2 p-2 flex-row rounded-sm items-center"
+          >
+            <Text
+              style={{ color: theme.colors.onSurfaceVariant }}
+              numberOfLines={1}
+              className="flex-1"
+            >
+              {link}
+            </Text>
           </View>
         </Card.Content>
-        <Card.Actions>
-          <Button onPress={openQueue}>Atender</Button>
+        <Card.Actions className="justify-between">
+          <IconButton icon="content-copy" size={20} onPress={handleCopyLink} />
+          <Button mode="contained" onPress={openQueue}>
+            Atender
+          </Button>
         </Card.Actions>
       </Card>
       <Portal>
