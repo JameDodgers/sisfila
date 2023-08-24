@@ -17,15 +17,15 @@ export type AppStackParamList = {
   Drawer: NavigatorScreenParams<DrawerParamList> | undefined;
   Organizations: undefined;
   CreateOrganization: undefined;
-  Atendimento: { queueId: string };
 };
 
-export type AuthStackParamList = {
+export type GuestStackParamList = {
   SignIn: undefined;
   SignUp: undefined;
+  Queue: { queueId: string };
 };
 
-export type RootNavigatorParamList = AppStackParamList & AuthStackParamList;
+export type RootNavigatorParamList = AppStackParamList & GuestStackParamList;
 
 export type RootNavigatorScreenProps<T extends keyof RootNavigatorParamList> =
   NativeStackScreenProps<RootNavigatorParamList, T>;

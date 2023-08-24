@@ -1,11 +1,12 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { SignUp } from "../screens/SignUp";
 import { SignIn } from "../screens/SignIn";
-import { AuthStackParamList } from "../../@types/navigation";
+import { GuestStackParamList } from "../../@types/navigation";
+import { Queue } from "../screens/Guest/Queue";
 
-const { Navigator, Screen } = createNativeStackNavigator<AuthStackParamList>();
+const { Navigator, Screen } = createNativeStackNavigator<GuestStackParamList>();
 
-export const AuthRoutes = () => {
+export const GuestRoutes = () => {
   return (
     <Navigator initialRouteName="SignIn">
       <Screen
@@ -22,6 +23,7 @@ export const AuthRoutes = () => {
         }}
         component={SignUp}
       />
+      <Screen name="Queue" component={Queue} options={{ headerShown: false }} />
     </Navigator>
   );
 };

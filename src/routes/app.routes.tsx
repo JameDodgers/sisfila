@@ -5,7 +5,6 @@ import { DrawerRoutes } from "./drawer.routes";
 import { Organizations } from "../screens/Member/Organizations";
 import { CreateOrganization } from "../screens/Member/CreateOrganization";
 
-import { Atendimento } from "../screens/Guest/Atendimento";
 import { useOrganizerStore } from "../store/organizer";
 import { AppStackParamList } from "../../@types/navigation";
 
@@ -33,7 +32,6 @@ export const AppRoutes = () => {
         options={{ title: "Criar organização" }}
         component={CreateOrganization}
       />
-      <Screen name="Atendimento" component={Atendimento} />
     </Navigator>
   );
 };

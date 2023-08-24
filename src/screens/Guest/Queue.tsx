@@ -14,12 +14,11 @@ import { FlatList } from "react-native";
 import { ClientItem } from "../../components/ClientItem";
 
 type Props = {
-  route: RootNavigatorScreenProps<"Atendimento">["route"];
+  route: RootNavigatorScreenProps<"Queue">["route"];
 };
 
-export const Atendimento = ({ route }: Props) => {
-  const { queueId = "f2625359-49ed-4cbf-b8f3-6efbd87ab646" } =
-    route.params || {};
+export const Queue = ({ route }: Props) => {
+  const { queueId } = route.params;
 
   const [visible, setVisible] = useState(false);
 

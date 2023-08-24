@@ -4,19 +4,16 @@ import { NavigationContainer } from "@react-navigation/native";
 
 import { CombinedDefaultTheme } from "../styles/theme";
 import { useToken } from "../store/auth";
-import { AuthRoutes } from "./auth.routes";
+
 import { AppRoutes } from "./app.routes";
+import { GuestRoutes } from "./guest.routes";
 
 const prefix = Linking.createURL("/");
 
 const config = {
   screens: {
-    DrawerStack: {
-      screens: {
-        initialRouteName: "Atendimentos",
-        Atendimento: "queue/:queueId",
-      },
-    },
+    initialRouteName: "Queue",
+    Queue: "queue/:queueId",
   },
 };
 
@@ -30,7 +27,7 @@ export const Routes = () => {
 
   return (
     <NavigationContainer linking={linking} theme={CombinedDefaultTheme}>
-      {token ? <AppRoutes /> : <AuthRoutes />}
+      {token ? <AppRoutes /> : <GuestRoutes />}
     </NavigationContainer>
   );
 };
