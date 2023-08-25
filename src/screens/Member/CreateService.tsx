@@ -46,7 +46,7 @@ export const CreateService = () => {
   const [endTimePickerModalVisible, setEndTimePickerModalVisible] =
     useState(false);
 
-  const { mutate: createService } = useCreateService();
+  const { mutate: createService, isLoading } = useCreateService();
 
   const handleCreateService = ({ name }: FormValues) => {
     const payload = {
@@ -155,6 +155,7 @@ export const CreateService = () => {
                 </View>
                 <Button
                   className="web:self-end"
+                  disabled={isLoading}
                   mode="contained"
                   onPress={() => handleSubmit()}
                 >
