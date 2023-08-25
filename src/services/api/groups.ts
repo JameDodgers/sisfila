@@ -1,15 +1,12 @@
 import { Client } from "../../models/Client";
-import { Group } from "../../models/Group";
+import { Group, GroupBase } from "../../models/Group";
 import api from "./config";
 
 interface getOrganizationGroupsResponse extends Array<Group> {
   clients: Client[];
 }
 
-interface CreateGroupParams {
-  name: string;
-  organizationId: string;
-}
+interface CreateGroupParams extends GroupBase {}
 
 interface CreateGroupResponse {
   id: string;

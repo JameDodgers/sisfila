@@ -1,7 +1,10 @@
-export type Group = {
-  id: string;
+export type GroupBase = {
   name: string;
-  createdAt: Date;
-  updatedAt: Date;
   organizationId: string;
+};
+
+export type Group = GroupBase & {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
 };
