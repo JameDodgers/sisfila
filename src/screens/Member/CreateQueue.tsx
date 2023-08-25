@@ -114,7 +114,7 @@ export const CreateQueue = () => {
 
           return (
             <View className="flex-1">
-              <ScrollView contentContainerStyle="web:self-center web:sm:w-96  p-4 ios:justify-between android:justify-between">
+              <ScrollView contentContainerStyle="flex-1 web:self-center web:sm:w-96  p-4 ios:justify-between android:justify-between">
                 <View>
                   <FormikTextInput
                     fieldName="name"
