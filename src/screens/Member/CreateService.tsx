@@ -3,13 +3,7 @@ import { useCallback, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 
 import { useServicesQueries } from "../../queries/services";
-import {
-  Button,
-  HelperText,
-  Switch,
-  Text,
-  TextInput,
-} from "react-native-paper";
+import { Button, HelperText, Text, TextInput } from "react-native-paper";
 import * as Yup from "yup";
 import { DatePickerModal } from "react-native-paper-dates";
 import { format } from "date-fns";
@@ -31,7 +25,6 @@ export const CreateService = () => {
   const { currentOrganizationId = "" } = useOrganizerStore();
 
   const [subscriptionToken, setSubscriptionToken] = useState("");
-  const [guestEnrollment, setguestEnrollment] = useState(false);
   const { useCreateService } = useServicesQueries();
 
   const [open, setOpen] = useState(false);
@@ -49,7 +42,6 @@ export const CreateService = () => {
       organizationId: currentOrganizationId,
       name,
       subscriptionToken,
-      guestEnrollment,
       opensAt: opensAt.toISOString(),
       closesAt: closesAt.toISOString(),
     };
@@ -60,8 +52,6 @@ export const CreateService = () => {
       },
     });
   };
-
-  const toggleguestEnrollment = () => setguestEnrollment((value) => !value);
 
   const validationSchema = Yup.object().shape({
     name: Yup.string()
@@ -120,13 +110,6 @@ export const CreateService = () => {
                     value={subscriptionToken}
                     onChangeText={setSubscriptionToken}
                   />
-                  <View className="flex-row items-center justify-between mt-6">
-                    <Text variant="titleMedium">Entrada anônima</Text>
-                    <Switch
-                      value={guestEnrollment}
-                      onValueChange={toggleguestEnrollment}
-                    />
-                  </View>
                   <View className="flex-row items-center justify-between mt-6">
                     <View>
                       <Text variant="titleMedium">Intervalo*</Text>
