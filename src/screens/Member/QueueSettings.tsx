@@ -1,12 +1,13 @@
 import { useState } from "react";
 
 import { useGroupsQueries } from "../../queries/groups";
-import { useOrganizationsQueries } from "../../queries/organizations";
+
 import { useOrganizerStore } from "../../store/organizer";
 import { QueuesStackScreenProps } from "../../../@types/navigation";
 import { useNavigation } from "@react-navigation/native";
 import { ScrollView, View } from "react-native";
 import { Button, Checkbox, Text } from "react-native-paper";
+import { useOrganizationQueuesQueries } from "../../queries/organizationQueues";
 
 type Props = {
   route: QueuesStackScreenProps<"QueueSettings">["route"];
@@ -33,7 +34,7 @@ export const QueueSettings = ({ route }: Props) => {
 
   const { data: groups = [] } = useGetGroups(currentOrganizationId);
 
-  const { useAttachGroupsToQueue } = useOrganizationsQueries();
+  const { useAttachGroupsToQueue } = useOrganizationQueuesQueries();
 
   const { mutate: attachGroupsToQueue } = useAttachGroupsToQueue();
 

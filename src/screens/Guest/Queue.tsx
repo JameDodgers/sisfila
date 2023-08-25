@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useQueuesQueries } from "../../queries/queues";
+import { useQueuesQueries } from "../../queries/guestQueues";
 import { RootNavigatorScreenProps } from "../../../@types/navigation";
 import {
   FAB,

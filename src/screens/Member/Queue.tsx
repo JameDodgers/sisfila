@@ -1,10 +1,10 @@
 import { ClientItem } from "../../components/ClientItem";
-import { useOrganizationsQueries } from "../../queries/organizations";
 import { useOrganizerStore } from "../../store/organizer";
 import { QueuesStackScreenProps } from "../../../@types/navigation";
 
 import { Button } from "react-native-paper";
 import { View, FlatList } from "react-native";
+import { useOrganizationQueuesQueries } from "../../queries/organizationQueues";
 
 type Props = {
   route: QueuesStackScreenProps<"Queue">["route"];
@@ -15,7 +15,7 @@ export const Queue = ({ route }: Props) => {
 
   const { currentOrganizationId = "" } = useOrganizerStore();
 
-  const { useGetQueue, useCallNext } = useOrganizationsQueries();
+  const { useGetQueue, useCallNext } = useOrganizationQueuesQueries();
 
   const { data: queue } = useGetQueue(queueId, currentOrganizationId);
 

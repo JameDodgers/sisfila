@@ -1,4 +1,3 @@
-import { useOrganizationsQueries } from "../../queries/organizations";
 import { QueueItem } from "../../components/QueueItem";
 import { useLayoutEffect } from "react";
 import { IconButton } from "react-native-paper";
@@ -7,6 +6,7 @@ import { QueuesStackScreenProps } from "../../../@types/navigation";
 import { useNavigation } from "@react-navigation/native";
 import { View } from "react-native";
 import { FlatList } from "../../libs/styled";
+import { useOrganizationQueuesQueries } from "../../queries/organizationQueues";
 
 export const Queues = () => {
   const navigation =
@@ -14,9 +14,9 @@ export const Queues = () => {
 
   const { currentOrganizationId = "" } = useOrganizerStore();
 
-  const { useGetOrganizationQueues } = useOrganizationsQueries();
+  const { useGetQueues } = useOrganizationQueuesQueries();
 
-  const { data: queues = [] } = useGetOrganizationQueues(currentOrganizationId);
+  const { data: queues = [] } = useGetQueues(currentOrganizationId);
 
   useLayoutEffect(() => {
     navigation.setOptions({

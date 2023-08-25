@@ -1,14 +1,7 @@
-import { Queue } from "../../models/Queue";
+import { Queue, QueueBase } from "../../models/Queue";
 import api from "./config";
 
-interface CreateQueueParams {
-  name: string;
-  description: string;
-  priority: number;
-  code: string;
-  organizationId: string;
-  serviceId: string;
-}
+interface CreateQueueParams extends QueueBase {}
 
 interface CreateQueueResponse {
   id: string;
@@ -39,7 +32,9 @@ const getOne = (organizationId: string) =>
 const getQueue = (queueId: string) => api.get<Queue>(`v1/queues/${queueId}`);
 
 const create = (data: CreateQueueParams) =>
-  api.post<CreateQueueResponse>("v1/queues", data);
+  api
+    .post<CreateQueueResponse>("v1/queues", data)
+    .then((response) => response.data);
 
 const attachGroupsToQueue = ({
   queueId,

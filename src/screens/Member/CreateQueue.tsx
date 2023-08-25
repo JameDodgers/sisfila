@@ -4,7 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 
 import { useServicesQueries } from "../../queries/services";
 import _ from "lodash";
-import { useOrganizationsQueries } from "../../queries/organizations";
+
 import { useOrganizerStore } from "../../store/organizer";
 import { View } from "react-native";
 import * as Yup from "yup";
@@ -13,6 +13,7 @@ import { Picker } from "../../components/Picker";
 import { ScrollView } from "../../libs/styled";
 import { Formik } from "formik";
 import { FormikTextInput } from "../../components/FormikTextInput";
+import { useOrganizationQueuesQueries } from "../../queries/organizationQueues";
 
 interface FormValues {
   name: string;
@@ -25,7 +26,7 @@ export const CreateQueue = () => {
 
   const { currentOrganizationId = "" } = useOrganizerStore();
 
-  const { useCreateQueue } = useOrganizationsQueries();
+  const { useCreateQueue } = useOrganizationQueuesQueries();
 
   const { useGetServices } = useServicesQueries();
 
@@ -33,7 +34,7 @@ export const CreateQueue = () => {
 
   const [selectedServiceId, setSelectedServiceId] = useState<string>("");
 
-  const { mutate: createQueue } = useCreateQueue();
+  const { mutate: createQueue, isLoading } = useCreateQueue();
 
   const [description, setDescription] = useState("");
 
@@ -170,6 +171,7 @@ export const CreateQueue = () => {
                 <Button
                   className="mt-7 web:self-end"
                   mode="contained"
+                  disabled={isLoading}
                   onPress={() => handleSubmit()}
                 >
                   Criar

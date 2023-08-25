@@ -27,3 +27,4 @@ export const queuesKeys = {
   items: () => [...queuesKeys.all, "item"],
   item: (queueId: string) => [...queuesKeys.items(), queueId],
 };
+``;
