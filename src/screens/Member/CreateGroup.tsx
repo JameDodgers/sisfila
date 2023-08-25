@@ -20,13 +20,14 @@ export const CreateGroup = () => {
 
   const { useCreateGroup } = useGroupsQueries();
 
-  const { mutate: createGroup } = useCreateGroup();
+  const { mutate: createGroup, isLoading } = useCreateGroup();
 
   const handleCreateGroup = ({ name }: FormValues) => {
     const payload = {
       name,
       organizationId: currentOrganizationId,
     };
+
     createGroup(payload, {
       onSuccess: () => {
         navigation.goBack();
@@ -61,6 +62,7 @@ export const CreateGroup = () => {
               </View>
               <Button
                 className="web:self-end"
+                disabled={isLoading}
                 mode="contained"
                 onPress={() => handleSubmit()}
               >
