@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 import { useNavigation } from "@react-navigation/native";
 
@@ -18,6 +18,7 @@ import { useOrganizationQueuesQueries } from "../../queries/organizationQueues";
 interface FormValues {
   name: string;
   priority: string;
+  serviceId: string;
   code: string;
 }
 
@@ -31,8 +32,6 @@ export const CreateQueue = () => {
   const { useGetServices } = useServicesQueries();
 
   const { data: services = [] } = useGetServices(currentOrganizationId);
-
-  const [selectedServiceId, setSelectedServiceId] = useState<string>("");
 
   const { mutate: createQueue, isLoading } = useCreateQueue();
 
@@ -48,7 +47,7 @@ export const CreateQueue = () => {
   );
 
   const onOpenPriorityPicker = () => {
-    setOpenPriorityPicker(true);
+    setOpenServicePicker(false);
   };
 
   const [openServicePicker, setOpenServicePicker] = useState(false);
@@ -60,15 +59,20 @@ export const CreateQueue = () => {
     setOpenPriorityPicker(false);
   };
 
-  const handleCreateQueue = ({ name, code, priority }: FormValues) => {
-    if (!priority) return;
+  const handleCreateQueue = ({
+    name,
+    code,
+    priority,
+    serviceId,
+  }: FormValues) => {
+    if (!priority || !serviceId) return;
 
     const payload = {
       name,
       description,
       code,
       priority: Number(priority),
-      serviceId: selectedServiceId,
+      serviceId,
       organizationId: currentOrganizationId,
     };
 
@@ -84,6 +88,7 @@ export const CreateQueue = () => {
       .min(2, "Escolha um nome maior")
       .required("Nome é um campo obrigatório"),
     priority: Yup.string().required(),
+    serviceId: Yup.string().required(),
     code: Yup.string()
       .min(2, "Mínimo de 2 caracteres")
       .required("Código é um campo obrigatório"),
@@ -95,22 +100,32 @@ export const CreateQueue = () => {
         initialValues={{
           name: "",
           priority: "",
+          serviceId: "",
           code: "",
         }}
         validationSchema={validationSchema}
         onSubmit={handleCreateQueue}
       >
-        {({
-          values,
-          errors,
-          touched,
-          setFieldValue,
-          setFieldTouched,
-          handleSubmit,
-        }) => {
-          const onClosePriorityPicker = () => {
-            setFieldTouched("priority", true);
-          };
+        {({ values, errors, touched, setFieldValue, handleSubmit }) => {
+          const setPriorityPickerValue = useCallback((state: any) => {
+            let newState = state;
+
+            if (typeof state === "function") {
+              newState = state(values.priority);
+            }
+
+            setFieldValue("priority", newState);
+          }, []);
+
+          const setServiceIdPickerValue = useCallback((state: any) => {
+            let newState = state;
+
+            if (typeof state === "function") {
+              newState = state(values.serviceId);
+            }
+
+            setFieldValue("serviceId", newState);
+          }, []);
 
           return (
             <View className="flex-1">
@@ -135,37 +150,30 @@ export const CreateQueue = () => {
                   />
                   <Picker
                     placeholder="Selecione uma prioridade*"
-                    error={!!(touched.priority && errors.priority)}
                     open={openPriorityPicker}
                     onOpen={onOpenPriorityPicker}
-                    onClose={onClosePriorityPicker}
                     value={values.priority}
                     items={priorityPickerItems}
                     setOpen={setOpenPriorityPicker}
                     //https://github.com/hossein-zare/react-native-dropdown-picker/issues/255
-                    setValue={(state) => {
-                      let newState = state;
-
-                      if (typeof state === "function") {
-                        newState = state(values.priority);
-                      }
-
-                      setFieldValue("priority", newState);
-                    }}
+                    setValue={setPriorityPickerValue}
                     setItems={setPriorityPickerItems}
                     zIndex={2}
+                    error={!!(touched.priority && errors.priority)}
                   />
                   <View className="mt-7" />
                   <Picker
-                    placeholder="Selecione um serviço"
+                    placeholder="Selecione um serviço*"
                     open={openServicePicker}
                     onOpen={onOpenServicePicker}
-                    value={selectedServiceId}
+                    value={values.serviceId}
                     items={servicePickerItems}
                     setOpen={setOpenServicePicker}
-                    setValue={setSelectedServiceId}
+                    //https://github.com/hossein-zare/react-native-dropdown-picker/issues/255
+                    setValue={setServiceIdPickerValue}
                     setItems={setServicePickerItems}
                     zIndex={1}
+                    error={!!(touched.serviceId && errors.serviceId)}
                   />
                 </View>
                 <Button
