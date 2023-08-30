@@ -39,12 +39,12 @@ export const Clients = () => {
                 <DataTable.Row key={client.id}>
                   <DataTable.Cell>{client.name}</DataTable.Cell>
                   <DataTable.Cell>{client.registrationId}</DataTable.Cell>
-                  <DataTable.Cell className="justify-end">
+                  <View className="justify-end">
                     <IconButton
                       icon="delete"
                       onPress={() => handleDeleteClient(client.id)}
                     />
-                  </DataTable.Cell>
+                  </View>
                 </DataTable.Row>
               );
             })}
