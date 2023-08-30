@@ -1,44 +1,26 @@
-import { useEffect, useState } from "react";
-
-import { useNavigation } from "@react-navigation/native";
+import { useState } from "react";
 
 import { useGroupsQueries } from "../../queries/groups";
 import { useOrganizerStore } from "../../store/organizer";
 import { View } from "react-native";
 import { Button, TextInput } from "react-native-paper";
-import { Picker } from "../../components/Picker";
+import { GroupsStackScreenProps } from "../../../@types/navigation";
 
-export const ImportClients = () => {
-  const navigation = useNavigation();
+export const ImportClients = ({
+  route,
+  navigation,
+}: GroupsStackScreenProps<"ImportClients">) => {
+  const { groupId } = route.params;
 
   const { currentOrganizationId = "" } = useOrganizerStore();
 
   const [data, setData] = useState("");
 
-  const { useGetGroups, useImportClients } = useGroupsQueries();
-
-  const { data: groups = [] } = useGetGroups(currentOrganizationId);
+  const { useImportClients } = useGroupsQueries();
 
   const { mutate: importClients } = useImportClients();
 
-  const [selectedGroupId, setSelectedGroupId] = useState<string>("");
-
-  const [openGroupPicker, setOpenGroupPicker] = useState(false);
-  const [groupPickerItems, setGroupPickerItems] = useState(
-    groups.map((group) => ({ value: group.id, label: group.name }))
-  );
-
-  useEffect(() => {
-    if (groups[0]) {
-      setSelectedGroupId(groups[0].id);
-    }
-  }, [groups]);
-
   const handleImportClients = () => {
-    if (!selectedGroupId) {
-      return;
-    }
-
     const line = data.split("\n");
     let clients = [];
 
@@ -55,7 +37,7 @@ export const ImportClients = () => {
     const payload = {
       clients,
       organizationId: currentOrganizationId,
-      groupId: selectedGroupId,
+      groupId,
     };
 
     importClients(payload, {
@@ -69,15 +51,6 @@ export const ImportClients = () => {
     <View className="flex-1 p-4 web:items-center">
       <View className="flex-1 ios:justify-between android:justify-between web:sm:w-96">
         <View>
-          <Picker
-            placeholder="Selecione um grupo"
-            open={openGroupPicker}
-            value={selectedGroupId}
-            items={groupPickerItems}
-            setOpen={setOpenGroupPicker}
-            setValue={setSelectedGroupId}
-            setItems={setGroupPickerItems}
-          />
           <TextInput
             className="mt-7"
             label="Dados (TSV)"

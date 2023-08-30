@@ -1,7 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import clientsApi from "../services/api/clients";
-import { organizationsKeys } from "./organizations";
+
 import { Client } from "../models/Client";
+import { Group } from "../models/Group";
+import { clientsKeys, groupsKeys } from "./keys";
 
 export const useClientsQueries = () => {
   const queryClient = useQueryClient();
@@ -9,7 +11,7 @@ export const useClientsQueries = () => {
   const useGetOrganizationClients = (organizationId: string) =>
     useQuery({
       queryFn: () => clientsApi.getOrganizationClients(organizationId),
-      queryKey: clientsKeys.list(organizationId),
+      queryKey: clientsKeys.all(organizationId),
     });
 
   const useRemoveClient = () =>
@@ -17,44 +19,61 @@ export const useClientsQueries = () => {
       mutationFn: clientsApi.remove,
       onMutate: async ({ clientId, organizationId }) => {
         await queryClient.cancelQueries({
-          queryKey: clientsKeys.list(organizationId),
+          queryKey: clientsKeys.all(organizationId),
         });
 
-        const previosClients = queryClient.getQueryData<Client[]>(
-          clientsKeys.list(organizationId)
+        await queryClient.cancelQueries({
+          queryKey: groupsKeys.all(organizationId),
+        });
+
+        const previousClients = queryClient.getQueryData<Client[]>(
+          clientsKeys.all(organizationId)
         );
 
         queryClient.setQueryData<Client[]>(
-          clientsKeys.list(organizationId),
+          clientsKeys.all(organizationId),
           (data) => data?.filter((client) => client.id !== clientId)
         );
 
-        return { previosClients };
+        const previousGroups = queryClient.getQueryData<Group[]>(
+          groupsKeys.all(organizationId)
+        );
+
+        queryClient.setQueryData<Group[]>(
+          groupsKeys.all(organizationId),
+          (data) =>
+            data?.map((group) => ({
+              ...group,
+              clients: group.clients.filter((client) => client.id !== clientId),
+            }))
+        );
+
+        return { previousClients, previousGroups };
       },
       onError: (_err, variables, context) => {
-        if (context?.previosClients) {
+        if (context?.previousClients) {
           queryClient.setQueryData<Client[]>(
-            clientsKeys.list(variables.organizationId),
-            context.previosClients
+            clientsKeys.all(variables.organizationId),
+            context.previousClients
+          );
+        }
+        if (context?.previousGroups) {
+          queryClient.setQueryData<Group[]>(
+            groupsKeys.all(variables.organizationId),
+            context.previousGroups
           );
         }
       },
       onSettled: (_data, _error, variables) => {
         queryClient.invalidateQueries({
-          queryKey: clientsKeys.list(variables.organizationId),
+          queryKey: clientsKeys.all(variables.organizationId),
+        });
+
+        queryClient.invalidateQueries({
+          queryKey: groupsKeys.all(variables.organizationId),
         });
       },
     });
 
   return { useGetOrganizationClients, useRemoveClient };
-};
-
-export const clientsKeys = {
-  all: (id: string) => [...organizationsKeys.item(id), "clients"],
-  list: (id: string) => [...clientsKeys.all(id), "list"],
-  items: (id: string) => [...clientsKeys.all(id), "item"],
-  item: (organizationId: string, groupId: string) => [
-    ...clientsKeys.items(organizationId),
-    groupId,
-  ],
 };

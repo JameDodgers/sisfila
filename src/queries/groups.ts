@@ -1,18 +1,29 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import groupsApi from "../services/api/groups";
-import { organizationsKeys } from "./organizations";
+
 import { Group } from "../models/Group";
+import { groupsKeys, clientsKeys } from "./keys";
+
+// https://github.com/TanStack/query/discussions/5800
+// https:github.com/TanStack/query/discussions/3227
+type QueryOptions<TData, TResult> = {
+  select?: (data: TData) => TResult;
+};
 
 export const useGroupsQueries = () => {
   const queryClient = useQueryClient();
 
-  const useGetGroups = (organizationId: string) =>
+  const useGetGroups = <TResult = Group[]>(
+    organizationId: string,
+    options?: QueryOptions<Group[], TResult>
+  ) =>
     useQuery({
       queryFn: () =>
         groupsApi
           .getOrganizationGroups(organizationId)
           .then((response) => response.data),
       queryKey: groupsKeys.all(organizationId),
+      ...options,
     });
 
   const useCreateGroup = () =>
@@ -32,7 +43,13 @@ export const useGroupsQueries = () => {
             groupsKeys.all(newGroup.organizationId),
             [
               ...previousGroups,
-              { id: "", createdAt: "", updatedAt: "", ...newGroup },
+              {
+                id: "",
+                createdAt: "",
+                updatedAt: "",
+                clients: [],
+                ...newGroup,
+              },
             ]
           );
         }
@@ -55,11 +72,15 @@ export const useGroupsQueries = () => {
   const useImportClients = () =>
     useMutation({
       mutationFn: groupsApi.importClients,
+      onSuccess: (_data, variables) => {
+        queryClient.invalidateQueries({
+          queryKey: groupsKeys.all(variables.organizationId),
+        });
+        queryClient.invalidateQueries({
+          queryKey: clientsKeys.all(variables.organizationId),
+        });
+      },
     });
 
   return { useGetGroups, useCreateGroup, useImportClients };
-};
-
-export const groupsKeys = {
-  all: (id: string) => [...organizationsKeys.item(id), "groups"],
 };

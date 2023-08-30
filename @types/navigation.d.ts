@@ -23,6 +23,7 @@ export type GuestStackParamList = {
   SignIn: undefined;
   SignUp: undefined;
   Queue: { queueId: string };
+  Organization: { id: string };
 };
 
 export type RootNavigatorParamList = AppStackParamList & GuestStackParamList;
@@ -45,7 +46,6 @@ export type OrganizationDrawerScreenProps<T extends keyof DrawerParamList> =
 
 export type ClientsStackParamList = {
   Clients: undefined;
-  ImportClients: undefined;
 };
 export type ClientsStackNavigationProp<T extends keyof ClientsStackParamList> =
   CompositeNavigationProp<
@@ -56,12 +56,18 @@ export type ClientsStackNavigationProp<T extends keyof ClientsStackParamList> =
 export type GroupsStackParamList = {
   Groups: undefined;
   CreateGroup: undefined;
+  Group: {
+    id: string;
+  };
+  ImportClients: {
+    groupId: string;
+  };
 };
 
-export type GroupsStackNavigationProp<T extends keyof GroupsStackParamList> =
-  CompositeNavigationProp<
-    NativeStackNavigationProp<GroupsStackParamList, T>,
-    OrganizationDrawerScreenProps<keyof DrawerParamList>["navigation"]
+export type GroupsStackScreenProps<T extends keyof GroupsStackParamList> =
+  CompositeScreenProps<
+    NativeStackScreenProps<GroupsStackParamList, T>,
+    OrganizationDrawerScreenProps<keyof DrawerParamList>
   >;
 
 export type ServicesStackParamList = {

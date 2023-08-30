@@ -1,8 +1,8 @@
 import queuesApi from "../services/api/queues";
 
 import { Queue } from "../models/Queue";
-import { organizationsKeys } from "./organizations";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { queuesKeys } from "./keys";
 
 export const useOrganizationQueuesQueries = () => {
   const queryClient = useQueryClient();
@@ -80,14 +80,4 @@ export const useOrganizationQueuesQueries = () => {
     useAttachGroupsToQueue,
     useCallNext,
   };
-};
-
-export const queuesKeys = {
-  all: (id: string) => [...organizationsKeys.item(id), "queues"],
-  list: (id: string) => [...queuesKeys.all(id), "list"],
-  items: (id: string) => [...queuesKeys.all(id), "item"],
-  item: (organizationId: string, queueId: string) => [
-    ...queuesKeys.items(organizationId),
-    queueId,
-  ],
 };

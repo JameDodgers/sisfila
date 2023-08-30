@@ -1,17 +1,13 @@
-import { useNavigation } from "@react-navigation/native";
-import { useLayoutEffect } from "react";
 import { DataTable } from "react-native-paper";
-import { Button, IconButton } from "react-native-paper";
+import { IconButton } from "react-native-paper";
 
 import { useClientsQueries } from "../../queries/clients";
 import { useRefreshOnFocus } from "../../hooks/useRefreshOnFocus";
 import { useOrganizerStore } from "../../store/organizer";
-import { ClientsStackNavigationProp } from "../../../@types/navigation";
+
 import { ScrollView, View } from "react-native";
 
 export const Clients = () => {
-  const navigation = useNavigation<ClientsStackNavigationProp<"Clients">>();
-
   const { useGetOrganizationClients, useRemoveClient } = useClientsQueries();
 
   const { currentOrganizationId = "" } = useOrganizerStore();
@@ -23,16 +19,6 @@ export const Clients = () => {
   const { mutate: removeClient } = useRemoveClient();
 
   useRefreshOnFocus(refetch);
-
-  const handleImport = () => {
-    navigation.navigate("ImportClients");
-  };
-
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => <Button onPress={handleImport}>Importar</Button>,
-    });
-  }, [navigation]);
 
   const handleDeleteClient = (clientId: string) => {
     removeClient({ clientId, organizationId: currentOrganizationId });

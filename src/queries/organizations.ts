@@ -5,6 +5,7 @@ import { useUserQueries } from "./user";
 import { useUser } from "../store/auth";
 
 import { setCurrentOrganizationId } from "../store/organizer";
+import { organizationsKeys } from "./keys";
 
 export const useOrganizationsQueries = () => {
   const queryClient = useQueryClient();
@@ -92,11 +93,4 @@ export const useOrganizationsQueries = () => {
     useDeleteOrganization,
     useGetOrganizations,
   };
-};
-
-export const organizationsKeys = {
-  all: ["organizations"],
-  list: () => [...organizationsKeys.all, "list"],
-  items: () => [...organizationsKeys.all, "item"],
-  item: (id: string) => [...organizationsKeys.items(), id],
 };

@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import servicesApi from "../services/api/services";
-import { organizationsKeys } from "./organizations";
 import { Service } from "../models/Service";
+import { servicesKeys } from "./keys";
 
 export const useServicesQueries = () => {
   const queryClient = useQueryClient();
@@ -51,11 +51,4 @@ export const useServicesQueries = () => {
     });
 
   return { useGetServices, useCreateService };
-};
-
-export const servicesKeys = {
-  all: (organizationId: string) => [
-    ...organizationsKeys.item(organizationId),
-    "services",
-  ],
 };

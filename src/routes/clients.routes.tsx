@@ -1,5 +1,4 @@
 import { Clients } from "../screens/Member/Clients";
-import { ImportClients } from "../screens/Member/ImportClients";
 import { getStackAndScreensInsideDrawer } from "./helpers";
 
 export const ClientsRoutes = getStackAndScreensInsideDrawer({
@@ -10,13 +9,6 @@ export const ClientsRoutes = getStackAndScreensInsideDrawer({
       component: Clients,
       options: {
         title: "Clientes",
-      },
-    },
-    {
-      name: "ImportClients",
-      component: ImportClients,
-      options: {
-        title: "Importar Clientes",
       },
     },
   ],
