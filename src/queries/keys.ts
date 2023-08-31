@@ -17,6 +17,10 @@ export const servicesKeys = {
   all: (id: string) => [...organizationsKeys.item(id), "services"],
 };
 
+export const attendantsKeys = {
+  all: (id: string) => [...organizationsKeys.item(id), "attendants"],
+};
+
 export const queuesKeys = {
   all: (id: string) => [...organizationsKeys.item(id), "queues"],
   list: (id: string) => [...queuesKeys.all(id), "list"],

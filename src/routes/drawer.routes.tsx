@@ -8,6 +8,7 @@ import { GroupsRoutes } from "./groups.routes";
 import { QueuesRoutes } from "./queues.routes";
 import { ServicesRoutes } from "./services.routes";
 import { ClientsRoutes } from "./clients.routes";
+import { Attendants } from "../screens/Member/Attendants";
 
 const { Navigator, Screen } = createDrawerNavigator();
 
@@ -50,6 +51,14 @@ export const DrawerRoutes = () => {
           title: "Clientes",
         }}
         component={ClientsRoutes}
+      />
+      <Screen
+        name="Attendants"
+        options={{
+          title: "Atendentes",
+          headerShown: true,
+        }}
+        component={Attendants}
       />
       <Screen
         name="GroupsRoutes"
