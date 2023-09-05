@@ -3,14 +3,16 @@ import { useCallback, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 
 import { useServicesQueries } from "../../queries/services";
-import { Button, Switch, Text, TextInput } from "react-native-paper";
+import { Button, Text, TextInput } from "react-native-paper";
 import * as Yup from "yup";
-import { TimePickerModal } from "react-native-paper-dates";
-import { format } from "date-fns";
+import { DatePickerModal, TimePickerModal } from "react-native-paper-dates";
+import { addDays, format, isAfter, isBefore } from "date-fns";
 import { useOrganizerStore } from "../../store/organizer";
-import { TouchableWithoutFeedback, View } from "react-native";
+import { View } from "react-native";
 import { Formik } from "formik";
 import { FormikTextInput } from "../../components/FormikTextInput";
+import { SingleChange } from "react-native-paper-dates/lib/typescript/Date/Calendar";
+import { TouchableWithoutFeedback } from "react-native";
 
 interface FormValues {
   name: string;
@@ -21,24 +23,32 @@ type hoursAndMinutes = {
   minutes: number;
 };
 
+const replaceHours = (sourceDate: Date, targetDate: Date) =>
+  new Date(
+    targetDate.setHours(sourceDate.getHours(), sourceDate.getMinutes(), 0)
+  );
+
 export const CreateService = () => {
   const navigation = useNavigation();
 
   const { currentOrganizationId = "" } = useOrganizerStore();
 
   const [subscriptionToken, setSubscriptionToken] = useState("");
+
   const { useCreateService } = useServicesQueries();
 
-  const [isEntireDay, setIsEntireDay] = useState(true);
-
-  const toggleIsEntireDay = () => setIsEntireDay((isEntireDay) => !isEntireDay);
-
   const [opensAt, setOpensAt] = useState<Date>(
-    new Date(new Date().setHours(8, 0, 0))
+    addDays(new Date(new Date().setHours(8, 0, 0)), 1)
   );
   const [closesAt, setClosesAt] = useState<Date>(
-    new Date(new Date().setHours(17, 0, 0))
+    addDays(new Date(new Date().setHours(17, 0, 0)), 1)
   );
+
+  const [startDatePickerModalVisible, setStartDatePickerModalVisible] =
+    useState(false);
+
+  const [endDatePickerModalVisible, setEndDatePickerModalVisible] =
+    useState(false);
 
   const [startTimePickerModalVisible, setStartTimePickerModalVisible] =
     useState(false);
@@ -53,14 +63,9 @@ export const CreateService = () => {
       organizationId: currentOrganizationId,
       name,
       subscriptionToken,
-      opensAt: (isEntireDay
-        ? new Date(opensAt.setHours(0, 0, 1))
-        : opensAt
-      ).toISOString(),
-      closesAt: (isEntireDay
-        ? new Date(closesAt.setHours(23, 59, 59))
-        : closesAt
-      ).toISOString(),
+      guestEnrollment: false,
+      opensAt: opensAt.toISOString(),
+      closesAt: closesAt.toISOString(),
     };
 
     createService(payload, {
@@ -72,10 +77,20 @@ export const CreateService = () => {
 
   const onConfirmStartTimePicker = useCallback(
     ({ hours, minutes }: hoursAndMinutes) => {
-      setOpensAt(new Date(opensAt.setHours(hours, minutes)));
+      let _opensAt = new Date(opensAt.setHours(hours, minutes, 0));
+
+      if (isAfter(_opensAt, replaceHours(opensAt, closesAt))) {
+        _opensAt = replaceHours(opensAt, closesAt);
+
+        const _closesAt = new Date(closesAt.setHours(hours, minutes));
+
+        setClosesAt(_closesAt);
+      }
+      setOpensAt(_opensAt);
+
       setStartTimePickerModalVisible(false);
     },
-    []
+    [opensAt, closesAt]
   );
 
   const onDismissStartTimePickerModal = useCallback(() => {
@@ -84,14 +99,76 @@ export const CreateService = () => {
 
   const onConfirmEndTimePicker = useCallback(
     ({ hours, minutes }: hoursAndMinutes) => {
-      setClosesAt(new Date(closesAt.setHours(hours, minutes)));
+      let _closesAt = new Date(closesAt.setHours(hours, minutes, 0));
+
+      if (isBefore(_closesAt, replaceHours(closesAt, opensAt))) {
+        _closesAt = replaceHours(closesAt, opensAt);
+
+        const _opensAt = new Date(opensAt.setHours(hours, minutes));
+
+        setOpensAt(_opensAt);
+      }
+
+      setClosesAt(_closesAt);
+
       setEndTimePickerModalVisible(false);
     },
-    []
+    [opensAt, closesAt]
   );
 
   const onDismissEndTimePickerModal = useCallback(() => {
     setEndTimePickerModalVisible(false);
+  }, []);
+
+  const onConfirmStartDatePicker = useCallback<SingleChange>(
+    ({ date }) => {
+      if (date) {
+        if (isAfter(date, closesAt)) {
+          const _closesAt = replaceHours(date, closesAt);
+
+          const _opensAt = replaceHours(closesAt, opensAt);
+
+          setClosesAt(_closesAt);
+          setOpensAt(_opensAt);
+        } else {
+          const _opensAt = replaceHours(date, opensAt);
+
+          setOpensAt(_opensAt);
+        }
+      }
+
+      setStartDatePickerModalVisible(false);
+    },
+    [opensAt, closesAt]
+  );
+
+  const onDismissStartDatePicker = useCallback(() => {
+    setStartDatePickerModalVisible(false);
+  }, []);
+
+  const onConfirmEndDatePicker = useCallback<SingleChange>(
+    ({ date }) => {
+      if (date) {
+        if (isBefore(date, opensAt)) {
+          const _opensAt = replaceHours(date, opensAt);
+
+          const _closesAt = replaceHours(opensAt, closesAt);
+
+          setClosesAt(_closesAt);
+          setOpensAt(_opensAt);
+        } else {
+          const _closesAt = replaceHours(closesAt, date);
+          setClosesAt(_closesAt);
+        }
+      }
+
+      setEndDatePickerModalVisible(false);
+    },
+    [opensAt, closesAt]
+  );
+
+  const onDismissEndDatePicker = useCallback(() => {
+    setEndDatePickerModalVisible(false);
   }, []);
 
   const validationSchema = Yup.object().shape({
@@ -125,33 +202,50 @@ export const CreateService = () => {
                     value={subscriptionToken}
                     onChangeText={setSubscriptionToken}
                   />
-                  <View className="flex-row mt-6 py-2 items-center justify-between">
-                    <Text variant="titleMedium">Dia inteiro</Text>
-                    <Switch
-                      value={isEntireDay}
-                      onValueChange={toggleIsEntireDay}
-                    />
+                  <Text className="mt-6" variant="titleMedium">
+                    Início
+                  </Text>
+                  <View className="flex-row justify-between">
+                    <TouchableWithoutFeedback
+                      onPress={() => setStartDatePickerModalVisible(true)}
+                    >
+                      <View className="p-2 flex-1">
+                        <Text variant="titleSmall">
+                          {format(opensAt, "EEE, d 'de' MMMM 'de' yyyy")}
+                        </Text>
+                      </View>
+                    </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback
+                      onPress={() => setStartTimePickerModalVisible(true)}
+                    >
+                      <View className="p-2">
+                        <Text variant="titleSmall">
+                          {format(opensAt, "HH:mm")}
+                        </Text>
+                      </View>
+                    </TouchableWithoutFeedback>
                   </View>
-                  {!isEntireDay && (
-                    <View>
-                      <TouchableWithoutFeedback
-                        onPress={() => setStartTimePickerModalVisible(true)}
-                      >
-                        <View className="flex-row py-2 items-center justify-between">
-                          <Text variant="titleMedium">Início*</Text>
-                          <Text>{format(opensAt, "HH:mm")}</Text>
-                        </View>
-                      </TouchableWithoutFeedback>
-                      <TouchableWithoutFeedback
-                        onPress={() => setEndTimePickerModalVisible(true)}
-                      >
-                        <View className="flex-row py-2 items-center justify-between">
-                          <Text variant="titleMedium">Término*</Text>
-                          <Text>{format(closesAt, "HH:mm")}</Text>
-                        </View>
-                      </TouchableWithoutFeedback>
-                    </View>
-                  )}
+                  <Text variant="titleMedium">Término</Text>
+                  <View className="flex-row justify-between">
+                    <TouchableWithoutFeedback
+                      onPress={() => setEndDatePickerModalVisible(true)}
+                    >
+                      <View className="p-2 flex-1">
+                        <Text variant="titleSmall">
+                          {format(closesAt, "EEE, d 'de' MMMM 'de' yyyy")}
+                        </Text>
+                      </View>
+                    </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback
+                      onPress={() => setEndTimePickerModalVisible(true)}
+                    >
+                      <View className="p-2">
+                        <Text variant="titleSmall">
+                          {format(closesAt, "HH:mm")}
+                        </Text>
+                      </View>
+                    </TouchableWithoutFeedback>
+                  </View>
                 </View>
                 <Button
                   className="web:self-end"
@@ -166,6 +260,28 @@ export const CreateService = () => {
           }}
         </Formik>
       </View>
+      <DatePickerModal
+        locale="pt"
+        mode="single"
+        visible={startDatePickerModalVisible}
+        validRange={{
+          startDate: new Date(),
+        }}
+        onDismiss={onDismissStartDatePicker}
+        date={opensAt}
+        onConfirm={onConfirmStartDatePicker}
+      />
+      <DatePickerModal
+        locale="pt"
+        mode="single"
+        visible={endDatePickerModalVisible}
+        validRange={{
+          startDate: new Date(),
+        }}
+        onDismiss={onDismissEndDatePicker}
+        date={closesAt}
+        onConfirm={onConfirmEndDatePicker}
+      />
       <TimePickerModal
         locale="pt"
         visible={startTimePickerModalVisible}
