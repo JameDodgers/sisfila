@@ -3,9 +3,7 @@ import api from "./config";
 
 interface CreateQueueParams extends QueueBase {}
 
-interface CreateQueueResponse {
-  id: string;
-}
+interface CreateQueueResponse extends Queue {}
 
 interface AttachGroupsToQueueParams {
   queueId: string;

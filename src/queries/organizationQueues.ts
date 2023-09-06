@@ -66,11 +66,31 @@ export const useOrganizationQueuesQueries = () => {
   const useCreateQueue = () =>
     useMutation({
       mutationFn: queuesApi.create,
+      onSuccess(data, variables) {
+        queryClient.setQueryData<Queue[]>(
+          queuesKeys.list(variables.organizationId),
+          (queues) => (queues ? [data, ...queues] : [data])
+        );
+      },
+      onSettled: (_data, _error, newQueue) => {
+        queryClient.invalidateQueries({
+          refetchType: "none",
+          queryKey: queuesKeys.list(newQueue.organizationId),
+        });
+      },
     });
 
   const useAttachGroupsToQueue = () =>
     useMutation({
       mutationFn: queuesApi.attachGroupsToQueue,
+      onSuccess: (_data, variables) => {
+        queryClient.invalidateQueries({
+          queryKey: queuesKeys.item(
+            variables.organizationId,
+            variables.queueId
+          ),
+        });
+      },
     });
 
   return {
