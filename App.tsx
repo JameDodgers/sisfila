@@ -18,10 +18,15 @@ import {
 import * as SplashScreen from "expo-splash-screen";
 import { NativeWindStyleSheet } from "nativewind";
 
+import { setDefaultOptions } from "date-fns";
+import { ptBR } from "date-fns/locale";
+
 import { pt, registerTranslation } from "react-native-paper-dates";
 import { useMessageStore } from "./src/store/message";
 
 registerTranslation("pt", pt);
+
+setDefaultOptions({ locale: ptBR });
 
 SplashScreen.preventAutoHideAsync();
 
