@@ -6,6 +6,7 @@ import { useRefreshOnFocus } from "../../hooks/useRefreshOnFocus";
 import { useOrganizerStore } from "../../store/organizer";
 
 import { ScrollView, View } from "react-native";
+import { SafeAreaInsetsContainer } from "../../components/SafeInsetsContainer";
 
 export const Clients = () => {
   const { useGetOrganizationClients, useRemoveClient } = useClientsQueries();
@@ -25,7 +26,7 @@ export const Clients = () => {
   };
 
   return (
-    <View className="flex-1">
+    <SafeAreaInsetsContainer>
       {clients.length > 0 && (
         <DataTable className="flex-1 justify-between">
           <ScrollView>
@@ -51,6 +52,6 @@ export const Clients = () => {
           </ScrollView>
         </DataTable>
       )}
-    </View>
+    </SafeAreaInsetsContainer>
   );
 };

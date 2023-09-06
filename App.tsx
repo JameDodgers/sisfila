@@ -1,11 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import {
-  AppState,
-  AppStateStatus,
-  Platform,
-  SafeAreaView,
-  View,
-} from "react-native";
+import { AppState, AppStateStatus, Platform, View } from "react-native";
 import { Provider as PaperProvider, Snackbar } from "react-native-paper";
 
 import { Routes } from "./src/routes";
@@ -72,19 +66,13 @@ export default function App() {
         <PaperProvider theme={CombinedDefaultTheme}>
           <DataProvider>
             <StatusBar style="auto" translucent={false} />
-            <SafeAreaView
-              style={{
-                flex: 1,
-              }}
+            <Routes />
+            <Snackbar
+              visible={messageStore.visible}
+              onDismiss={messageStore.dismiss}
             >
-              <Routes />
-              <Snackbar
-                visible={messageStore.visible}
-                onDismiss={messageStore.dismiss}
-              >
-                {messageStore.message}
-              </Snackbar>
-            </SafeAreaView>
+              {messageStore.message}
+            </Snackbar>
           </DataProvider>
         </PaperProvider>
       </GestureHandlerRootView>

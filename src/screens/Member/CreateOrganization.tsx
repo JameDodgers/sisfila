@@ -6,6 +6,7 @@ import { View } from "react-native";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import { FormikTextInput } from "../../components/FormikTextInput";
+import { SafeAreaInsetsContainer } from "../../components/SafeInsetsContainer";
 
 interface FormValues {
   name: string;
@@ -38,41 +39,43 @@ export const CreateOrganization = () => {
   });
 
   return (
-    <View className="flex-1 p-4 web:items-center">
-      <Formik
-        initialValues={{
-          name: "",
-          code: "",
-        }}
-        validationSchema={validationSchema}
-        onSubmit={handleCreateOrganization}
-      >
-        {({ handleSubmit }) => {
-          return (
-            <View className="flex-1 ios:justify-between android:justify-between web:sm:w-96">
-              <View>
-                <FormikTextInput
-                  fieldName="name"
-                  mode="outlined"
-                  label="Nome"
-                />
-                <FormikTextInput
-                  fieldName="code"
-                  mode="outlined"
-                  label="Código"
-                />
+    <SafeAreaInsetsContainer>
+      <View className="flex-1 p-4 web:items-center">
+        <Formik
+          initialValues={{
+            name: "",
+            code: "",
+          }}
+          validationSchema={validationSchema}
+          onSubmit={handleCreateOrganization}
+        >
+          {({ handleSubmit }) => {
+            return (
+              <View className="flex-1 ios:justify-between android:justify-between web:sm:w-96">
+                <View>
+                  <FormikTextInput
+                    fieldName="name"
+                    mode="outlined"
+                    label="Nome"
+                  />
+                  <FormikTextInput
+                    fieldName="code"
+                    mode="outlined"
+                    label="Código"
+                  />
+                </View>
+                <Button
+                  className="web:self-end"
+                  mode="contained"
+                  onPress={() => handleSubmit()}
+                >
+                  Criar
+                </Button>
               </View>
-              <Button
-                className="web:self-end"
-                mode="contained"
-                onPress={() => handleSubmit()}
-              >
-                Criar
-              </Button>
-            </View>
-          );
-        }}
-      </Formik>
-    </View>
+            );
+          }}
+        </Formik>
+      </View>
+    </SafeAreaInsetsContainer>
   );
 };
