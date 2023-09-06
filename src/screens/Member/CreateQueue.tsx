@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { useNavigation } from "@react-navigation/native";
 
@@ -8,12 +8,13 @@ import _ from "lodash";
 import { useOrganizerStore } from "../../store/organizer";
 import { View } from "react-native";
 import * as Yup from "yup";
-import { Button, TextInput } from "react-native-paper";
+import { Button, Checkbox, List, TextInput } from "react-native-paper";
 import { Picker } from "../../components/Picker";
 import { ScrollView } from "../../libs/styled";
 import { Formik } from "formik";
 import { FormikTextInput } from "../../components/FormikTextInput";
 import { useOrganizationQueuesQueries } from "../../queries/organizationQueues";
+import { useGroupsQueries } from "../../queries/groups";
 
 interface FormValues {
   name: string;
@@ -29,11 +30,30 @@ export const CreateQueue = () => {
 
   const { useCreateQueue } = useOrganizationQueuesQueries();
 
+  const { useGetGroups } = useGroupsQueries();
+
+  const { data: groups = [] } = useGetGroups(currentOrganizationId);
+
   const { useGetServices } = useServicesQueries();
 
   const { data: services = [] } = useGetServices(currentOrganizationId);
 
   const { mutate: createQueue, isLoading } = useCreateQueue();
+
+  const [selectedGroupIds, setSelectedGroupIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (groups[0]) {
+      setSelectedGroupIds([groups[0].id]);
+    }
+  }, [groups]);
+
+  const toggleGroupId = (id: string) =>
+    setSelectedGroupIds((selectedGroupIds) =>
+      selectedGroupIds.includes(id)
+        ? selectedGroupIds.filter((i) => i !== id)
+        : [...selectedGroupIds, id]
+    );
 
   const [description, setDescription] = useState("");
 
@@ -74,6 +94,7 @@ export const CreateQueue = () => {
       priority: Number(priority),
       serviceId,
       organizationId: currentOrganizationId,
+      groups: selectedGroupIds,
     };
 
     createQueue(payload, {
@@ -175,6 +196,25 @@ export const CreateQueue = () => {
                     zIndex={1}
                     error={!!(touched.serviceId && errors.serviceId)}
                   />
+                  <View className="mt-7">
+                    <List.AccordionGroup>
+                      <List.Accordion title="Grupos" id="groups">
+                        {groups.map((group) => (
+                          <Checkbox.Item
+                            mode="android"
+                            key={group.id}
+                            label={group.name}
+                            status={
+                              selectedGroupIds.includes(group.id)
+                                ? "checked"
+                                : "unchecked"
+                            }
+                            onPress={() => toggleGroupId(group.id)}
+                          />
+                        ))}
+                      </List.Accordion>
+                    </List.AccordionGroup>
+                  </View>
                 </View>
                 <Button
                   className="mt-7 web:self-end"

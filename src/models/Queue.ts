@@ -1,6 +1,7 @@
 import { Client } from "./Client";
+import { Group } from "./Group";
 
-export type QueueBase = {
+export type QueueCommon = {
   name: string;
   description: string;
   code: string;
@@ -9,10 +10,15 @@ export type QueueBase = {
   serviceId: string;
 };
 
-export type Queue = QueueBase & {
+export type QueueBase = QueueCommon & {
+  groups: string[];
+};
+
+export type Queue = QueueCommon & {
   id: string;
   createdAt: string;
   updatedAt: string;
   clients: Client[];
+  groups: Group[];
   lastClientCalled: Client | null;
 };
