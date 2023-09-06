@@ -37,6 +37,7 @@ export type DrawerParamList = {
   ServicesRoutes: NavigatorScreenParams<ServicesStackParamList>;
   QueuesRoutes: NavigatorScreenParams<QueuesStackParamList>;
   Attendants: undefined;
+  Desks: undefined;
 };
 
 export type OrganizationDrawerScreenProps<T extends keyof DrawerParamList> =

@@ -21,6 +21,10 @@ export const attendantsKeys = {
   all: (id: string) => [...organizationsKeys.item(id), "attendants"],
 };
 
+export const desksKeys = {
+  all: (id: string) => [...organizationsKeys.item(id), "desks"],
+};
+
 export const queuesKeys = {
   all: (id: string) => [...organizationsKeys.item(id), "queues"],
   list: (id: string) => [...queuesKeys.all(id), "list"],
