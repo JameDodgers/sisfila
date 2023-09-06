@@ -9,6 +9,9 @@ import {
   DefaultTheme as NavigationDefaultTheme,
 } from "@react-navigation/native";
 
+import generatedLightScheme from "./generatedLightScheme.json";
+import generatedDarkScheme from "./generatedDarkScheme.json";
+
 const { LightTheme, DarkTheme } = adaptNavigationTheme({
   reactNavigationLight: NavigationDefaultTheme,
   reactNavigationDark: NavigationDarkTheme,
@@ -20,6 +23,7 @@ export const CombinedDefaultTheme = {
   colors: {
     ...MD3LightTheme.colors,
     ...LightTheme.colors,
+    ...generatedLightScheme.colors,
   },
 };
 export const CombinedDarkTheme = {
@@ -28,5 +32,6 @@ export const CombinedDarkTheme = {
   colors: {
     ...MD3DarkTheme.colors,
     ...DarkTheme.colors,
+    ...generatedDarkScheme.colors,
   },
 };
