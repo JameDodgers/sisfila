@@ -3,14 +3,17 @@ import { Desk } from "../models/Desk";
 
 type Props = {
   item: Desk;
+  openDesk: () => void;
 };
 
-export const DeskItem = ({ item }: Props) => {
+export const DeskItem = ({ item, openDesk }: Props) => {
   return (
     <Card>
       <Card.Title title={item.name} />
       <Card.Actions>
-        <Button mode="contained">Iniciar</Button>
+        <Button onPress={openDesk} mode="contained">
+          Iniciar
+        </Button>
       </Card.Actions>
     </Card>
   );

@@ -31,12 +31,6 @@ export const Queues = () => {
     });
   }, [navigation]);
 
-  const handleOpenQueue = (queueId: string) => {
-    navigation.navigate("Queue", {
-      queueId,
-    });
-  };
-
   const handleOpenQueueSettings = (queueId: string) => {
     navigation.navigate("QueueSettings", {
       queueId,
@@ -54,7 +48,6 @@ export const Queues = () => {
         renderItem={({ item }: any) => (
           <QueueItem
             item={item}
-            openQueue={() => handleOpenQueue(item.id)}
             openSettings={() => handleOpenQueueSettings(item.id)}
           />
         )}

@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { desksKeys } from "./keys";
-import { Attendant } from "../models/Attendant";
+import { Desk } from "../models/Desk";
 
 const desks = [
   {
@@ -14,14 +14,22 @@ const desks = [
   },
 ];
 
+type QueryOptions<TData, TResult> = {
+  select?: (data: TData) => TResult;
+};
+
 export const useDesksQueries = () => {
-  const useGetDesks = (organizationId: string) =>
+  const useGetDesks = <TResult = Desk[]>(
+    organizationId: string,
+    options?: QueryOptions<Desk[], TResult>
+  ) =>
     useQuery({
       queryFn: () =>
-        new Promise<Attendant[]>((resolve) =>
+        new Promise<Desk[]>((resolve) =>
           setTimeout(() => resolve(desks), 1000)
         ),
       queryKey: desksKeys.all(organizationId),
+      ...options,
     });
 
   return { useGetDesks };

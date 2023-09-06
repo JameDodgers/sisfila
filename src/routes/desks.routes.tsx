@@ -1,3 +1,4 @@
+import { Desk } from "../screens/Member/Desk";
 import { Desks } from "../screens/Member/Desks";
 import { getStackAndScreensInsideDrawer } from "./helpers";
 
@@ -10,6 +11,10 @@ export const DesksRoutes = getStackAndScreensInsideDrawer({
       options: {
         title: "Guichês",
       },
+    },
+    {
+      name: "Desk",
+      component: Desk,
     },
   ],
 });
