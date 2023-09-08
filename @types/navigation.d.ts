@@ -60,7 +60,6 @@ export type GroupsStackParamList = {
   CreateGroup: undefined;
   Group: {
     id: string;
-    name: string;
   };
   ImportClients: {
     groupId: string;

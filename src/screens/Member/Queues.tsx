@@ -1,12 +1,13 @@
 import { QueueItem } from "../../components/QueueItem";
 import { useLayoutEffect } from "react";
-import { IconButton } from "react-native-paper";
+import { Appbar } from "react-native-paper";
 import { useOrganizerStore } from "../../store/organizer";
 import { QueuesStackScreenProps } from "../../../@types/navigation";
 import { useNavigation } from "@react-navigation/native";
 import { View } from "react-native";
 import { FlatList } from "../../libs/styled";
 import { useOrganizationQueuesQueries } from "../../queries/organizationQueues";
+import { CustomNavigationBar } from "../../components/CustomNavigationBar";
 
 export const Queues = () => {
   const navigation =
@@ -20,12 +21,17 @@ export const Queues = () => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerRight: () => (
-        <IconButton
-          icon="plus"
-          onPress={() => {
-            navigation.navigate("CreateQueue");
-          }}
+      header: (props) => (
+        <CustomNavigationBar
+          headerRight={
+            <Appbar.Action
+              icon="plus"
+              onPress={() => {
+                navigation.navigate("CreateQueue");
+              }}
+            />
+          }
+          {...props}
         />
       ),
     });

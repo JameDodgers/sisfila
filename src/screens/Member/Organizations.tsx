@@ -1,16 +1,19 @@
 import { useNavigation } from "@react-navigation/native";
-import { useCallback, useEffect } from "react";
+import { useCallback, useLayoutEffect } from "react";
 import { OrganizationItem } from "../../components/OrganizationItem";
-import { IconButton, Text } from "react-native-paper";
+import { Appbar, Text } from "react-native-paper";
 
 import { useOrganizationsQueries } from "../../queries/organizations";
 import { useRefreshOnFocus } from "../../hooks/useRefreshOnFocus";
 import { setCurrentOrganizationId } from "../../store/organizer";
 import { View } from "react-native";
 import { FlatList } from "../../libs/styled";
+import { CustomNavigationBar } from "../../components/CustomNavigationBar";
+import { RootNavigatorScreenProps } from "../../../@types/navigation";
 
 export const Organizations = () => {
-  const navigation = useNavigation();
+  const navigation =
+    useNavigation<RootNavigatorScreenProps<"Organizations">["navigation"]>();
 
   const { useGetOrganizations } = useOrganizationsQueries();
 
@@ -18,14 +21,19 @@ export const Organizations = () => {
 
   useRefreshOnFocus(refetch);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     navigation.setOptions({
-      headerRight: () => (
-        <IconButton
-          icon="plus"
-          onPress={() => {
-            navigation.navigate("CreateOrganization");
-          }}
+      header: (props) => (
+        <CustomNavigationBar
+          {...props}
+          headerRight={
+            <Appbar.Action
+              icon="plus"
+              onPress={() => {
+                navigation.navigate("CreateOrganization");
+              }}
+            />
+          }
         />
       ),
     });

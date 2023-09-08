@@ -6,11 +6,12 @@ import { useOrganizerStore } from "../../store/organizer";
 import { GroupsStackScreenProps } from "../../../@types/navigation";
 import { FlatList, View } from "react-native";
 import { useGroupsQueries } from "../../queries/groups";
+import { CustomNavigationBar } from "../../components/CustomNavigationBar";
 
 type Props = GroupsStackScreenProps<"Group">;
 
 export const Group = ({ route, navigation }: Props) => {
-  const { id } = route.params;
+  const { id, name } = route.params;
 
   const { currentOrganizationId = "" } = useOrganizerStore();
 
@@ -28,7 +29,17 @@ export const Group = ({ route, navigation }: Props) => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerRight: () => <Button onPress={handleImport}>Importar</Button>,
+      header: (props) => (
+        <CustomNavigationBar
+          {...props}
+          title={group?.name}
+          headerRight={
+            <Button className="mr-2" onPress={handleImport}>
+              Importar
+            </Button>
+          }
+        />
+      ),
     });
   }, [navigation]);
 

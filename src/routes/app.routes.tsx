@@ -7,6 +7,7 @@ import { CreateOrganization } from "../screens/Member/CreateOrganization";
 
 import { useOrganizerStore } from "../store/organizer";
 import { AppStackParamList } from "../../@types/navigation";
+import { CustomNavigationBar } from "../components/CustomNavigationBar";
 
 const { Navigator, Screen } = createNativeStackNavigator<AppStackParamList>();
 
@@ -16,6 +17,9 @@ export const AppRoutes = () => {
   return (
     <Navigator
       initialRouteName={currentOrganizationId ? "Drawer" : "Organizations"}
+      screenOptions={{
+        header: (props) => <CustomNavigationBar {...props} />,
+      }}
     >
       <Screen
         name="Drawer"

@@ -3,12 +3,18 @@ import { SignUp } from "../screens/SignUp";
 import { SignIn } from "../screens/SignIn";
 import { GuestStackParamList } from "../../@types/navigation";
 import { Queue } from "../screens/Guest/Queue";
+import { CustomNavigationBar } from "../components/CustomNavigationBar";
 
 const { Navigator, Screen } = createNativeStackNavigator<GuestStackParamList>();
 
 export const GuestRoutes = () => {
   return (
-    <Navigator initialRouteName="SignIn">
+    <Navigator
+      initialRouteName="SignIn"
+      screenOptions={{
+        header: (props) => <CustomNavigationBar {...props} />,
+      }}
+    >
       <Screen
         name="SignIn"
         options={{

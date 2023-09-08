@@ -1,4 +1,3 @@
-// import { CommonActions, DrawerActions } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 
 import CustomDrawerContent from "../components/CustomDrawerContent";
@@ -7,10 +6,11 @@ import { Platform } from "react-native";
 import { GroupsRoutes } from "./groups.routes";
 import { QueuesRoutes } from "./queues.routes";
 import { ServicesRoutes } from "./services.routes";
-import { ClientsRoutes } from "./clients.routes";
-import { OrganizationRoutes } from "./organization.routes";
 import { DesksRoutes } from "./desks.routes";
-import { AttendantsRoutes } from "./attendants.routes";
+import { CustomNavigationBar } from "../components/CustomNavigationBar";
+import { OrganizationDetails } from "../screens/Member/OrganizationDetails";
+import { Attendants } from "../screens/Member/Attendants";
+import { Clients } from "../screens/Member/Clients";
 
 const { Navigator, Screen } = createDrawerNavigator();
 
@@ -23,7 +23,6 @@ export const DrawerRoutes = () => {
         default: "closed",
       })}
       screenOptions={{
-        headerShown: false,
         drawerType: Platform.select({
           web: "permanent",
           ios: "slide",
@@ -32,19 +31,8 @@ export const DrawerRoutes = () => {
         ...(Platform.OS === "web" && {
           overlayColor: "transparent",
         }),
+        header: (props) => <CustomNavigationBar {...props} />,
       }}
-      // screenListeners={({ navigation, route }) => ({
-      //   drawerItemPress: (e) => {
-      //     navigation.dispatch((state) => {
-      //       const index = state.routes.findIndex(
-      //         (r) => r.name === route.name
-      //       );
-
-      //       return CommonActions.reset({ ...state, index });
-      //     });
-      //     e.preventDefault();
-      //   },
-      // })}
       drawerContent={(props) => <CustomDrawerContent {...props} />}
     >
       <Screen
@@ -52,26 +40,27 @@ export const DrawerRoutes = () => {
         options={{
           title: "Organização",
         }}
-        component={OrganizationRoutes}
+        component={OrganizationDetails}
       />
       <Screen
-        name="ClientsRoutes"
+        name="Clients"
         options={{
           title: "Clientes",
         }}
-        component={ClientsRoutes}
+        component={Clients}
       />
       <Screen
-        name="AttendantsRoutes"
+        name="Attendants"
         options={{
           title: "Atendentes",
         }}
-        component={AttendantsRoutes}
+        component={Attendants}
       />
       <Screen
         name="DesksRoutes"
         options={{
           title: "Guichês",
+          headerShown: false,
         }}
         component={DesksRoutes}
       />
@@ -79,6 +68,7 @@ export const DrawerRoutes = () => {
         name="GroupsRoutes"
         options={{
           title: "Grupos",
+          headerShown: false,
         }}
         component={GroupsRoutes}
       />
@@ -86,6 +76,7 @@ export const DrawerRoutes = () => {
         name="ServicesRoutes"
         options={{
           title: "Serviços",
+          headerShown: false,
         }}
         component={ServicesRoutes}
       />
@@ -93,6 +84,7 @@ export const DrawerRoutes = () => {
         name="QueuesRoutes"
         options={{
           title: "Filas",
+          headerShown: false,
         }}
         component={QueuesRoutes}
       />

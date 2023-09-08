@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Button, Dialog, Portal, TextInput } from "react-native-paper";
 import { OrganizationDrawerScreenProps } from "../../../@types/navigation";
+import { CustomNavigationBar } from "../../components/CustomNavigationBar";
 
 export const Attendants = () => {
   const navigation =
@@ -50,10 +51,15 @@ export const Attendants = () => {
 
   useEffect(() => {
     navigation.setOptions({
-      headerRight: () => (
-        <Button className="mx-2" onPress={openModal}>
-          Adicionar
-        </Button>
+      header: (props) => (
+        <CustomNavigationBar
+          headerRight={
+            <Button className="mx-2" onPress={openModal}>
+              Adicionar
+            </Button>
+          }
+          {...props}
+        />
       ),
     });
   }, [navigation]);

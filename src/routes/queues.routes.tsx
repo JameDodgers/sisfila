@@ -1,22 +1,35 @@
 import { Queues } from "../screens/Member/Queues";
 
-import { getStackAndScreensInsideDrawer } from "./helpers";
 import { CreateQueue } from "../screens/Member/CreateQueue";
 import { QueueSettings } from "../screens/Member/QueueSettings";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { CustomNavigationBar } from "../components/CustomNavigationBar";
 
-export const QueuesRoutes = getStackAndScreensInsideDrawer({
-  initialRouteName: "Queues",
-  screensProps: [
-    { name: "Queues", options: { title: "Filas" }, component: Queues },
-    {
-      name: "QueueSettings",
-      options: { title: "Configurações" },
-      component: QueueSettings,
-    },
-    {
-      name: "CreateQueue",
-      options: { title: "Criar Fila" },
-      component: CreateQueue,
-    },
-  ],
-});
+const { Navigator, Screen } = createNativeStackNavigator();
+
+export const QueuesRoutes = () => {
+  return (
+    <Navigator
+      initialRouteName="Queues"
+      screenOptions={{
+        header: (props) => <CustomNavigationBar {...props} />,
+      }}
+    >
+      <Screen
+        name="Queues"
+        component={Queues}
+        options={{
+          title: "Filas",
+        }}
+      />
+      <Screen
+        name="CreateQueue"
+        component={CreateQueue}
+        options={{
+          title: "Criar fila",
+        }}
+      />
+      <Screen name="QueueSettings" component={QueueSettings} />
+    </Navigator>
+  );
+};

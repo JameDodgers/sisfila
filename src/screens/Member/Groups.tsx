@@ -1,6 +1,6 @@
 import { useLayoutEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { IconButton } from "react-native-paper";
+import { Appbar } from "react-native-paper";
 import { GroupItem } from "../../components/GroupItem";
 
 import { useGroupsQueries } from "../../queries/groups";
@@ -8,6 +8,7 @@ import { useRefreshOnFocus } from "../../hooks/useRefreshOnFocus";
 import { useOrganizerStore } from "../../store/organizer";
 import { GroupsStackScreenProps } from "../../../@types/navigation";
 import { FlatList, View } from "react-native";
+import { CustomNavigationBar } from "../../components/CustomNavigationBar";
 
 export const Groups = () => {
   const navigation =
@@ -23,12 +24,17 @@ export const Groups = () => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerRight: () => (
-        <IconButton
-          icon="plus"
-          onPress={() => {
-            navigation.navigate("CreateGroup");
-          }}
+      header: (props) => (
+        <CustomNavigationBar
+          {...props}
+          headerRight={
+            <Appbar.Action
+              icon="plus"
+              onPress={() => {
+                navigation.navigate("CreateGroup");
+              }}
+            />
+          }
         />
       ),
     });

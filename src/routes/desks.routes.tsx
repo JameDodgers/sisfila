@@ -1,20 +1,26 @@
 import { Desk } from "../screens/Member/Desk";
 import { Desks } from "../screens/Member/Desks";
-import { getStackAndScreensInsideDrawer } from "./helpers";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { CustomNavigationBar } from "../components/CustomNavigationBar";
 
-export const DesksRoutes = getStackAndScreensInsideDrawer({
-  initialRouteName: "Desks",
-  screensProps: [
-    {
-      name: "Desks",
-      component: Desks,
-      options: {
-        title: "Guichês",
-      },
-    },
-    {
-      name: "Desk",
-      component: Desk,
-    },
-  ],
-});
+const { Navigator, Screen } = createNativeStackNavigator();
+
+export const DesksRoutes = () => {
+  return (
+    <Navigator
+      initialRouteName="Desks"
+      screenOptions={{
+        header: (props) => <CustomNavigationBar {...props} />,
+      }}
+    >
+      <Screen
+        name="Desks"
+        component={Desks}
+        options={{
+          title: "Guichês",
+        }}
+      />
+      <Screen name="Desk" component={Desk} />
+    </Navigator>
+  );
+};
