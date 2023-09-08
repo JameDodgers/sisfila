@@ -9,12 +9,12 @@ import { useNavigation } from "@react-navigation/native";
 import { useDesksQueries } from "../../queries/desks";
 
 type Props = {
-  route: DesksStackScreenProps<"Desks">["route"];
+  route: DesksStackScreenProps<"Desk">["route"];
 };
 
 export const Desk = ({ route }: Props) => {
   const navigation =
-    useNavigation<DesksStackScreenProps<"Desks">["navigation"]>();
+    useNavigation<DesksStackScreenProps<"Desk">["navigation"]>();
 
   const deskId = route.params?.deskId;
 

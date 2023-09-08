@@ -96,7 +96,7 @@ export type QueuesStackScreenProps<T extends keyof QueuesStackParamList> =
     OrganizationDrawerScreenProps<keyof DrawerParamList>
   >;
 
-export type QueuesStackParamList = {
+export type DesksStackParamList = {
   Desks: undefined;
   Desk: { deskId: string; name: string };
 };
