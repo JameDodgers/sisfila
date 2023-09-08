@@ -101,12 +101,6 @@ export const SignIn = () => {
                 onSubmitEditing={handleSignIn}
                 blurOnSubmit={false}
               />
-              <Text
-                variant="bodyMedium"
-                className="underline self-end mt-1 text-indigo-500"
-              >
-                Esqueceu sua senha?
-              </Text>
               <View className="gap-y-2 mt-8">
                 <Button onPress={handleSignInWithGoogle}>
                   <Text>Entrar com o Google</Text>
