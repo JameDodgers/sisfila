@@ -12,26 +12,40 @@ import {
 import generatedLightScheme from "./generatedLightScheme.json";
 import generatedDarkScheme from "./generatedDarkScheme.json";
 
-const { LightTheme, DarkTheme } = adaptNavigationTheme({
-  reactNavigationLight: NavigationDefaultTheme,
-  reactNavigationDark: NavigationDarkTheme,
-});
-
-export const CombinedDefaultTheme = {
+const customLightTheme = {
   ...MD3LightTheme,
-  ...LightTheme,
   colors: {
-    ...MD3LightTheme.colors,
-    ...LightTheme.colors,
     ...generatedLightScheme.colors,
   },
 };
-export const CombinedDarkTheme = {
+
+const customDarkTheme = {
   ...MD3DarkTheme,
+  colors: {
+    ...generatedDarkScheme.colors,
+  },
+};
+
+const { LightTheme, DarkTheme } = adaptNavigationTheme({
+  reactNavigationLight: NavigationDefaultTheme,
+  reactNavigationDark: NavigationDarkTheme,
+  materialLight: customLightTheme,
+  materialDark: customDarkTheme,
+});
+
+export const CombinedDefaultTheme = {
+  ...customLightTheme,
+  ...LightTheme,
+  colors: {
+    ...customLightTheme.colors,
+    ...LightTheme.colors,
+  },
+};
+export const CombinedDarkTheme = {
+  ...customDarkTheme,
   ...DarkTheme,
   colors: {
-    ...MD3DarkTheme.colors,
+    ...customDarkTheme.colors,
     ...DarkTheme.colors,
-    ...generatedDarkScheme.colors,
   },
 };
