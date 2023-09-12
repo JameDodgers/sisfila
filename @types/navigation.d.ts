@@ -98,7 +98,8 @@ export type QueuesStackScreenProps<T extends keyof QueuesStackParamList> =
 
 export type DesksStackParamList = {
   Desks: undefined;
-  Desk: { deskId: string; name: string };
+  Desk: { deskId: string };
+  DeskSettings: { deskId: string };
 };
 
 export type DesksStackScreenProps<T extends keyof DesksStackParamList> =
