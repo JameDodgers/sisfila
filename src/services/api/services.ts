@@ -15,4 +15,19 @@ const getOne = (organizationId: string) =>
 const create = (data: CreateServiceParams) =>
   api.post<CreateServiceResponse>("v1/services", data);
 
-export default { getOne, create };
+interface EnterServiceRequestBody {
+  registrationId: string;
+  organizationId: string;
+  serviceId: string;
+}
+
+interface EnterServiceResponse {
+  queueId: string;
+  queueName: string;
+  position: Number;
+}
+
+const enter = (data: EnterServiceRequestBody) =>
+  api.patch<EnterServiceResponse>("v1/services/enter", data);
+
+export default { getOne, create, enter };

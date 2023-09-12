@@ -13,7 +13,7 @@ const prefix = Linking.createURL("/");
 const config = {
   screens: {
     initialRouteName: "Queue",
-    Queue: "queue/:queueId",
+    Organization: "organization/:id",
   },
 };
 

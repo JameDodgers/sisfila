@@ -13,12 +13,6 @@ interface AttachGroupsToQueueParams {
 
 interface GetOneResponse extends Array<Queue> {}
 
-interface EnterQueueParams {
-  registrationId: string;
-  organizationId: string;
-  queueId: string;
-}
-
 interface CallNextParams {
   organizationId: string;
   queueId: string;
@@ -41,9 +35,6 @@ const attachGroupsToQueue = ({
 }: AttachGroupsToQueueParams) =>
   api.patch(`v1/queues/${queueId}/organizations/${organizationId}`, data);
 
-const enter = (data: EnterQueueParams) =>
-  api.patch<CreateQueueResponse>("v1/queues/enter", data);
-
 const callNext = (data: CallNextParams) => api.patch("v1/queues/next", data);
 
 export default {
@@ -52,5 +43,4 @@ export default {
   create,
   callNext,
   attachGroupsToQueue,
-  enter,
 };

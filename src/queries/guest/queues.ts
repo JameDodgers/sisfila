@@ -1,6 +1,6 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
-import queuesApi from "../services/api/queues";
-import { publicQueuesKeys } from "./keys";
+import { useQuery } from "@tanstack/react-query";
+import queuesApi from "../../services/api/queues";
+import { publicQueuesKeys } from "../keys";
 
 export const useQueuesQueries = () => {
   const useGetQueue = (queueId: string) =>
@@ -12,13 +12,7 @@ export const useQueuesQueries = () => {
       refetchIntervalInBackground: true,
     });
 
-  const useEnterQueue = () =>
-    useMutation({
-      mutationFn: queuesApi.enter,
-    });
-
   return {
     useGetQueue,
-    useEnterQueue,
   };
 };

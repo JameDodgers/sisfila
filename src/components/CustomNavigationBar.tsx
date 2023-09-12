@@ -4,7 +4,6 @@ import { getHeaderTitle } from "@react-navigation/elements";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { ReactNode } from "react";
 import { DrawerHeaderProps } from "@react-navigation/drawer";
-import { View } from "react-native";
 
 type HeaderProps = NativeStackHeaderProps | DrawerHeaderProps;
 

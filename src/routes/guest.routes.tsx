@@ -3,6 +3,7 @@ import { SignUp } from "../screens/SignUp";
 import { SignIn } from "../screens/SignIn";
 import { GuestStackParamList } from "../../@types/navigation";
 import { Queue } from "../screens/Guest/Queue";
+import { Organization } from "../screens/Guest/Organization";
 import { CustomNavigationBar } from "../components/CustomNavigationBar";
 
 const { Navigator, Screen } = createNativeStackNavigator<GuestStackParamList>();
@@ -30,6 +31,7 @@ export const GuestRoutes = () => {
         component={SignUp}
       />
       <Screen name="Queue" component={Queue} options={{ headerShown: false }} />
+      <Screen name="Organization" component={Organization} />
     </Navigator>
   );
 };
