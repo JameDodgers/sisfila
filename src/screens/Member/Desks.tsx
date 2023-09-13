@@ -34,7 +34,14 @@ export const Desks = () => {
 
   const { mutate: updateDesk } = useUpdateDesk(currentOrganizationId);
 
-  const { data: desks = [] } = useGetDesks(currentOrganizationId);
+  const { data: desks = [] } = useGetDesks(currentOrganizationId, {
+    select: (desks) =>
+      [...desks].sort(
+        (a, b) =>
+          Number(b.attendantId === user?.id) -
+          Number(a.attendantId === user?.id)
+      ),
+  });
 
   const handleOpenDesk = (deskId: string) => {
     navigation.navigate("DeskSettings", {
