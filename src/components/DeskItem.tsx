@@ -4,16 +4,24 @@ import { useState } from "react";
 
 type Props = {
   item: Desk;
+  occupiedByUser: boolean;
+  userOccupiesSomeDesk: boolean;
   openDeskSettings: () => void;
+  openDesk: () => void;
   deleteDesk: () => void;
   startService: () => void;
+  endService: () => void;
 };
 
 export const DeskItem = ({
   item,
+  occupiedByUser,
+  userOccupiesSomeDesk,
+  openDesk,
   openDeskSettings,
   deleteDesk,
   startService,
+  endService,
 }: Props) => {
   const [menuVisible, setMenuVisible] = useState(false);
 
@@ -28,7 +36,11 @@ export const DeskItem = ({
 
   const vacant = !item.attendantId;
 
-  const actionButtonText = vacant ? "Ocupar" : "Ocupado";
+  const actionButtonText = vacant
+    ? "Ocupar"
+    : occupiedByUser
+    ? "Retomar"
+    : "Ocupado";
 
   return (
     <Card>
@@ -56,9 +68,15 @@ export const DeskItem = ({
         )}
       />
       <Card.Actions>
-        <Button onPress={startService} disabled={!vacant} mode="contained">
-          {actionButtonText}
-        </Button>
+        {occupiedByUser && <Button onPress={endService}>Encerrar</Button>}
+        {!(vacant && userOccupiesSomeDesk) && (
+          <Button
+            onPress={occupiedByUser ? openDesk : startService}
+            disabled={!vacant && !occupiedByUser}
+          >
+            {actionButtonText}
+          </Button>
+        )}
       </Card.Actions>
     </Card>
   );
