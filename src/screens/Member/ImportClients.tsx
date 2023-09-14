@@ -1,12 +1,14 @@
 import { useGroupsQueries } from "../../queries/groups";
 import { useOrganizerStore } from "../../store/organizer";
 import { View } from "react-native";
-import { Button } from "react-native-paper";
+import { Button, Text, useTheme } from "react-native-paper";
 import { GroupsStackScreenProps } from "../../../@types/navigation";
 import { SafeAreaInsetsContainer } from "../../components/SafeInsetsContainer";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { FormikTextInput } from "../../components/FormikTextInput";
+
+import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 interface FormValues {
   data: string;
@@ -19,6 +21,7 @@ export const ImportClients = ({
   route,
   navigation,
 }: GroupsStackScreenProps<"ImportClients">) => {
+  const theme = useTheme();
   const { groupId } = route.params;
 
   const { currentOrganizationId = "" } = useOrganizerStore();
@@ -73,14 +76,35 @@ export const ImportClients = ({
             {({ handleSubmit }) => {
               return (
                 <View className="flex-1 android:justify-between ios:justify-between">
-                  <FormikTextInput
-                    fieldName="data"
-                    className="mt-7"
-                    label="Dados"
-                    mode="outlined"
-                    multiline
-                    numberOfLines={5}
-                  />
+                  <View>
+                    <View
+                      className="rounded-lg p-2"
+                      style={{ backgroundColor: theme.colors.surfaceVariant }}
+                    >
+                      <View className="flex-row items-center mb-2">
+                        <Icon size={20} name="information-outline" />
+                        <Text className="ml-2" variant="titleMedium">
+                          Formato dos dados
+                        </Text>
+                      </View>
+                      <Text variant="bodyMedium">
+                        Cole aqui as matrículas e nomes dos alunos, separados
+                        por vírgula, ponto e vírgula ou tabulação, um aluno por
+                        linha. Exemplo:
+                      </Text>
+                      <Text variant="bodySmall">
+                        1234 Fulano de Tal 4321 Sicrana de Tal
+                      </Text>
+                    </View>
+                    <FormikTextInput
+                      fieldName="data"
+                      className="mt-2"
+                      label="Dados"
+                      mode="outlined"
+                      multiline
+                      numberOfLines={5}
+                    />
+                  </View>
                   <Button
                     className="mt-4 web:self-end"
                     mode="contained"
