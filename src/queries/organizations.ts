@@ -27,7 +27,18 @@ export const useOrganizationsQueries = () => {
     useMutation({
       mutationFn: organizationsApi.create,
       onSuccess: (data) => {
+        queryClient.setQueryData<Organization[]>(
+          organizationsKeys.list(),
+          (organizations) => (organizations ? [...organizations, data] : [data])
+        );
+
+        queryClient.setQueryData<Organization>(
+          organizationsKeys.item(data.id),
+          data
+        );
+
         setCurrentOrganizationId(data.id);
+
         if (user) {
           return setUserRoleInOrganizationById({
             userId: user.id,

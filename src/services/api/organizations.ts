@@ -9,9 +9,6 @@ interface CreateRequest {
   name: string;
   code: string;
 }
-interface CreateResponse {
-  id: string;
-}
 
 interface UpdateRequest {
   id: string;
@@ -29,7 +26,7 @@ const getAll = () =>
 
 const create = (data: CreateRequest) =>
   api
-    .post<CreateResponse>("v1/organizations", data)
+    .post<Organization>("v1/organizations", data)
     .then((response) => response.data);
 
 const update = (data: UpdateRequest) =>
