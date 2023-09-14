@@ -39,7 +39,6 @@ export const ImportClients = ({
       clients.push({
         name: match[2],
         registrationId: match[1],
-        organizationId: currentOrganizationId,
       });
     }
 

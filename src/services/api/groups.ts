@@ -14,7 +14,6 @@ interface CreateGroupResponse {
 
 type ImportedClient = {
   name: string;
-  organizationId: string;
   registrationId: string;
 };
 
