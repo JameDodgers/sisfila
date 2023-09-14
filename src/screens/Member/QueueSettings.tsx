@@ -8,6 +8,7 @@ import { useNavigation } from "@react-navigation/native";
 import { ScrollView, View } from "react-native";
 import { Button, Checkbox, List } from "react-native-paper";
 import { useOrganizationQueuesQueries } from "../../queries/organizationQueues";
+import { SafeAreaInsetsContainer } from "../../components/SafeInsetsContainer";
 
 type Props = {
   route: QueuesStackScreenProps<"QueueSettings">["route"];
@@ -63,27 +64,31 @@ export const QueueSettings = ({ route }: Props) => {
   };
 
   return (
-    <View className="flex-1 p-4">
-      <ScrollView className="flex-1">
-        <List.AccordionGroup>
-          <List.Accordion title="Grupos" id="groups">
-            {groups.map((group) => (
-              <Checkbox.Item
-                mode="android"
-                key={group.id}
-                label={group.name}
-                status={
-                  selectedGroupIds.includes(group.id) ? "checked" : "unchecked"
-                }
-                onPress={() => toggleGroupId(group.id)}
-              />
-            ))}
-          </List.Accordion>
-        </List.AccordionGroup>
-      </ScrollView>
-      <Button className="" mode="contained" onPress={handleUpdateQueue}>
-        Salvar
-      </Button>
-    </View>
+    <SafeAreaInsetsContainer>
+      <View className="flex-1 p-4">
+        <ScrollView className="flex-1">
+          <List.AccordionGroup>
+            <List.Accordion title="Grupos" id="groups">
+              {groups.map((group) => (
+                <Checkbox.Item
+                  mode="android"
+                  key={group.id}
+                  label={group.name}
+                  status={
+                    selectedGroupIds.includes(group.id)
+                      ? "checked"
+                      : "unchecked"
+                  }
+                  onPress={() => toggleGroupId(group.id)}
+                />
+              ))}
+            </List.Accordion>
+          </List.AccordionGroup>
+        </ScrollView>
+        <Button className="" mode="contained" onPress={handleUpdateQueue}>
+          Salvar
+        </Button>
+      </View>
+    </SafeAreaInsetsContainer>
   );
 };

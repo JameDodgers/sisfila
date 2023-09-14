@@ -15,6 +15,7 @@ import { Formik } from "formik";
 import { FormikTextInput } from "../../components/FormikTextInput";
 import { useOrganizationQueuesQueries } from "../../queries/organizationQueues";
 import { useGroupsQueries } from "../../queries/groups";
+import { SafeAreaInsetsContainer } from "../../components/SafeInsetsContainer";
 
 interface FormValues {
   name: string;
@@ -116,119 +117,121 @@ export const CreateQueue = () => {
   });
 
   return (
-    <View className="flex-1">
-      <Formik
-        initialValues={{
-          name: "",
-          priority: "",
-          serviceId: "",
-          code: "",
-        }}
-        validationSchema={validationSchema}
-        onSubmit={handleCreateQueue}
-      >
-        {({ values, errors, touched, setFieldValue, handleSubmit }) => {
-          const setPriorityPickerValue = useCallback((state: any) => {
-            let newState = state;
+    <SafeAreaInsetsContainer>
+      <View className="flex-1">
+        <Formik
+          initialValues={{
+            name: "",
+            priority: "",
+            serviceId: "",
+            code: "",
+          }}
+          validationSchema={validationSchema}
+          onSubmit={handleCreateQueue}
+        >
+          {({ values, errors, touched, setFieldValue, handleSubmit }) => {
+            const setPriorityPickerValue = useCallback((state: any) => {
+              let newState = state;
 
-            if (typeof state === "function") {
-              newState = state(values.priority);
-            }
+              if (typeof state === "function") {
+                newState = state(values.priority);
+              }
 
-            setFieldValue("priority", newState);
-          }, []);
+              setFieldValue("priority", newState);
+            }, []);
 
-          const setServiceIdPickerValue = useCallback((state: any) => {
-            let newState = state;
+            const setServiceIdPickerValue = useCallback((state: any) => {
+              let newState = state;
 
-            if (typeof state === "function") {
-              newState = state(values.serviceId);
-            }
+              if (typeof state === "function") {
+                newState = state(values.serviceId);
+              }
 
-            setFieldValue("serviceId", newState);
-          }, []);
+              setFieldValue("serviceId", newState);
+            }, []);
 
-          return (
-            <View className="flex-1">
-              <ScrollView contentContainerStyle="flex-1 web:self-center web:sm:w-96  p-4 ios:justify-between android:justify-between">
-                <View>
-                  <FormikTextInput
-                    fieldName="name"
-                    mode="outlined"
-                    label="Nome"
-                  />
-                  <TextInput
-                    mode="outlined"
-                    label="Descrição"
-                    value={description}
-                    onChangeText={setDescription}
-                  />
-                  <FormikTextInput
-                    className="mt-6"
-                    fieldName="code"
-                    mode="outlined"
-                    label="Código"
-                  />
-                  <Picker
-                    placeholder="Selecione uma prioridade*"
-                    open={openPriorityPicker}
-                    onOpen={onOpenPriorityPicker}
-                    value={values.priority}
-                    items={priorityPickerItems}
-                    setOpen={setOpenPriorityPicker}
-                    //https://github.com/hossein-zare/react-native-dropdown-picker/issues/255
-                    setValue={setPriorityPickerValue}
-                    setItems={setPriorityPickerItems}
-                    zIndex={2}
-                    error={!!(touched.priority && errors.priority)}
-                  />
-                  <View className="mt-7" />
-                  <Picker
-                    placeholder="Selecione um serviço*"
-                    open={openServicePicker}
-                    onOpen={onOpenServicePicker}
-                    value={values.serviceId}
-                    items={servicePickerItems}
-                    setOpen={setOpenServicePicker}
-                    //https://github.com/hossein-zare/react-native-dropdown-picker/issues/255
-                    setValue={setServiceIdPickerValue}
-                    setItems={setServicePickerItems}
-                    zIndex={1}
-                    error={!!(touched.serviceId && errors.serviceId)}
-                  />
-                  <View className="mt-7">
-                    <List.AccordionGroup>
-                      <List.Accordion title="Grupos" id="groups">
-                        {groups.map((group) => (
-                          <Checkbox.Item
-                            mode="android"
-                            key={group.id}
-                            label={group.name}
-                            status={
-                              selectedGroupIds.includes(group.id)
-                                ? "checked"
-                                : "unchecked"
-                            }
-                            onPress={() => toggleGroupId(group.id)}
-                          />
-                        ))}
-                      </List.Accordion>
-                    </List.AccordionGroup>
+            return (
+              <View className="flex-1">
+                <ScrollView contentContainerStyle="flex-1 web:self-center web:sm:w-96  p-4 ios:justify-between android:justify-between">
+                  <View>
+                    <FormikTextInput
+                      fieldName="name"
+                      mode="outlined"
+                      label="Nome"
+                    />
+                    <TextInput
+                      mode="outlined"
+                      label="Descrição"
+                      value={description}
+                      onChangeText={setDescription}
+                    />
+                    <FormikTextInput
+                      className="mt-6"
+                      fieldName="code"
+                      mode="outlined"
+                      label="Código"
+                    />
+                    <Picker
+                      placeholder="Selecione uma prioridade*"
+                      open={openPriorityPicker}
+                      onOpen={onOpenPriorityPicker}
+                      value={values.priority}
+                      items={priorityPickerItems}
+                      setOpen={setOpenPriorityPicker}
+                      //https://github.com/hossein-zare/react-native-dropdown-picker/issues/255
+                      setValue={setPriorityPickerValue}
+                      setItems={setPriorityPickerItems}
+                      zIndex={2}
+                      error={!!(touched.priority && errors.priority)}
+                    />
+                    <View className="mt-7" />
+                    <Picker
+                      placeholder="Selecione um serviço*"
+                      open={openServicePicker}
+                      onOpen={onOpenServicePicker}
+                      value={values.serviceId}
+                      items={servicePickerItems}
+                      setOpen={setOpenServicePicker}
+                      //https://github.com/hossein-zare/react-native-dropdown-picker/issues/255
+                      setValue={setServiceIdPickerValue}
+                      setItems={setServicePickerItems}
+                      zIndex={1}
+                      error={!!(touched.serviceId && errors.serviceId)}
+                    />
+                    <View className="mt-7">
+                      <List.AccordionGroup>
+                        <List.Accordion title="Grupos" id="groups">
+                          {groups.map((group) => (
+                            <Checkbox.Item
+                              mode="android"
+                              key={group.id}
+                              label={group.name}
+                              status={
+                                selectedGroupIds.includes(group.id)
+                                  ? "checked"
+                                  : "unchecked"
+                              }
+                              onPress={() => toggleGroupId(group.id)}
+                            />
+                          ))}
+                        </List.Accordion>
+                      </List.AccordionGroup>
+                    </View>
                   </View>
-                </View>
-                <Button
-                  className="mt-7 web:self-end"
-                  mode="contained"
-                  disabled={isLoading}
-                  onPress={() => handleSubmit()}
-                >
-                  Criar
-                </Button>
-              </ScrollView>
-            </View>
-          );
-        }}
-      </Formik>
-    </View>
+                  <Button
+                    className="mt-7 web:self-end"
+                    mode="contained"
+                    disabled={isLoading}
+                    onPress={() => handleSubmit()}
+                  >
+                    Criar
+                  </Button>
+                </ScrollView>
+              </View>
+            );
+          }}
+        </Formik>
+      </View>
+    </SafeAreaInsetsContainer>
   );
 };
