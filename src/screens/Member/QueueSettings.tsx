@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 
 import { useGroupsQueries } from "../../queries/groups";
 
@@ -62,6 +62,12 @@ export const QueueSettings = ({ route }: Props) => {
       },
     });
   };
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: queue?.name,
+    });
+  }, [navigation, queue]);
 
   return (
     <SafeAreaInsetsContainer>
