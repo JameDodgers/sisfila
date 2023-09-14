@@ -56,7 +56,11 @@ export const ServiceItem = ({ item, guest = false, enterOnQueue }: Props) => {
       </Card.Content>
       <Card.Actions>
         {guest && (
-          <Button disabled={!item.open} mode="contained" onPress={enterOnQueue}>
+          <Button
+            disabled={!item.isOpened}
+            mode="contained"
+            onPress={enterOnQueue}
+          >
             Entrar na fila
           </Button>
         )}
