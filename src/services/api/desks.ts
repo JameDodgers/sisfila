@@ -31,9 +31,12 @@ type UpdateParams = {
 const updateDesk = ({ deskId, data }: UpdateParams) =>
   api.patch(`v1/desks/${deskId}`, data).then((response) => response.data);
 
+const callNext = (id: string) => api.patch(`v1/desks/${id}/next`);
+
 export default {
   getAll,
   createDesk,
   deleteDesk,
   updateDesk,
+  callNext,
 };

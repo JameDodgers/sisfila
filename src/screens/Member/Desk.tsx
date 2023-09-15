@@ -20,7 +20,9 @@ export const Desk = ({ route }: Props) => {
 
   const { currentOrganizationId = "" } = useOrganizerStore();
 
-  const { useGetDesks } = useDesksQueries();
+  const { useGetDesks, useCallNext } = useDesksQueries();
+
+  const { mutate: callNext } = useCallNext();
 
   const { data: desk } = useGetDesks(currentOrganizationId, {
     select: (data) => data.find((item) => item.id === deskId),
@@ -32,7 +34,9 @@ export const Desk = ({ route }: Props) => {
     });
   }, [navigation, desk]);
 
-  const handleCallNext = () => {};
+  const handleCallNext = () => {
+    callNext(deskId);
+  };
 
   return (
     <SafeAreaInsetsContainer>

@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { desksKeys } from "./keys";
 import { Desk } from "../models/Desk";
 
-import deskApi from "../services/api/desks";
+import desksApi from "../services/api/desks";
 
 type QueryOptions<TData, TResult> = {
   select?: (data: TData) => TResult;
@@ -17,14 +17,14 @@ export const useDesksQueries = () => {
     options?: QueryOptions<Desk[], TResult>
   ) =>
     useQuery({
-      queryFn: () => deskApi.getAll(organizationId),
+      queryFn: () => desksApi.getAll(organizationId),
       queryKey: desksKeys.all(organizationId),
       ...options,
     });
 
   const useCreateDesk = (organizationId: string) =>
     useMutation({
-      mutationFn: deskApi.createDesk,
+      mutationFn: desksApi.createDesk,
       onSuccess: (desk) => {
         queryClient.setQueryData<Desk[]>(
           desksKeys.all(organizationId),
@@ -41,7 +41,7 @@ export const useDesksQueries = () => {
 
   const useDeleteDesk = (organizationId: string) =>
     useMutation({
-      mutationFn: deskApi.deleteDesk,
+      mutationFn: desksApi.deleteDesk,
       onMutate: async (deskId) => {
         await queryClient.cancelQueries({
           queryKey: desksKeys.all(organizationId),
@@ -75,7 +75,7 @@ export const useDesksQueries = () => {
 
   const useUpdateDesk = (organizationId: string) =>
     useMutation({
-      mutationFn: deskApi.updateDesk,
+      mutationFn: desksApi.updateDesk,
       onSettled: () => {
         queryClient.invalidateQueries({
           queryKey: desksKeys.all(organizationId),
@@ -83,5 +83,16 @@ export const useDesksQueries = () => {
       },
     });
 
-  return { useGetDesks, useCreateDesk, useDeleteDesk, useUpdateDesk };
+  const useCallNext = () =>
+    useMutation({
+      mutationFn: desksApi.callNext,
+    });
+
+  return {
+    useGetDesks,
+    useCreateDesk,
+    useDeleteDesk,
+    useUpdateDesk,
+    useCallNext,
+  };
 };
