@@ -1,12 +1,12 @@
 import { FlatList, View } from "react-native";
 import { RootNavigatorScreenProps } from "../../../@types/navigation";
 import { Button, Dialog, Portal, TextInput } from "react-native-paper";
-import { useOrganizationsQueries } from "../../queries/guest/organizations";
+import { useOrganizationsQueries } from "../../queries/organizations";
 
 import { ServiceItem } from "../../components/ServiceItem";
 import { useLayoutEffect, useState } from "react";
 import { useMessageStore } from "../../store/message";
-import { useServicesQueries } from "../../queries/guest/services";
+import { useServicesQueries } from "../../queries/services";
 import { useNavigation } from "@react-navigation/native";
 
 type Props = {
@@ -31,7 +31,9 @@ export const Organization = ({ route }: Props) => {
 
   const { useEnterService } = useServicesQueries();
 
-  const { useGetOrganization, useGetServices } = useOrganizationsQueries();
+  const { useGetOrganization } = useOrganizationsQueries();
+
+  const { useGetServices } = useServicesQueries();
 
   const { data: organization } = useGetOrganization(organizationId);
 

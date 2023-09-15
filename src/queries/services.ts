@@ -9,8 +9,7 @@ export const useServicesQueries = () => {
   const useGetServices = (organizationId: string) =>
     useQuery({
       queryKey: servicesKeys.all(organizationId),
-      queryFn: () =>
-        servicesApi.getOne(organizationId).then((response) => response.data),
+      queryFn: () => servicesApi.getAllFromOrganization(organizationId),
     });
 
   const useCreateService = () =>
@@ -50,5 +49,10 @@ export const useServicesQueries = () => {
       },
     });
 
-  return { useGetServices, useCreateService };
+  const useEnterService = () =>
+    useMutation({
+      mutationFn: servicesApi.enter,
+    });
+
+  return { useGetServices, useCreateService, useEnterService };
 };

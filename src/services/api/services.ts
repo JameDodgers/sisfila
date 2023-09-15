@@ -9,11 +9,15 @@ interface CreateServiceResponse {
   id: string;
 }
 
-const getOne = (organizationId: string) =>
-  api.get<GetOneResponse>(`v1/services/organizations/${organizationId}`);
+const getAllFromOrganization = (organizationId: string) =>
+  api
+    .get<GetOneResponse>(`v1/services/organizations/${organizationId}`)
+    .then((response) => response.data);
 
 const create = (data: CreateServiceParams) =>
-  api.post<CreateServiceResponse>("v1/services", data);
+  api
+    .post<CreateServiceResponse>("v1/services", data)
+    .then((response) => response.data);
 
 interface EnterServiceRequestBody {
   registrationId: string;
@@ -30,4 +34,4 @@ interface EnterServiceResponse {
 const enter = (data: EnterServiceRequestBody) =>
   api.patch<EnterServiceResponse>("v1/services/enter", data);
 
-export default { getOne, create, enter };
+export default { getAllFromOrganization, create, enter };
