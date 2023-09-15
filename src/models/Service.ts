@@ -1,15 +1,15 @@
 export type ServiceBase = {
   name: string;
   subscriptionToken: string;
-  guestEnroll: boolean;
+  guestEnrollment: boolean;
   organizationId: string;
-  isOpened: boolean;
   opensAt: string;
   closesAt: string;
 };
 
 export type Service = ServiceBase & {
   id: string;
+  isOpened: boolean;
   createdAt: string;
   updatedAt: string;
 };
