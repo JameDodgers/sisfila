@@ -5,10 +5,11 @@ interface CreateQueueParams extends QueueBase {}
 
 interface CreateQueueResponse extends Queue {}
 
-interface AttachGroupsToQueueParams {
+interface AttachGroupsAndServiceParams {
   queueId: string;
   organizationId: string;
-  groups: string[];
+  serviceId?: string;
+  groups?: string[];
 }
 
 interface GetOneResponse extends Array<Queue> {}
@@ -23,16 +24,16 @@ const create = (data: CreateQueueParams) =>
     .post<CreateQueueResponse>("v1/queues", data)
     .then((response) => response.data);
 
-const attachGroupsToQueue = ({
+const attachGroupsAndServiceToQueue = ({
   queueId,
   organizationId,
   ...data
-}: AttachGroupsToQueueParams) =>
+}: AttachGroupsAndServiceParams) =>
   api.patch(`v1/queues/${queueId}/organizations/${organizationId}`, data);
 
 export default {
   getOne,
   getQueue,
   create,
-  attachGroupsToQueue,
+  attachGroupsAndServiceToQueue,
 };

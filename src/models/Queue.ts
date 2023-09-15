@@ -11,7 +11,7 @@ export type QueueCommon = {
 };
 
 export type QueueBase = QueueCommon & {
-  groups: string[];
+  groupIds: string[];
 };
 
 export type Queue = QueueCommon & {

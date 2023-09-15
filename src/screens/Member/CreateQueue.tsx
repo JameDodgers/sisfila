@@ -95,7 +95,7 @@ export const CreateQueue = () => {
       priority: Number(priority),
       serviceId,
       organizationId: currentOrganizationId,
-      groups: selectedGroupIds,
+      groupIds: selectedGroupIds,
     };
 
     createQueue(payload, {
