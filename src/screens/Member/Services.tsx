@@ -8,7 +8,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useOrganizerStore } from "../../store/organizer";
 import { ServicesStackNavigationProp } from "../../../@types/navigation";
 import { View } from "react-native";
-import { FlatList } from "../../libs/styled";
+import { CustomFlatList } from "../../libs/styled";
 import { CustomNavigationBar } from "../../components/CustomNavigationBar";
 
 export const Services = () => {
@@ -40,11 +40,10 @@ export const Services = () => {
 
   return (
     <View className="flex-1">
-      <FlatList
+      <CustomFlatList
         data={services}
         renderItem={({ item }: any) => <ServiceItem item={item} />}
         keyExtractor={(item: any) => item.id.toString()}
-        contentContainerStyle="p-4 web:items-center"
         ItemSeparatorComponent={() => <View className="h-3" />}
       />
     </View>

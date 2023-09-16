@@ -8,7 +8,7 @@ type Props = {
 
 export const GroupItem = ({ item, onPress }: Props) => {
   return (
-    <Card className="sm:w-[320]" mode="elevated" onPress={onPress}>
+    <Card mode="elevated" onPress={onPress}>
       <Card.Title title={item.name} />
     </Card>
   );

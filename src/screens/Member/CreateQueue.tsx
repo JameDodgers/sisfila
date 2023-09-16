@@ -151,82 +151,85 @@ export const CreateQueue = () => {
             }, []);
 
             return (
-              <View className="flex-1">
-                <ScrollView contentContainerStyle="flex-1 web:self-center web:sm:w-96  p-4 ios:justify-between android:justify-between">
-                  <View>
-                    <FormikTextInput
-                      fieldName="name"
-                      mode="outlined"
-                      label="Nome"
-                    />
-                    <TextInput
-                      mode="outlined"
-                      label="Descrição"
-                      value={description}
-                      onChangeText={setDescription}
-                    />
-                    <FormikTextInput
-                      className="mt-6"
-                      fieldName="code"
-                      mode="outlined"
-                      label="Código"
-                    />
-                    <Picker
-                      placeholder="Selecione uma prioridade*"
-                      open={openPriorityPicker}
-                      onOpen={onOpenPriorityPicker}
-                      value={values.priority}
-                      items={priorityPickerItems}
-                      setOpen={setOpenPriorityPicker}
-                      //https://github.com/hossein-zare/react-native-dropdown-picker/issues/255
-                      setValue={setPriorityPickerValue}
-                      setItems={setPriorityPickerItems}
-                      zIndex={2}
-                      error={!!(touched.priority && errors.priority)}
-                    />
-                    <View className="mt-7" />
-                    <Picker
-                      placeholder="Selecione um serviço*"
-                      open={openServicePicker}
-                      onOpen={onOpenServicePicker}
-                      value={values.serviceId}
-                      items={servicePickerItems}
-                      setOpen={setOpenServicePicker}
-                      //https://github.com/hossein-zare/react-native-dropdown-picker/issues/255
-                      setValue={setServiceIdPickerValue}
-                      setItems={setServicePickerItems}
-                      zIndex={1}
-                      error={!!(touched.serviceId && errors.serviceId)}
-                    />
-                    <View className="mt-7">
-                      <List.AccordionGroup>
-                        <List.Accordion title="Grupos" id="groups">
-                          {groups.map((group) => (
-                            <Checkbox.Item
-                              mode="android"
-                              key={group.id}
-                              label={group.name}
-                              status={
-                                selectedGroupIds.includes(group.id)
-                                  ? "checked"
-                                  : "unchecked"
-                              }
-                              onPress={() => toggleGroupId(group.id)}
-                            />
-                          ))}
-                        </List.Accordion>
-                      </List.AccordionGroup>
-                    </View>
+              <View className="flex-1 justify-between web:justify-start">
+                <ScrollView
+                  className="web:grow-0"
+                  contentContainerStyle="p-4 web:w-full web:self-center web:max-w-sm"
+                >
+                  <FormikTextInput
+                    fieldName="name"
+                    mode="outlined"
+                    label="Nome"
+                  />
+                  <TextInput
+                    mode="outlined"
+                    label="Descrição"
+                    value={description}
+                    onChangeText={setDescription}
+                  />
+                  <FormikTextInput
+                    className="mt-6"
+                    fieldName="code"
+                    mode="outlined"
+                    label="Código"
+                  />
+                  <Picker
+                    placeholder="Selecione uma prioridade*"
+                    open={openPriorityPicker}
+                    onOpen={onOpenPriorityPicker}
+                    value={values.priority}
+                    items={priorityPickerItems}
+                    setOpen={setOpenPriorityPicker}
+                    //https://github.com/hossein-zare/react-native-dropdown-picker/issues/255
+                    setValue={setPriorityPickerValue}
+                    setItems={setPriorityPickerItems}
+                    zIndex={2}
+                    error={!!(touched.priority && errors.priority)}
+                  />
+                  <View className="mt-7" />
+                  <Picker
+                    placeholder="Selecione um serviço*"
+                    open={openServicePicker}
+                    onOpen={onOpenServicePicker}
+                    value={values.serviceId}
+                    items={servicePickerItems}
+                    setOpen={setOpenServicePicker}
+                    //https://github.com/hossein-zare/react-native-dropdown-picker/issues/255
+                    setValue={setServiceIdPickerValue}
+                    setItems={setServicePickerItems}
+                    zIndex={1}
+                    error={!!(touched.serviceId && errors.serviceId)}
+                  />
+                  <View className="mt-7">
+                    <List.AccordionGroup>
+                      <List.Accordion title="Grupos" id="groups">
+                        {groups.map((group) => (
+                          <Checkbox.Item
+                            mode="android"
+                            key={group.id}
+                            label={group.name}
+                            status={
+                              selectedGroupIds.includes(group.id)
+                                ? "checked"
+                                : "unchecked"
+                            }
+                            onPress={() => toggleGroupId(group.id)}
+                          />
+                        ))}
+                      </List.Accordion>
+                    </List.AccordionGroup>
                   </View>
+                </ScrollView>
+                <View className="p-4 web:w-full web:self-center web:max-w-sm">
                   <Button
-                    className="mt-7 web:self-end"
+                    className="web:self-end"
                     mode="contained"
                     disabled={isLoading}
                     onPress={() => handleSubmit()}
                   >
                     Criar
                   </Button>
-                </ScrollView>
+                </View>
               </View>
             );
           }}

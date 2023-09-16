@@ -30,7 +30,7 @@ export const ServiceItem = ({ item, guest = false, enterOnQueue }: Props) => {
   const cardMode = guest ? "elevated" : "contained";
 
   return (
-    <Card className="sm:w-[320]" mode={cardMode}>
+    <Card mode={cardMode}>
       <Card.Title title={item.name} />
       <Card.Content>
         <View className="flex-row items-center">

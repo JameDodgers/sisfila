@@ -7,8 +7,9 @@ import { useGroupsQueries } from "../../queries/groups";
 import { useRefreshOnFocus } from "../../hooks/useRefreshOnFocus";
 import { useOrganizerStore } from "../../store/organizer";
 import { GroupsStackScreenProps } from "../../../@types/navigation";
-import { FlatList, View } from "react-native";
+import { View } from "react-native";
 import { CustomNavigationBar } from "../../components/CustomNavigationBar";
+import { CustomFlatList } from "../../libs/styled";
 
 export const Groups = () => {
   const navigation =
@@ -48,14 +49,13 @@ export const Groups = () => {
 
   return (
     <View className="flex-1">
-      <FlatList
+      <CustomFlatList
         data={groups}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
+        keyExtractor={(item: any) => item.id.toString()}
+        renderItem={({ item }: any) => (
           <GroupItem item={item} onPress={() => openGroup(item.id)} />
         )}
         ItemSeparatorComponent={() => <View className="h-3" />}
-        contentContainerStyle={{ padding: 16 }}
       />
     </View>
   );

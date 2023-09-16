@@ -44,7 +44,7 @@ export const CreateGroup = () => {
 
   return (
     <SafeAreaInsetsContainer>
-      <View className="flex-1 p-4 web:items-center">
+      <View className="flex-1 p-4 web:w-full web:self-center web:max-w-sm">
         <Formik
           initialValues={{
             name: "",
@@ -54,7 +54,7 @@ export const CreateGroup = () => {
         >
           {({ handleSubmit }) => {
             return (
-              <View className="flex-1 ios:justify-between android:justify-between web:sm:w-96">
+              <View className="flex-1 justify-between web:justify-start">
                 <View>
                   <FormikTextInput
                     fieldName="name"

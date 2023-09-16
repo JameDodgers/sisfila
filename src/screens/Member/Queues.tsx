@@ -5,7 +5,7 @@ import { useOrganizerStore } from "../../store/organizer";
 import { QueuesStackScreenProps } from "../../../@types/navigation";
 import { useNavigation } from "@react-navigation/native";
 import { View } from "react-native";
-import { FlatList } from "../../libs/styled";
+import { CustomFlatList } from "../../libs/styled";
 import { useOrganizationQueuesQueries } from "../../queries/organizationQueues";
 import { CustomNavigationBar } from "../../components/CustomNavigationBar";
 
@@ -44,10 +44,8 @@ export const Queues = () => {
   };
 
   return (
-    <View className="flex-1 web:items-center">
-      <FlatList
-        className="web:sm:w-[640]"
-        contentContainerStyle="p-4"
+    <View className="flex-1">
+      <CustomFlatList
         data={queues}
         keyExtractor={(item: any) => item.id.toString()}
         ItemSeparatorComponent={() => <View className="h-3" />}

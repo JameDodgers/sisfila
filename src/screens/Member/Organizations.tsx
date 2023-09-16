@@ -7,7 +7,7 @@ import { useOrganizationsQueries } from "../../queries/organizations";
 import { useRefreshOnFocus } from "../../hooks/useRefreshOnFocus";
 import { setCurrentOrganizationId } from "../../store/organizer";
 import { View } from "react-native";
-import { FlatList } from "../../libs/styled";
+import { CustomFlatList } from "../../libs/styled";
 import { CustomNavigationBar } from "../../components/CustomNavigationBar";
 import { RootNavigatorScreenProps } from "../../../@types/navigation";
 
@@ -54,10 +54,8 @@ export const Organizations = () => {
   };
 
   return (
-    <View className="flex-1 web:items-center">
-      <FlatList
-        className="web:sm:w-[640]"
-        contentContainerStyle="p-4"
+    <View className="flex-1">
+      <CustomFlatList
         data={organizations}
         ItemSeparatorComponent={() => <View className="h-3" />}
         showsVerticalScrollIndicator={false}

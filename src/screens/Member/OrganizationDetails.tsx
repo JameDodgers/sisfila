@@ -5,14 +5,7 @@ import { useLayoutEffect, useState } from "react";
 import { useOrganizationsQueries } from "../../queries/organizations";
 
 import { useOrganizerStore } from "../../store/organizer";
-import {
-  Button,
-  IconButton,
-  Portal,
-  Snackbar,
-  Text,
-  useTheme,
-} from "react-native-paper";
+import { Button, Portal, Snackbar, TextInput } from "react-native-paper";
 import { View } from "react-native";
 
 import * as Clipboard from "expo-clipboard";
@@ -21,8 +14,6 @@ import { SafeAreaInsetsContainer } from "../../components/SafeInsetsContainer";
 
 export const OrganizationDetails = () => {
   const navigation = useNavigation();
-
-  const theme = useTheme();
 
   const [visible, setVisible] = useState(false);
 
@@ -60,29 +51,22 @@ export const OrganizationDetails = () => {
   return (
     <>
       <SafeAreaInsetsContainer>
-        <View className="flex-1 p-4 web:items-center">
-          <View
-            style={{ gap: 8 }}
-            className="flex-1 ios:justify-between android:justify-between"
-          >
-            <View
-              className="mt-2 flex-row rounded-sm items-center pr-3"
-              style={{ backgroundColor: theme.colors.surfaceVariant }}
-            >
-              <IconButton
-                icon="content-copy"
-                size={20}
-                onPress={handleCopyLink}
-              />
-              <Text
-                className="flex-1"
-                style={{ color: theme.colors.onSurfaceVariant }}
-                numberOfLines={1}
-              >
-                {link}
-              </Text>
-            </View>
-            <Button onPress={handleDeleteOrganization}>
+        <View className="flex-1 p-4 web:w-full web:self-center web:max-w-md">
+          <View className="flex-1 justify-between web:justify-start">
+            <TextInput
+              label="URL para clientes"
+              value={link}
+              editable={false}
+              right={
+                <TextInput.Icon
+                  icon="content-copy"
+                  size={20}
+                  onPress={handleCopyLink}
+                />
+              }
+            />
+
+            <Button className="mt-4" onPress={handleDeleteOrganization}>
               Excluir organização
             </Button>
           </View>
@@ -90,7 +74,7 @@ export const OrganizationDetails = () => {
       </SafeAreaInsetsContainer>
       <Portal>
         <Snackbar visible={visible} onDismiss={onDismissSnackBar}>
-          O link para a fila foi copiado para a área de transferência
+          A URL da organização foi copiado para a área de transferência
         </Snackbar>
       </Portal>
     </>

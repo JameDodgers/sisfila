@@ -1,4 +1,4 @@
-import { FlatList, View } from "react-native";
+import { View } from "react-native";
 import { useOrganizerStore } from "../../store/organizer";
 import { useNavigation } from "@react-navigation/native";
 import { DesksStackScreenProps } from "../../../@types/navigation";
@@ -10,6 +10,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { FormikTextInput } from "../../components/FormikTextInput";
 import { useUser } from "../../store/auth";
+import { CustomFlatList } from "../../libs/styled";
 
 type FormValues = {
   name: string;
@@ -147,13 +148,12 @@ export const Desks = () => {
 
   return (
     <View className="flex-1">
-      <FlatList
+      <CustomFlatList
         data={desks}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={{ padding: 16 }}
+        keyExtractor={(item: any) => item.id}
         ItemSeparatorComponent={() => <View className="h-3" />}
         ListHeaderComponent={ListHeaderComponent}
-        renderItem={({ item }) => (
+        renderItem={({ item }: any) => (
           <DeskItem
             item={item}
             openDeskSettings={() => handleEditDesk(item.id)}

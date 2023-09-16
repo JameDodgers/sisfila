@@ -1,4 +1,4 @@
-import { FlatList, View } from "react-native";
+import { View } from "react-native";
 import { RootNavigatorScreenProps } from "../../../@types/navigation";
 import { Button, Dialog, Portal, TextInput } from "react-native-paper";
 import { useOrganizationsQueries } from "../../queries/organizations";
@@ -8,6 +8,7 @@ import { useLayoutEffect, useState } from "react";
 import { useMessageStore } from "../../store/message";
 import { useServicesQueries } from "../../queries/services";
 import { useNavigation } from "@react-navigation/native";
+import { CustomFlatList } from "../../libs/styled";
 
 type Props = {
   route: RootNavigatorScreenProps<"Organization">["route"];
@@ -73,18 +74,17 @@ export const Organization = ({ route }: Props) => {
   return (
     <>
       <View className="flex-1">
-        <FlatList
+        <CustomFlatList
           data={services}
-          renderItem={({ item }) => (
+          renderItem={({ item }: any) => (
             <ServiceItem
               guest
               item={item}
               enterOnQueue={() => handleSelectService(item.id)}
             />
           )}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item: any) => item.id}
           ItemSeparatorComponent={() => <View className="h-3" />}
-          contentContainerStyle={{ padding: 16 }}
         />
       </View>
       <Portal>

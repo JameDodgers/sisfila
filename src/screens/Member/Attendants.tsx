@@ -8,6 +8,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Button, Dialog, Portal, TextInput } from "react-native-paper";
 import { OrganizationDrawerScreenProps } from "../../../@types/navigation";
 import { CustomNavigationBar } from "../../components/CustomNavigationBar";
+import { CustomFlatList, Dialog as StyledDialog } from "../../libs/styled";
 
 export const Attendants = () => {
   const navigation =
@@ -67,12 +68,11 @@ export const Attendants = () => {
   return (
     <>
       <View className="flex-1">
-        <FlatList
+        <CustomFlatList
           data={attendants}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={{ padding: 16 }}
+          keyExtractor={(item: any) => item.id}
           ItemSeparatorComponent={() => <View className="h-3" />}
-          renderItem={({ item }) => (
+          renderItem={({ item }: any) => (
             <AttendantItem
               item={item}
               onPressRemove={() => handleRemoveAttendant(item.id)}
@@ -81,7 +81,7 @@ export const Attendants = () => {
         />
       </View>
       <Portal>
-        <Dialog visible={visible} onDismiss={closeModal}>
+        <StyledDialog visible={visible} onDismiss={closeModal}>
           <Dialog.Title>Adicionar atendente</Dialog.Title>
           <Dialog.Content>
             <TextInput
@@ -95,7 +95,7 @@ export const Attendants = () => {
             <Button onPress={closeModal}>Cancelar</Button>
             <Button onPress={handleAddAttendant}>Adicionar</Button>
           </Dialog.Actions>
-        </Dialog>
+        </StyledDialog>
       </Portal>
     </>
   );

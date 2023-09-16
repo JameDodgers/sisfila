@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import {
   KeyboardAvoidingView,
   Platform,
-  ScrollView,
   View,
   TextInput as RNTextInput,
 } from "react-native";
@@ -68,67 +67,63 @@ export const SignIn = () => {
 
   return (
     <KeyboardAvoidingView
-      className="flex-1 p-4"
+      className="flex-1"
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      <ScrollView>
-        <View className="items-center">
-          <View className="web:sm:w-96">
-            <Text variant="displaySmall">Bem-vindo</Text>
-            <View className="gap-y-3 mt-5">
-              <TextInput
-                mode="outlined"
-                label="E-mail"
-                value={email}
-                onChangeText={setEmail}
-                keyboardType="email-address"
-                autoComplete="email"
-                returnKeyType="next"
-                onSubmitEditing={() => {
-                  passwordInputRef.current?.focus();
-                }}
-                blurOnSubmit={false}
-              />
-              <TextInput
-                mode="outlined"
-                label="Senha"
-                ref={passwordInputRef}
-                returnKeyType="next"
-                secureTextEntry
-                autoComplete="current-password"
-                value={password}
-                onChangeText={setPassword}
-                onSubmitEditing={handleSignIn}
-                blurOnSubmit={false}
-              />
-              <View className="gap-y-2 mt-8">
-                <Button onPress={handleSignInWithGoogle}>
-                  <Text>Entrar com o Google</Text>
-                </Button>
-                <Button
-                  mode="contained-tonal"
-                  disabled={!email || !password}
-                  onPress={handleSignIn}
-                >
-                  Entrar
-                </Button>
-              </View>
-              <View className="flex-row mt-6">
-                <Text variant="bodyMedium">Ainda não tem uma conta? </Text>
-                <Text
-                  variant="bodyMedium"
-                  className="underline text-indigo-500"
-                  onPress={() => {
-                    navigation.navigate("SignUp");
-                  }}
-                >
-                  Cadastre-se
-                </Text>
-              </View>
-            </View>
+      <View className="flex-1 p-4 max-w-[90%] w-full self-center web:max-w-sm">
+        <Text variant="displaySmall">Bem-vindo</Text>
+        <View className="gap-y-3 mt-5">
+          <TextInput
+            mode="outlined"
+            label="E-mail"
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+            autoComplete="email"
+            returnKeyType="next"
+            onSubmitEditing={() => {
+              passwordInputRef.current?.focus();
+            }}
+            blurOnSubmit={false}
+          />
+          <TextInput
+            mode="outlined"
+            label="Senha"
+            ref={passwordInputRef}
+            returnKeyType="next"
+            secureTextEntry
+            autoComplete="current-password"
+            value={password}
+            onChangeText={setPassword}
+            onSubmitEditing={handleSignIn}
+            blurOnSubmit={false}
+          />
+          <View className="gap-y-2 mt-8">
+            <Button onPress={handleSignInWithGoogle}>
+              <Text>Entrar com o Google</Text>
+            </Button>
+            <Button
+              mode="contained-tonal"
+              disabled={!email || !password}
+              onPress={handleSignIn}
+            >
+              Entrar
+            </Button>
+          </View>
+          <View className="flex-row mt-6">
+            <Text variant="bodyMedium">Ainda não tem uma conta? </Text>
+            <Text
+              variant="bodyMedium"
+              className="underline text-indigo-500"
+              onPress={() => {
+                navigation.navigate("SignUp");
+              }}
+            >
+              Cadastre-se
+            </Text>
           </View>
         </View>
-      </ScrollView>
+      </View>
     </KeyboardAvoidingView>
   );
 };
