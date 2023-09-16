@@ -132,7 +132,7 @@ export const CreateService = () => {
           setClosesAt(_closesAt);
           setOpensAt(_opensAt);
         } else {
-          const _opensAt = replaceHours(date, opensAt);
+          const _opensAt = replaceHours(opensAt, date);
 
           setOpensAt(_opensAt);
         }
