@@ -8,7 +8,7 @@ import _ from "lodash";
 import { useOrganizerStore } from "../../store/organizer";
 import { View } from "react-native";
 import * as Yup from "yup";
-import { Button, Checkbox, List, TextInput } from "react-native-paper";
+import { Button, TextInput } from "react-native-paper";
 import { Picker } from "../../components/Picker";
 import { ScrollView } from "../../libs/styled";
 import { Formik } from "formik";
@@ -16,6 +16,7 @@ import { FormikTextInput } from "../../components/FormikTextInput";
 import { useOrganizationQueuesQueries } from "../../queries/organizationQueues";
 import { useGroupsQueries } from "../../queries/groups";
 import { SafeAreaInsetsContainer } from "../../components/SafeInsetsContainer";
+import { CheckboxList } from "../../components/CheckboxList";
 
 interface FormValues {
   name: string;
@@ -48,13 +49,6 @@ export const CreateQueue = () => {
       setSelectedGroupIds([groups[0].id]);
     }
   }, [groups]);
-
-  const toggleGroupId = (id: string) =>
-    setSelectedGroupIds((selectedGroupIds) =>
-      selectedGroupIds.includes(id)
-        ? selectedGroupIds.filter((i) => i !== id)
-        : [...selectedGroupIds, id]
-    );
 
   const [description, setDescription] = useState("");
 
@@ -201,23 +195,12 @@ export const CreateQueue = () => {
                     error={!!(touched.serviceId && errors.serviceId)}
                   />
                   <View className="mt-7">
-                    <List.AccordionGroup>
-                      <List.Accordion title="Grupos" id="groups">
-                        {groups.map((group) => (
-                          <Checkbox.Item
-                            mode="android"
-                            key={group.id}
-                            label={group.name}
-                            status={
-                              selectedGroupIds.includes(group.id)
-                                ? "checked"
-                                : "unchecked"
-                            }
-                            onPress={() => toggleGroupId(group.id)}
-                          />
-                        ))}
-                      </List.Accordion>
-                    </List.AccordionGroup>
+                    <CheckboxList
+                      items={groups}
+                      selectedIds={selectedGroupIds}
+                      setSelectedIds={setSelectedGroupIds}
+                      title="Grupos"
+                    />
                   </View>
                 </ScrollView>
                 <View className="p-4 web:w-full web:self-center web:max-w-sm">

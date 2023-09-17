@@ -1,7 +1,7 @@
 import { useOrganizerStore } from "../../store/organizer";
 import { DesksStackScreenProps } from "../../../@types/navigation";
 
-import { Button, Checkbox, List } from "react-native-paper";
+import { Button } from "react-native-paper";
 import { View } from "react-native";
 import { SafeAreaInsetsContainer } from "../../components/SafeInsetsContainer";
 import { useEffect, useLayoutEffect, useState } from "react";
@@ -12,6 +12,7 @@ import { useServicesQueries } from "../../queries/services";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import { FormikTextInput } from "../../components/FormikTextInput";
+import { CheckboxList } from "../../components/CheckboxList";
 
 type Props = {
   route: DesksStackScreenProps<"DeskSettings">["route"];
@@ -69,13 +70,6 @@ export const DeskSettings = ({ route }: Props) => {
     }
   }, [desk?.services]);
 
-  const toggleServiceId = (id: string) =>
-    setSelectedServiceIds((selectedServiceIds) =>
-      selectedServiceIds.includes(id)
-        ? selectedServiceIds.filter((serviceId) => serviceId !== id)
-        : [...selectedServiceIds, id]
-    );
-
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: desk?.name,
@@ -101,23 +95,12 @@ export const DeskSettings = ({ route }: Props) => {
           <View className="flex-1 p-4 gap-4 justify-between">
             <View>
               <FormikTextInput mode="outlined" fieldName="name" label="Nome" />
-              <List.AccordionGroup>
-                <List.Accordion title="Serviços" id="services">
-                  {services.map((service) => (
-                    <Checkbox.Item
-                      mode="android"
-                      key={service.id}
-                      label={service.name}
-                      status={
-                        selectedServiceIds.includes(service.id)
-                          ? "checked"
-                          : "unchecked"
-                      }
-                      onPress={() => toggleServiceId(service.id)}
-                    />
-                  ))}
-                </List.Accordion>
-              </List.AccordionGroup>
+              <CheckboxList
+                items={services}
+                selectedIds={selectedServiceIds}
+                setSelectedIds={setSelectedServiceIds}
+                title="Serviços"
+              />
             </View>
             <Button
               mode="contained"

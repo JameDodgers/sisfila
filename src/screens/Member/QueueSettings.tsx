@@ -6,9 +6,10 @@ import { useOrganizerStore } from "../../store/organizer";
 import { QueuesStackScreenProps } from "../../../@types/navigation";
 import { useNavigation } from "@react-navigation/native";
 import { ScrollView, View } from "react-native";
-import { Button, Checkbox, List } from "react-native-paper";
+import { Button } from "react-native-paper";
 import { useOrganizationQueuesQueries } from "../../queries/organizationQueues";
 import { SafeAreaInsetsContainer } from "../../components/SafeInsetsContainer";
+import { CheckboxList } from "../../components/CheckboxList";
 
 type Props = {
   route: QueuesStackScreenProps<"QueueSettings">["route"];
@@ -33,13 +34,6 @@ export const QueueSettings = ({ route }: Props) => {
       setSelectedGroupIds(queue.groups.map((group) => group.id));
     }
   }, [queue?.groups]);
-
-  const toggleGroupId = (id: string) =>
-    setSelectedGroupIds((selectedGroupIds) =>
-      selectedGroupIds.includes(id)
-        ? selectedGroupIds.filter((i) => i !== id)
-        : [...selectedGroupIds, id]
-    );
 
   const { useGetGroups } = useGroupsQueries();
 
@@ -73,23 +67,12 @@ export const QueueSettings = ({ route }: Props) => {
     <SafeAreaInsetsContainer>
       <View className="flex-1 p-4">
         <ScrollView className="flex-1">
-          <List.AccordionGroup>
-            <List.Accordion title="Grupos" id="groups">
-              {groups.map((group) => (
-                <Checkbox.Item
-                  mode="android"
-                  key={group.id}
-                  label={group.name}
-                  status={
-                    selectedGroupIds.includes(group.id)
-                      ? "checked"
-                      : "unchecked"
-                  }
-                  onPress={() => toggleGroupId(group.id)}
-                />
-              ))}
-            </List.Accordion>
-          </List.AccordionGroup>
+          <CheckboxList
+            title="Grupos"
+            items={groups}
+            selectedIds={selectedGroupIds}
+            setSelectedIds={setSelectedGroupIds}
+          />
         </ScrollView>
         <Button className="" mode="contained" onPress={handleUpdateQueue}>
           Salvar
