@@ -4,17 +4,12 @@ import { useNavigation } from "@react-navigation/native";
 import { DesksStackScreenProps } from "../../../@types/navigation";
 import { useDesksQueries } from "../../queries/desks";
 import { DeskItem } from "../../components/DeskItem";
-import { useCallback, useEffect, useState } from "react";
-import { Button, Card } from "react-native-paper";
-import { Formik } from "formik";
-import * as Yup from "yup";
-import { FormikTextInput } from "../../components/FormikTextInput";
+import { useEffect, useLayoutEffect, useState } from "react";
+
 import { useUser } from "../../store/auth";
 import { CustomFlatList } from "../../libs/styled";
-
-type FormValues = {
-  name: string;
-};
+import { CustomNavigationBar } from "../../components/CustomNavigationBar";
+import { Appbar } from "react-native-paper";
 
 export const Desks = () => {
   const navigation =
@@ -24,12 +19,7 @@ export const Desks = () => {
 
   const user = useUser();
 
-  const { useGetDesks, useCreateDesk, useDeleteDesk, useUpdateDesk } =
-    useDesksQueries();
-
-  const { mutate: createDesk, isLoading: isCreatingDesk } = useCreateDesk(
-    currentOrganizationId
-  );
+  const { useGetDesks, useDeleteDesk, useUpdateDesk } = useDesksQueries();
 
   const { mutate: deleteDesk } = useDeleteDesk(currentOrganizationId);
 
@@ -59,16 +49,6 @@ export const Desks = () => {
       deskId,
     });
   };
-
-  const handleCreateDesk = useCallback(
-    ({ name }: FormValues) => {
-      createDesk({
-        name,
-        organizationId: currentOrganizationId,
-      });
-    },
-    [currentOrganizationId]
-  );
 
   const handleDeleteDesk = (deskId: string) => {
     deleteDesk(deskId);
@@ -101,50 +81,23 @@ export const Desks = () => {
     });
   };
 
-  const validationSchema = Yup.object().shape({
-    name: Yup.string()
-      .min(2, "Escolha um nome maior")
-      .required("Nome é um campo obrigatório"),
-  });
-
-  const ListHeaderComponent = useCallback(
-    () => (
-      <View className="mb-4">
-        <Card mode="elevated">
-          <Card.Title title="Novo guichê" />
-          <Formik
-            initialValues={{
-              name: "",
-            }}
-            validationSchema={validationSchema}
-            onSubmit={handleCreateDesk}
-          >
-            {({ handleSubmit }) => (
-              <>
-                <Card.Content>
-                  <FormikTextInput
-                    mode="outlined"
-                    fieldName="name"
-                    label="Nome"
-                  />
-                </Card.Content>
-                <Card.Actions className="mr-2 mb-2">
-                  <Button
-                    mode="text"
-                    disabled={isCreatingDesk}
-                    onPress={() => handleSubmit()}
-                  >
-                    Criar
-                  </Button>
-                </Card.Actions>
-              </>
-            )}
-          </Formik>
-        </Card>
-      </View>
-    ),
-    [isCreatingDesk, handleCreateDesk]
-  );
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      header: (props) => (
+        <CustomNavigationBar
+          headerRight={
+            <Appbar.Action
+              icon="plus"
+              onPress={() => {
+                navigation.navigate("CreateDesk");
+              }}
+            />
+          }
+          {...props}
+        />
+      ),
+    });
+  }, [navigation]);
 
   return (
     <View className="flex-1">
@@ -152,7 +105,6 @@ export const Desks = () => {
         data={desks}
         keyExtractor={(item: any) => item.id}
         ItemSeparatorComponent={() => <View className="h-3" />}
-        ListHeaderComponent={ListHeaderComponent}
         renderItem={({ item }: any) => (
           <DeskItem
             item={item}
