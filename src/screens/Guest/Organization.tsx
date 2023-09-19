@@ -6,7 +6,7 @@ import { useOrganizationsQueries } from "../../queries/organizations";
 import { ServiceItem } from "../../components/ServiceItem";
 import { useLayoutEffect, useState } from "react";
 import { useMessageStore } from "../../store/message";
-import { useServicesQueries } from "../../queries/services";
+import { useServicesQueries } from "../../queries/guest/services";
 import { useNavigation } from "@react-navigation/native";
 import { CustomFlatList } from "../../libs/styled";
 
@@ -30,11 +30,9 @@ export const Organization = ({ route }: Props) => {
 
   const [selectedServiceId, setSelectedServiceId] = useState<string>();
 
-  const { useEnterService } = useServicesQueries();
-
   const { useGetOrganization } = useOrganizationsQueries();
 
-  const { useGetServices } = useServicesQueries();
+  const { useGetServices, useEnterService } = useServicesQueries();
 
   const { data: organization } = useGetOrganization(organizationId);
 

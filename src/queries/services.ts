@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import servicesApi from "../services/api/services";
+import servicesApi from "../services/api/admin/services";
 import { Service } from "../models/Service";
 import { servicesKeys } from "./keys";
 
@@ -49,10 +49,5 @@ export const useServicesQueries = () => {
       },
     });
 
-  const useEnterService = () =>
-    useMutation({
-      mutationFn: servicesApi.enter,
-    });
-
-  return { useGetServices, useCreateService, useEnterService };
+  return { useGetServices, useCreateService };
 };

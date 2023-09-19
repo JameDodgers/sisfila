@@ -1,22 +1,11 @@
-import { Service, ServiceBase } from "../../models/Service";
+import { Service } from "../../models/Service";
 import api from "./config";
 
 interface GetOneResponse extends Array<Service> {}
 
-interface CreateServiceParams extends ServiceBase {}
-
-interface CreateServiceResponse {
-  id: string;
-}
-
 const getAllFromOrganization = (organizationId: string) =>
   api
     .get<GetOneResponse>(`v1/services/organizations/${organizationId}`)
-    .then((response) => response.data);
-
-const create = (data: CreateServiceParams) =>
-  api
-    .post<CreateServiceResponse>("v1/services", data)
     .then((response) => response.data);
 
 interface EnterServiceRequestBody {
@@ -32,6 +21,8 @@ interface EnterServiceResponse {
 }
 
 const enter = (data: EnterServiceRequestBody) =>
-  api.patch<EnterServiceResponse>("v1/services/enter", data);
+  api
+    .patch<EnterServiceResponse>("v1/services/enter", data)
+    .then((response) => response.data);
 
-export default { getAllFromOrganization, create, enter };
+export default { getAllFromOrganization, enter };
