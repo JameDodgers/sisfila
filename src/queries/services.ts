@@ -15,36 +15,16 @@ export const useServicesQueries = () => {
   const useCreateService = () =>
     useMutation({
       mutationFn: servicesApi.create,
-      onMutate: async (newService) => {
-        await queryClient.cancelQueries({
-          queryKey: servicesKeys.all(newService.organizationId),
-        });
-
-        const previousServices = queryClient.getQueryData<Service[]>(
-          servicesKeys.all(newService.organizationId)
-        );
-
-        if (previousServices) {
-          queryClient.setQueryData<Service[]>(
-            servicesKeys.all(newService.organizationId),
-            [
-              ...previousServices,
-              { id: "", createdAt: "", updatedAt: "", ...newService },
-            ]
-          );
-        }
-
-        return { previousServices };
-      },
-      onError: (_error, newService, context) => {
-        queryClient.setQueryData(
-          servicesKeys.all(newService.organizationId),
-          context?.previousServices
+      onSuccess: (service, variables) => {
+        queryClient.setQueryData<Service[]>(
+          servicesKeys.all(variables.organizationId),
+          (services) => (services ? [service, ...services] : [service])
         );
       },
-      onSettled: (_data, _error, newService) => {
+      onSettled: (_data, _error, variables) => {
         queryClient.invalidateQueries({
-          queryKey: servicesKeys.all(newService.organizationId),
+          refetchType: "none",
+          queryKey: servicesKeys.all(variables.organizationId),
         });
       },
     });
