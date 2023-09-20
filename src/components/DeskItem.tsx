@@ -1,6 +1,7 @@
-import { Button, Card, IconButton, Menu } from "react-native-paper";
+import { Button, Card } from "react-native-paper";
 import { Desk } from "../models/Desk";
-import { useState } from "react";
+
+import { CardMenu } from "./CardMenu";
 
 type Props = {
   item: Desk;
@@ -23,17 +24,6 @@ export const DeskItem = ({
   startService,
   endService,
 }: Props) => {
-  const [menuVisible, setMenuVisible] = useState(false);
-
-  const openMenu = () => setMenuVisible(true);
-
-  const closeMenu = () => setMenuVisible(false);
-
-  const onPressMenuItem = (callback: () => void) => () => {
-    callback();
-    closeMenu();
-  };
-
   const vacant = !item.attendantId;
 
   const actionButtonText = vacant
@@ -42,30 +32,24 @@ export const DeskItem = ({
     ? "Retomar"
     : "Ocupado";
 
+  const cardMenuOptions = [
+    {
+      leadingIcon: "cog",
+      title: "Configurações",
+      onPress: openDeskSettings,
+    },
+    {
+      leadingIcon: "delete",
+      title: "Excluir",
+      onPress: deleteDesk,
+    },
+  ];
+
   return (
     <Card>
       <Card.Title
         title={item.name}
-        right={(props) => (
-          <Menu
-            visible={menuVisible}
-            onDismiss={closeMenu}
-            anchor={
-              <IconButton {...props} icon="dots-vertical" onPress={openMenu} />
-            }
-          >
-            <Menu.Item
-              leadingIcon="cog"
-              title="Configurações"
-              onPress={onPressMenuItem(openDeskSettings)}
-            />
-            <Menu.Item
-              leadingIcon="delete"
-              title="Excluir"
-              onPress={onPressMenuItem(deleteDesk)}
-            />
-          </Menu>
-        )}
+        right={() => <CardMenu options={cardMenuOptions} />}
       />
       <Card.Actions>
         {occupiedByUser && <Button onPress={endService}>Encerrar</Button>}
