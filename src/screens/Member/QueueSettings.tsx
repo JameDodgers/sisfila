@@ -11,6 +11,7 @@ import { useQueuesQueries } from "../../queries/queues";
 import { SafeAreaInsetsContainer } from "../../components/SafeInsetsContainer";
 import { CheckboxList } from "../../components/CheckboxList";
 import { useServicesQueries } from "../../queries/services";
+import { RadioButtonList } from "../../components/RadioButtonList";
 
 type Props = {
   route: QueuesStackScreenProps<"QueueSettings">["route"];
@@ -28,7 +29,28 @@ export const QueueSettings = ({ route }: Props) => {
 
   const { data: queue } = useGetQueue(queueId, currentOrganizationId);
 
-  const [selectedGroupIds, setSelectedGroupIds] = useState<string[]>([]);
+  const [selectedServiceId, setSelectedServiceId] = useState<string>(
+    queue?.serviceId || ""
+  );
+
+  const { useGetServices } = useServicesQueries(currentOrganizationId);
+
+  const { data: services = [] } = useGetServices();
+
+  const radioButtonsListItems = services.map(({ id, name }) => ({
+    key: id,
+    label: name,
+  }));
+
+  useEffect(() => {
+    if (queue) {
+      setSelectedServiceId(queue.serviceId);
+    }
+  }, [queue?.serviceId]);
+
+  const { useGetGroups } = useGroupsQueries();
+
+  const { data: groups = [] } = useGetGroups(currentOrganizationId);
 
   useEffect(() => {
     if (queue) {
@@ -36,11 +58,9 @@ export const QueueSettings = ({ route }: Props) => {
     }
   }, [queue?.groups]);
 
-  const { useGetServices } = useServicesQueries(currentOrganizationId);
+  const [selectedGroupIds, setSelectedGroupIds] = useState<string[]>([]);
 
-  const { data: groups = [] } = useGetGroups(currentOrganizationId);
-
-  const { useAttachGroupsToQueue } = useOrganizationQueuesQueries();
+  const { useAttachGroupsToQueue } = useQueuesQueries();
 
   const { mutate: attachGroupsToQueue } = useAttachGroupsToQueue();
 
@@ -49,6 +69,7 @@ export const QueueSettings = ({ route }: Props) => {
       queueId,
       organizationId: currentOrganizationId,
       groups: selectedGroupIds,
+      serviceId: selectedServiceId,
     };
 
     attachGroupsToQueue(data, {
@@ -68,6 +89,12 @@ export const QueueSettings = ({ route }: Props) => {
     <SafeAreaInsetsContainer>
       <View className="flex-1 p-4">
         <ScrollView className="flex-1">
+          <RadioButtonList
+            title="Serviços"
+            items={radioButtonsListItems}
+            value={selectedServiceId}
+            setValue={setSelectedServiceId}
+          />
           <CheckboxList
             title="Grupos"
             items={groups}

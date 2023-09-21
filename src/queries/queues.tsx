@@ -17,6 +17,13 @@ export const useQueuesQueries = () => {
   const useGetQueue = (queueId: string, organizationId: string) =>
     useQuery({
       queryKey: queuesKeys.item(organizationId, queueId),
+      initialData: () =>
+        queryClient
+          .getQueryData<Queue[]>(queuesKeys.list(organizationId))
+          ?.find((m) => m.id === queueId),
+      initialDataUpdatedAt: () =>
+        queryClient.getQueryState(queuesKeys.list(organizationId))
+          ?.dataUpdatedAt,
       queryFn: () =>
         queuesApi.getQueue(queueId).then((response) => response.data),
     });
@@ -40,7 +47,7 @@ export const useQueuesQueries = () => {
 
   const useAttachGroupsToQueue = () =>
     useMutation({
-      mutationFn: queuesApi.attachGroupsToQueue,
+      mutationFn: queuesApi.attachGroupsAndServiceToQueue,
       onSuccess: (_data, variables) => {
         queryClient.invalidateQueries({
           queryKey: queuesKeys.item(
