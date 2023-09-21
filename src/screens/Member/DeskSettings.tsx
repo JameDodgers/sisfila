@@ -96,10 +96,10 @@ export const DeskSettings = ({ route }: Props) => {
             <View>
               <FormikTextInput mode="outlined" fieldName="name" label="Nome" />
               <CheckboxList
-                items={services}
-                selectedIds={selectedServiceIds}
-                setSelectedIds={setSelectedServiceIds}
                 title="Serviços"
+                items={services}
+                value={selectedServiceIds}
+                setValue={setSelectedServiceIds}
               />
             </View>
             <Button

@@ -196,10 +196,10 @@ export const CreateQueue = () => {
                   />
                   <View className="mt-7">
                     <CheckboxList
-                      items={groups}
-                      selectedIds={selectedGroupIds}
-                      setSelectedIds={setSelectedGroupIds}
                       title="Grupos"
+                      items={groups}
+                      value={selectedGroupIds}
+                      setValue={setSelectedGroupIds}
                     />
                   </View>
                 </ScrollView>

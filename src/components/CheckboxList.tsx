@@ -7,39 +7,36 @@ type Item = {
 };
 
 type Props = {
+  value: string[];
+  setValue: Dispatch<React.SetStateAction<string[]>>;
   items: Item[];
-  selectedIds: string[];
-  setSelectedIds: Dispatch<React.SetStateAction<string[]>>;
 } & Pick<ListAccordionProps, "title">;
 
-export const CheckboxList = ({
-  items,
-  selectedIds,
-  setSelectedIds,
-  ...props
-}: Props) => {
+export const CheckboxList = ({ items, value, setValue, ...props }: Props) => {
   const [expanded, setExpanded] = useState(true);
 
-  const toggleItemId = (id: string) =>
-    setSelectedIds((selectedIds) =>
-      selectedIds.includes(id)
-        ? selectedIds.filter((i) => i !== id)
-        : [...selectedIds, id]
+  const onCheckItem = (id: string) =>
+    setValue((value) =>
+      value.includes(id) ? value.filter((i) => i !== id) : [...value, id]
     );
 
   const handlePress = () => setExpanded(!expanded);
 
   return (
     <List.Accordion expanded={expanded} onPress={handlePress} {...props}>
-      {items.map((item) => (
-        <Checkbox.Item
-          mode="android"
-          key={item.id}
-          label={item.name}
-          status={selectedIds.includes(item.id) ? "checked" : "unchecked"}
-          onPress={() => toggleItemId(item.id)}
-        />
-      ))}
+      {items.map((item) => {
+        const status = value.includes(item.id) ? "checked" : "unchecked";
+
+        return (
+          <Checkbox.Item
+            mode="android"
+            key={item.id}
+            label={item.name}
+            status={status}
+            onPress={() => onCheckItem(item.id)}
+          />
+        );
+      })}
     </List.Accordion>
   );
 };

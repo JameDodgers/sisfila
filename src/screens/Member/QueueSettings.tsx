@@ -71,8 +71,8 @@ export const QueueSettings = ({ route }: Props) => {
           <CheckboxList
             title="Grupos"
             items={groups}
-            selectedIds={selectedGroupIds}
-            setSelectedIds={setSelectedGroupIds}
+            value={selectedGroupIds}
+            setValue={setSelectedGroupIds}
           />
         </ScrollView>
         <Button className="" mode="contained" onPress={handleUpdateQueue}>
