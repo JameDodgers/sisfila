@@ -21,3 +21,8 @@ export const CustomFlatList = (props: CustomFlatListProps) => (
 export const ScrollView = styled(RNScrollView, {
   props: { contentContainerStyle: true },
 });
+
+export const Dialog = styled(
+  PaperDialog,
+  "web:w-full web:self-center web:max-w-screen-sm"
+);

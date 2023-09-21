@@ -9,7 +9,7 @@ import { useMessageStore } from "../../store/message";
 import { useServicesQueries } from "../../queries/guest/services";
 import { useNavigation } from "@react-navigation/native";
 import { CustomFlatList } from "../../libs/styled";
-
+import { Dialog as StyledDialog } from "../../libs/styled";
 type Props = {
   route: RootNavigatorScreenProps<"Organization">["route"];
 };
@@ -86,7 +86,7 @@ export const Organization = ({ route }: Props) => {
         />
       </View>
       <Portal>
-        <Dialog visible={visible} onDismiss={closeModal}>
+        <StyledDialog visible={visible} onDismiss={closeModal}>
           <Dialog.Title>Entrar na fila</Dialog.Title>
           <Dialog.Content>
             <TextInput
@@ -100,7 +100,7 @@ export const Organization = ({ route }: Props) => {
             <Button onPress={closeModal}>Cancelar</Button>
             <Button onPress={handleEnterQueue}>Entrar</Button>
           </Dialog.Actions>
-        </Dialog>
+        </StyledDialog>
       </Portal>
     </>
   );
