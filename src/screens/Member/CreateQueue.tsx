@@ -13,7 +13,7 @@ import { Picker } from "../../components/Picker";
 import { ScrollView } from "../../libs/styled";
 import { Formik } from "formik";
 import { FormikTextInput } from "../../components/FormikTextInput";
-import { useOrganizationQueuesQueries } from "../../queries/organizationQueues";
+import { useQueuesQueries } from "../../queries/queues";
 import { useGroupsQueries } from "../../queries/groups";
 import { SafeAreaInsetsContainer } from "../../components/SafeInsetsContainer";
 import { CheckboxList } from "../../components/CheckboxList";
@@ -30,7 +30,7 @@ export const CreateQueue = () => {
 
   const { currentOrganizationId = "" } = useOrganizerStore();
 
-  const { useCreateQueue } = useOrganizationQueuesQueries();
+  const { useCreateQueue } = useQueuesQueries();
 
   const { useGetGroups } = useGroupsQueries();
 

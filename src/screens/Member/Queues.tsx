@@ -6,7 +6,7 @@ import { QueuesStackScreenProps } from "../../../@types/navigation";
 import { useNavigation } from "@react-navigation/native";
 import { View } from "react-native";
 import { CustomFlatList } from "../../libs/styled";
-import { useOrganizationQueuesQueries } from "../../queries/organizationQueues";
+import { useQueuesQueries } from "../../queries/queues";
 import { CustomNavigationBar } from "../../components/CustomNavigationBar";
 
 export const Queues = () => {
@@ -15,7 +15,7 @@ export const Queues = () => {
 
   const { currentOrganizationId = "" } = useOrganizerStore();
 
-  const { useGetQueues } = useOrganizationQueuesQueries();
+  const { useGetQueues } = useQueuesQueries();
 
   const { data: queues = [] } = useGetQueues(currentOrganizationId);
 

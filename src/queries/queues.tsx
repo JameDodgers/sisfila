@@ -40,7 +40,7 @@ export const useQueuesQueries = () => {
 
   const useAttachGroupsToQueue = () =>
     useMutation({
-      mutationFn: queuesApi.attachGroupsAndServiceToQueue,
+      mutationFn: queuesApi.attachGroupsToQueue,
       onSuccess: (_data, variables) => {
         queryClient.invalidateQueries({
           queryKey: queuesKeys.item(

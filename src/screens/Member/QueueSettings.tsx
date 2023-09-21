@@ -7,7 +7,7 @@ import { QueuesStackScreenProps } from "../../../@types/navigation";
 import { useNavigation } from "@react-navigation/native";
 import { ScrollView, View } from "react-native";
 import { Button } from "react-native-paper";
-import { useOrganizationQueuesQueries } from "../../queries/organizationQueues";
+import { useQueuesQueries } from "../../queries/queues";
 import { SafeAreaInsetsContainer } from "../../components/SafeInsetsContainer";
 import { CheckboxList } from "../../components/CheckboxList";
 import { useServicesQueries } from "../../queries/services";
@@ -24,7 +24,7 @@ export const QueueSettings = ({ route }: Props) => {
 
   const { currentOrganizationId = "" } = useOrganizerStore();
 
-  const { useGetQueue } = useOrganizationQueuesQueries();
+  const { useGetQueue } = useQueuesQueries();
 
   const { data: queue } = useGetQueue(queueId, currentOrganizationId);
 
