@@ -4,6 +4,7 @@ import { getHeaderTitle } from "@react-navigation/elements";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { ReactNode } from "react";
 import { DrawerHeaderProps } from "@react-navigation/drawer";
+import { Platform } from "react-native";
 
 type HeaderProps = NativeStackHeaderProps | DrawerHeaderProps;
 
@@ -25,7 +26,7 @@ export const CustomNavigationBar = ({
     <Appbar.Header>
       {"back" in props && props.back ? (
         <Appbar.BackAction onPress={navigation.goBack} />
-      ) : "toggleDrawer" in navigation ? (
+      ) : "toggleDrawer" in navigation && Platform.OS !== "web" ? (
         <Appbar.Action icon="menu" onPress={navigation.toggleDrawer} />
       ) : null}
 
