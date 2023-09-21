@@ -2,7 +2,7 @@ import { useState } from "react";
 import { IconButton, Menu, MenuItemProps } from "react-native-paper";
 
 type MenuItem = {
-  onPress: () => void;
+  onPress?: () => void;
 } & Omit<MenuItemProps, "onPress">;
 
 type Props = {
@@ -16,8 +16,8 @@ export const CardMenu = ({ options }: Props) => {
 
   const closeMenu = () => setVisible(false);
 
-  const onPressMenuItem = (callback: () => void) => () => {
-    callback();
+  const onPressMenuItem = (callback?: () => void) => () => {
+    callback?.();
     closeMenu();
   };
 
