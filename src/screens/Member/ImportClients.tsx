@@ -92,7 +92,8 @@ export const ImportClients = ({
                         linha. Exemplo:
                       </Text>
                       <Text variant="bodySmall">
-                        1234 Fulano de Tal 4321 Sicrana de Tal
+                        1234 Fulano de Tal{"\n"}
+                        4321 Sicrana de Tal
                       </Text>
                     </View>
                     <FormikTextInput
