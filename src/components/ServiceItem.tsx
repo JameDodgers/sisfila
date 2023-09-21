@@ -5,6 +5,7 @@ import { Service } from "../models/Service";
 
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import { View } from "react-native";
+import { CardMenu } from "./CardMenu";
 
 const formatServiceDate = (date: string) =>
   format(parseISO(date), "EEE, d 'de' MMM 'de' yyyy, HH:mm");
@@ -13,10 +14,14 @@ type ConditionalProps =
   | {
       guest: true;
       enterOnQueue: () => void;
+      deleteService?: never;
+      openServiceSettings?: never;
     }
   | {
       guest?: false;
       enterOnQueue?: never;
+      deleteService: () => void;
+      openServiceSettings: () => void;
     };
 
 type BaseProps = {
@@ -25,13 +30,35 @@ type BaseProps = {
 
 type Props = BaseProps & ConditionalProps;
 
-export const ServiceItem = ({ item, guest = false, enterOnQueue }: Props) => {
+export const ServiceItem = ({
+  item,
+  guest = false,
+  enterOnQueue,
+  deleteService,
+  openServiceSettings,
+}: Props) => {
   const theme = useTheme();
   const cardMode = guest ? "elevated" : "contained";
 
+  const cardMenuOptions = [
+    {
+      leadingIcon: "cog",
+      title: "Configurações",
+      onPress: openServiceSettings,
+    },
+    {
+      leadingIcon: "delete",
+      title: "Excluir",
+      onPress: deleteService,
+    },
+  ];
+
   return (
     <Card mode={cardMode}>
-      <Card.Title title={item.name} />
+      <Card.Title
+        title={item.name}
+        right={() => (!guest ? <CardMenu options={cardMenuOptions} /> : null)}
+      />
       <Card.Content>
         <View className="flex-row items-center">
           <Icon

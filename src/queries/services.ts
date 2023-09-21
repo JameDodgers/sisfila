@@ -3,13 +3,21 @@ import servicesApi from "../services/api/admin/services";
 import { Service } from "../models/Service";
 import { servicesKeys } from "./keys";
 
-export const useServicesQueries = () => {
+export const useServicesQueries = (organizationId: string) => {
   const queryClient = useQueryClient();
 
-  const useGetServices = (organizationId: string) =>
+  const useGetServices = () =>
     useQuery({
       queryKey: servicesKeys.all(organizationId),
       queryFn: () => servicesApi.getAllFromOrganization(organizationId),
+    });
+
+  const useGetService = (serviceId?: string) =>
+    useQuery({
+      queryKey: servicesKeys.all(organizationId),
+      enabled: !!serviceId,
+      queryFn: () => servicesApi.getAllFromOrganization(organizationId),
+      select: (data) => data.find((service) => service.id === serviceId),
     });
 
   const useCreateService = () =>
@@ -29,5 +37,55 @@ export const useServicesQueries = () => {
       },
     });
 
-  return { useGetServices, useCreateService };
+  const useDeleteService = () =>
+    useMutation({
+      mutationFn: servicesApi.remove,
+      onMutate: async (serviceId) => {
+        await queryClient.cancelQueries({
+          queryKey: servicesKeys.all(organizationId),
+        });
+
+        const previousServices = queryClient.getQueryData<Service[]>(
+          servicesKeys.all(organizationId)
+        );
+
+        queryClient.setQueryData<Service[]>(
+          servicesKeys.all(organizationId),
+          (data) => data?.filter((service) => service.id !== serviceId)
+        );
+
+        return { previousServices };
+      },
+      onError: (_err, _variables, context) => {
+        if (context?.previousServices) {
+          queryClient.setQueryData<Service[]>(
+            servicesKeys.all(organizationId),
+            context.previousServices
+          );
+        }
+      },
+      onSettled: () => {
+        queryClient.invalidateQueries({
+          queryKey: servicesKeys.all(organizationId),
+        });
+      },
+    });
+
+  const useUpdateService = () =>
+    useMutation({
+      mutationFn: servicesApi.update,
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: servicesKeys.all(organizationId),
+        });
+      },
+    });
+
+  return {
+    useGetServices,
+    useGetService,
+    useCreateService,
+    useUpdateService,
+    useDeleteService,
+  };
 };

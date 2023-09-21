@@ -74,15 +74,18 @@ export type GroupsStackScreenProps<T extends keyof GroupsStackParamList> =
 
 export type ServicesStackParamList = {
   Services: undefined;
-  CreateService: undefined;
+  CreateOrUpdateService:
+    | {
+        serviceId: string;
+      }
+    | undefined;
 };
 
-export type ServicesStackNavigationProp<
-  T extends keyof ServicesStackParamList
-> = CompositeNavigationProp<
-  NativeStackNavigationProp<ServicesStackParamList, T>,
-  OrganizationDrawerScreenProps<keyof DrawerParamList>["navigation"]
->;
+export type ServicesStackScreenProps<T extends keyof ServicesStackParamList> =
+  CompositeScreenProps<
+    NativeStackScreenProps<ServicesStackParamList, T>,
+    OrganizationDrawerScreenProps<keyof DrawerParamList>
+  >;
 
 export type QueuesStackParamList = {
   Queues: undefined;

@@ -30,7 +30,7 @@ const create = (data: CreateRequest) =>
     .then((response) => response.data);
 
 const update = (data: UpdateRequest) =>
-  api.post("v1/organizations", data).then((response) => response.data);
+  api.patch("v1/organizations", data).then((response) => response.data);
 
 const remove = (id: string) =>
   api.delete(`v1/organizations/${id}`).then((response) => response.data);

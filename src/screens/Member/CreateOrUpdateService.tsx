@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useLayoutEffect, useState } from "react";
 
 import { useNavigation } from "@react-navigation/native";
 
@@ -6,7 +6,7 @@ import { useServicesQueries } from "../../queries/services";
 import { Button, Text, TextInput } from "react-native-paper";
 import * as Yup from "yup";
 import { DatePickerModal, TimePickerModal } from "react-native-paper-dates";
-import { addDays, format, isAfter, isBefore } from "date-fns";
+import { addDays, format, isAfter, isBefore, parseISO } from "date-fns";
 import { useOrganizerStore } from "../../store/organizer";
 import { View } from "react-native";
 import { Formik } from "formik";
@@ -14,6 +14,7 @@ import { FormikTextInput } from "../../components/FormikTextInput";
 import { SingleChange } from "react-native-paper-dates/lib/typescript/Date/Calendar";
 import { TouchableWithoutFeedback } from "react-native";
 import { SafeAreaInsetsContainer } from "../../components/SafeInsetsContainer";
+import { ServicesStackScreenProps } from "../../../@types/navigation";
 
 interface FormValues {
   name: string;
@@ -29,20 +30,31 @@ const replaceHours = (sourceDate: Date, targetDate: Date) =>
     targetDate.setHours(sourceDate.getHours(), sourceDate.getMinutes(), 0)
   );
 
-export const CreateService = () => {
-  const navigation = useNavigation();
+type Props = ServicesStackScreenProps<"CreateOrUpdateService">;
+
+export const CreateOrUpdateService = ({ route, navigation }: Props) => {
+  const serviceId = route.params?.serviceId;
 
   const { currentOrganizationId = "" } = useOrganizerStore();
 
-  const [subscriptionToken, setSubscriptionToken] = useState("");
+  const { useGetService, useCreateService, useUpdateService } =
+    useServicesQueries(currentOrganizationId);
 
-  const { useCreateService } = useServicesQueries();
+  const { data: service } = useGetService(serviceId);
+
+  const [subscriptionToken, setSubscriptionToken] = useState(
+    service?.subscriptionToken || ""
+  );
 
   const [opensAt, setOpensAt] = useState<Date>(
-    addDays(new Date(new Date().setHours(8, 0, 0)), 1)
+    service
+      ? parseISO(service?.opensAt)
+      : addDays(new Date(new Date().setHours(8, 0, 0)), 1)
   );
   const [closesAt, setClosesAt] = useState<Date>(
-    addDays(new Date(new Date().setHours(17, 0, 0)), 1)
+    service
+      ? parseISO(service?.closesAt)
+      : addDays(new Date(new Date().setHours(17, 0, 0)), 1)
   );
 
   const [startDatePickerModalVisible, setStartDatePickerModalVisible] =
@@ -57,11 +69,18 @@ export const CreateService = () => {
   const [endTimePickerModalVisible, setEndTimePickerModalVisible] =
     useState(false);
 
-  const { mutate: createService, isLoading } = useCreateService();
+  const { mutate: createService, isLoading: isCreatingService } =
+    useCreateService();
 
-  const handleCreateService = ({ name }: FormValues) => {
-    const payload = {
-      organizationId: currentOrganizationId,
+  const { mutate: updateService, isLoading: isUpdatingService } =
+    useUpdateService();
+
+  const isLoading = isCreatingService || isUpdatingService;
+
+  const onSuccess = () => navigation.goBack();
+
+  const handleSubmit = ({ name }: FormValues) => {
+    const basePayload = {
       name,
       subscriptionToken,
       guestEnrollment: false,
@@ -69,11 +88,19 @@ export const CreateService = () => {
       closesAt: closesAt.toISOString(),
     };
 
-    createService(payload, {
-      onSuccess: () => {
-        navigation.goBack();
-      },
-    });
+    if (serviceId) {
+      const payload = {
+        ...basePayload,
+        serviceId,
+      };
+      updateService(payload, { onSuccess });
+    } else {
+      const payload = {
+        ...basePayload,
+        organizationId: currentOrganizationId,
+      };
+      createService(payload, { onSuccess });
+    }
   };
 
   const onConfirmStartTimePicker = useCallback(
@@ -178,16 +205,24 @@ export const CreateService = () => {
       .required("Nome é um campo obrigatório"),
   });
 
+  const actionButtonLabel = serviceId ? "Salvar" : "Criar";
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: service?.name,
+    });
+  }, [service?.name]);
+
   return (
     <>
       <SafeAreaInsetsContainer>
         <View className="flex-1 p-4 web:w-full web:self-center web:max-w-sm">
           <Formik
             initialValues={{
-              name: "",
+              name: service?.name || "",
             }}
             validationSchema={validationSchema}
-            onSubmit={handleCreateService}
+            onSubmit={handleSubmit}
           >
             {({ handleSubmit }) => {
               return (
@@ -251,11 +286,12 @@ export const CreateService = () => {
                   </View>
                   <Button
                     className="web:self-end"
+                    loading={isLoading}
                     disabled={isLoading}
                     mode="contained"
                     onPress={() => handleSubmit()}
                   >
-                    Criar
+                    {actionButtonLabel}
                   </Button>
                 </View>
               );

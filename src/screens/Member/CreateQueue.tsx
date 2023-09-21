@@ -36,9 +36,9 @@ export const CreateQueue = () => {
 
   const { data: groups = [] } = useGetGroups(currentOrganizationId);
 
-  const { useGetServices } = useServicesQueries();
+  const { useGetServices } = useServicesQueries(currentOrganizationId);
 
-  const { data: services = [] } = useGetServices(currentOrganizationId);
+  const { data: services = [] } = useGetServices();
 
   const { mutate: createQueue, isLoading } = useCreateQueue();
 

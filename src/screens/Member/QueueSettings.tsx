@@ -10,6 +10,7 @@ import { Button } from "react-native-paper";
 import { useOrganizationQueuesQueries } from "../../queries/organizationQueues";
 import { SafeAreaInsetsContainer } from "../../components/SafeInsetsContainer";
 import { CheckboxList } from "../../components/CheckboxList";
+import { useServicesQueries } from "../../queries/services";
 
 type Props = {
   route: QueuesStackScreenProps<"QueueSettings">["route"];
@@ -35,7 +36,7 @@ export const QueueSettings = ({ route }: Props) => {
     }
   }, [queue?.groups]);
 
-  const { useGetGroups } = useGroupsQueries();
+  const { useGetServices } = useServicesQueries(currentOrganizationId);
 
   const { data: groups = [] } = useGetGroups(currentOrganizationId);
 

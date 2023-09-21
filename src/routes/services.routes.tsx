@@ -1,5 +1,5 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { CreateService } from "../screens/Member/CreateService";
+import { CreateOrUpdateService } from "../screens/Member/CreateOrUpdateService";
 import { Services } from "../screens/Member/Services";
 
 import { CustomNavigationBar } from "../components/CustomNavigationBar";
@@ -22,8 +22,8 @@ export const ServicesRoutes = () => {
         }}
       />
       <Screen
-        name="CreateService"
-        component={CreateService}
+        name="CreateOrUpdateService"
+        component={CreateOrUpdateService}
         options={{
           title: "Criar serviço",
         }}
