@@ -102,7 +102,7 @@ export const QueueSettings = ({ route }: Props) => {
             setValue={setSelectedGroupIds}
           />
         </ScrollView>
-        <Button className="" mode="contained" onPress={handleUpdateQueue}>
+        <Button mode="contained" onPress={handleUpdateQueue}>
           Salvar
         </Button>
       </View>

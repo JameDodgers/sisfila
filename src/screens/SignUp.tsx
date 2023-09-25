@@ -11,7 +11,8 @@ import { useNavigation } from "@react-navigation/native";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { useUserQueries } from "../queries/user";
-import { Button, HelperText, Text, TextInput } from "react-native-paper";
+import { Button, HelperText, Text } from "react-native-paper";
+import { CustomTextInput } from "../components/CustomTextInput";
 
 export const SignUp = () => {
   const nameInputRef = useRef<RNTextInput>(null);
@@ -72,8 +73,7 @@ export const SignUp = () => {
             }) => {
               return (
                 <View>
-                  <TextInput
-                    mode="outlined"
+                  <CustomTextInput
                     label="Nome"
                     error={touched.email && !!errors.email}
                     ref={nameInputRef}
@@ -92,8 +92,7 @@ export const SignUp = () => {
                   >
                     {errors.name}
                   </HelperText>
-                  <TextInput
-                    mode="outlined"
+                  <CustomTextInput
                     label="E-mail"
                     error={touched.email && !!errors.email}
                     ref={emailInputRef}
@@ -114,8 +113,7 @@ export const SignUp = () => {
                   >
                     {errors.email}
                   </HelperText>
-                  <TextInput
-                    mode="outlined"
+                  <CustomTextInput
                     label="Senha"
                     error={touched.password && !!errors.password}
                     ref={passwordInputRef}
@@ -136,8 +134,7 @@ export const SignUp = () => {
                   >
                     {errors.password}
                   </HelperText>
-                  <TextInput
-                    mode="outlined"
+                  <CustomTextInput
                     label="Confirmar senha"
                     error={touched.confirmPassword && !!errors.confirmPassword}
                     ref={confirmPasswordInputRef}

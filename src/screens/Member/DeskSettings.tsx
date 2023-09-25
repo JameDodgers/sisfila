@@ -94,7 +94,7 @@ export const DeskSettings = ({ route }: Props) => {
         {({ handleSubmit }) => (
           <View className="flex-1 p-4 gap-4 justify-between">
             <View>
-              <FormikTextInput mode="outlined" fieldName="name" label="Nome" />
+              <FormikTextInput fieldName="name" label="Nome" />
               <CheckboxList
                 title="Serviços"
                 items={services}

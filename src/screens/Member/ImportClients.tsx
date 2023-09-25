@@ -100,7 +100,6 @@ export const ImportClients = ({
                       fieldName="data"
                       className="mt-2"
                       label="Dados"
-                      mode="outlined"
                       multiline
                       numberOfLines={5}
                     />

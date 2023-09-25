@@ -11,6 +11,7 @@ import { View } from "react-native";
 import * as Clipboard from "expo-clipboard";
 import * as Linking from "expo-linking";
 import { SafeAreaInsetsContainer } from "../../components/SafeInsetsContainer";
+import { CustomTextInput } from "../../components/CustomTextInput";
 
 export const OrganizationDetails = () => {
   const navigation = useNavigation();
@@ -53,7 +54,7 @@ export const OrganizationDetails = () => {
       <SafeAreaInsetsContainer>
         <View className="flex-1 p-4 web:w-full web:self-center web:max-w-md">
           <View className="flex-1 justify-between web:justify-start">
-            <TextInput
+            <CustomTextInput
               label="URL para clientes"
               value={link}
               editable={false}

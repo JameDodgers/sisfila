@@ -53,16 +53,8 @@ export const CreateOrganization = () => {
             return (
               <View className="flex-1 justify-between web:justify-start">
                 <View>
-                  <FormikTextInput
-                    fieldName="name"
-                    mode="outlined"
-                    label="Nome"
-                  />
-                  <FormikTextInput
-                    fieldName="code"
-                    mode="outlined"
-                    label="Código"
-                  />
+                  <FormikTextInput autoFocus fieldName="name" label="Nome" />
+                  <FormikTextInput fieldName="code" label="Código" />
                 </View>
                 <Button
                   className="web:self-end"

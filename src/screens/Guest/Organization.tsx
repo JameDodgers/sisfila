@@ -1,6 +1,6 @@
 import { View } from "react-native";
 import { RootNavigatorScreenProps } from "../../../@types/navigation";
-import { Button, Dialog, Portal, TextInput } from "react-native-paper";
+import { Button, Dialog, Portal } from "react-native-paper";
 import { useOrganizationsQueries } from "../../queries/organizations";
 
 import { ServiceItem } from "../../components/ServiceItem";
@@ -10,6 +10,7 @@ import { useServicesQueries } from "../../queries/guest/services";
 import { useNavigation } from "@react-navigation/native";
 import { CustomFlatList } from "../../libs/styled";
 import { Dialog as StyledDialog } from "../../libs/styled";
+import { CustomTextInput } from "../../components/CustomTextInput";
 type Props = {
   route: RootNavigatorScreenProps<"Organization">["route"];
 };
@@ -89,8 +90,8 @@ export const Organization = ({ route }: Props) => {
         <StyledDialog visible={visible} onDismiss={closeModal}>
           <Dialog.Title>Entrar na fila</Dialog.Title>
           <Dialog.Content>
-            <TextInput
-              mode="outlined"
+            <CustomTextInput
+              autoFocus
               label="Número de matrícula"
               value={registrationId}
               onChangeText={setRegistrationId}

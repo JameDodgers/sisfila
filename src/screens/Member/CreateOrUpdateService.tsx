@@ -1,9 +1,7 @@
 import { useCallback, useLayoutEffect, useState } from "react";
 
-import { useNavigation } from "@react-navigation/native";
-
 import { useServicesQueries } from "../../queries/services";
-import { Button, Text, TextInput } from "react-native-paper";
+import { Button, Text } from "react-native-paper";
 import * as Yup from "yup";
 import { DatePickerModal, TimePickerModal } from "react-native-paper-dates";
 import { addDays, format, isAfter, isBefore, parseISO } from "date-fns";
@@ -15,6 +13,7 @@ import { SingleChange } from "react-native-paper-dates/lib/typescript/Date/Calen
 import { TouchableWithoutFeedback } from "react-native";
 import { SafeAreaInsetsContainer } from "../../components/SafeInsetsContainer";
 import { ServicesStackScreenProps } from "../../../@types/navigation";
+import { CustomTextInput } from "../../components/CustomTextInput";
 
 interface FormValues {
   name: string;
@@ -229,12 +228,11 @@ export const CreateOrUpdateService = ({ route, navigation }: Props) => {
                 <View className="flex-1 justify-between web:justify-start">
                   <View className="mb-6">
                     <FormikTextInput
+                      autoFocus={!serviceId}
                       fieldName="name"
-                      mode="outlined"
                       label="Nome"
                     />
-                    <TextInput
-                      mode="outlined"
+                    <CustomTextInput
                       placeholder="Token"
                       value={subscriptionToken}
                       onChangeText={setSubscriptionToken}

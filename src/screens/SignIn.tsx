@@ -11,7 +11,8 @@ import { useNavigation } from "@react-navigation/native";
 import * as WebBrowser from "expo-web-browser";
 import Constants from "expo-constants";
 import { useUserQueries } from "../queries/user";
-import { Button, Text, TextInput } from "react-native-paper";
+import { Button, Text } from "react-native-paper";
+import { CustomTextInput } from "../components/CustomTextInput";
 
 const EXPO_CLIENT_ID = process.env.EXPO_CLIENT_ID;
 const IOS_CLIENT_ID = process.env.ANDROID_CLIENT_ID;
@@ -73,8 +74,7 @@ export const SignIn = () => {
       <View className="flex-1 p-4 max-w-[90%] w-full self-center web:max-w-sm">
         <Text variant="displaySmall">Bem-vindo</Text>
         <View className="gap-y-3 mt-5">
-          <TextInput
-            mode="outlined"
+          <CustomTextInput
             label="E-mail"
             value={email}
             onChangeText={setEmail}
@@ -86,8 +86,7 @@ export const SignIn = () => {
             }}
             blurOnSubmit={false}
           />
-          <TextInput
-            mode="outlined"
+          <CustomTextInput
             label="Senha"
             ref={passwordInputRef}
             returnKeyType="next"

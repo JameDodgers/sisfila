@@ -82,8 +82,8 @@ export const CreateOrUpdateGroup = ({ navigation, route }: Props) => {
               <View className="flex-1 justify-between web:justify-start">
                 <View>
                   <FormikTextInput
+                    autoFocus={!groupId}
                     fieldName="name"
-                    mode="outlined"
                     label="Nome"
                   />
                 </View>

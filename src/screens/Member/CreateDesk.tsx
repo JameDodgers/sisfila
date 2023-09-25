@@ -58,11 +58,7 @@ export const CreateDesk = () => {
             return (
               <View className="flex-1 ios:justify-between android:justify-between web:sm:w-96">
                 <View>
-                  <FormikTextInput
-                    mode="outlined"
-                    fieldName="name"
-                    label="Nome"
-                  />
+                  <FormikTextInput autoFocus fieldName="name" label="Nome" />
                 </View>
                 <Button
                   className="web:self-end"

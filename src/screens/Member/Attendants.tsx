@@ -5,10 +5,11 @@ import { useOrganizerStore } from "../../store/organizer";
 
 import { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { Button, Dialog, Portal, TextInput } from "react-native-paper";
+import { Button, Dialog, Portal } from "react-native-paper";
 import { OrganizationDrawerScreenProps } from "../../../@types/navigation";
 import { CustomNavigationBar } from "../../components/CustomNavigationBar";
 import { CustomFlatList, Dialog as StyledDialog } from "../../libs/styled";
+import { CustomTextInput } from "../../components/CustomTextInput";
 
 export const Attendants = () => {
   const navigation =
@@ -84,8 +85,7 @@ export const Attendants = () => {
         <StyledDialog visible={visible} onDismiss={closeModal}>
           <Dialog.Title>Adicionar atendente</Dialog.Title>
           <Dialog.Content>
-            <TextInput
-              mode="outlined"
+            <CustomTextInput
               label="E-mail"
               value={email}
               onChangeText={setEmail}

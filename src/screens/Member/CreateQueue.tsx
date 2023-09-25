@@ -8,7 +8,7 @@ import _ from "lodash";
 import { useOrganizerStore } from "../../store/organizer";
 import { View } from "react-native";
 import * as Yup from "yup";
-import { Button, TextInput } from "react-native-paper";
+import { Button } from "react-native-paper";
 import { Picker } from "../../components/Picker";
 import { ScrollView } from "../../libs/styled";
 import { Formik } from "formik";
@@ -17,6 +17,7 @@ import { useQueuesQueries } from "../../queries/queues";
 import { useGroupsQueries } from "../../queries/groups";
 import { SafeAreaInsetsContainer } from "../../components/SafeInsetsContainer";
 import { CheckboxList } from "../../components/CheckboxList";
+import { CustomTextInput } from "../../components/CustomTextInput";
 
 interface FormValues {
   name: string;
@@ -150,13 +151,8 @@ export const CreateQueue = () => {
                   className="web:grow-0"
                   contentContainerStyle="p-4 web:w-full web:self-center web:max-w-sm"
                 >
-                  <FormikTextInput
-                    fieldName="name"
-                    mode="outlined"
-                    label="Nome"
-                  />
-                  <TextInput
-                    mode="outlined"
+                  <FormikTextInput autoFocus fieldName="name" label="Nome" />
+                  <CustomTextInput
                     label="Descrição"
                     value={description}
                     onChangeText={setDescription}
@@ -164,7 +160,6 @@ export const CreateQueue = () => {
                   <FormikTextInput
                     className="mt-6"
                     fieldName="code"
-                    mode="outlined"
                     label="Código"
                   />
                   <Picker
