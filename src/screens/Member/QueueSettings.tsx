@@ -48,9 +48,9 @@ export const QueueSettings = ({ route }: Props) => {
     }
   }, [queue?.serviceId]);
 
-  const { useGetGroups } = useGroupsQueries();
+  const { useGetGroups } = useGroupsQueries(currentOrganizationId);
 
-  const { data: groups = [] } = useGetGroups(currentOrganizationId);
+  const { data: groups = [] } = useGetGroups();
 
   useEffect(() => {
     if (queue) {

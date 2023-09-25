@@ -1,5 +1,5 @@
 import { Groups } from "../screens/Member/Groups";
-import { CreateGroup } from "../screens/Member/CreateGroup";
+import { CreateOrUpdateGroup } from "../screens/Member/CreateOrUpdateGroup";
 
 import { ImportClients } from "../screens/Member/ImportClients";
 import { Group } from "../screens/Member/Group";
@@ -31,8 +31,8 @@ export const GroupsRoutes = () => {
         }}
       />
       <Screen
-        name="CreateGroup"
-        component={CreateGroup}
+        name="CreateOrUpdateGroup"
+        component={CreateOrUpdateGroup}
         options={{
           title: "Criar grupo",
         }}

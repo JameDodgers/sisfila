@@ -32,9 +32,9 @@ export const CreateQueue = () => {
 
   const { useCreateQueue } = useQueuesQueries();
 
-  const { useGetGroups } = useGroupsQueries();
+  const { useGetGroups } = useGroupsQueries(currentOrganizationId);
 
-  const { data: groups = [] } = useGetGroups(currentOrganizationId);
+  const { data: groups = [] } = useGetGroups();
 
   const { useGetServices } = useServicesQueries(currentOrganizationId);
 

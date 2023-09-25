@@ -4,67 +4,46 @@ import groupsApi from "../services/api/groups";
 import { Group } from "../models/Group";
 import { groupsKeys, clientsKeys } from "./keys";
 
-// https://github.com/TanStack/query/discussions/5800
-// https:github.com/TanStack/query/discussions/3227
-type QueryOptions<TData, TResult> = {
-  select?: (data: TData) => TResult;
-};
-
-export const useGroupsQueries = () => {
+export const useGroupsQueries = (organizationId: string) => {
   const queryClient = useQueryClient();
 
-  const useGetGroups = <TResult = Group[]>(
-    organizationId: string,
-    options?: QueryOptions<Group[], TResult>
-  ) =>
+  const useGetGroups = () =>
     useQuery({
-      queryFn: () =>
-        groupsApi
-          .getOrganizationGroups(organizationId)
-          .then((response) => response.data),
+      queryFn: () => groupsApi.getAllFromOrganization(organizationId),
       queryKey: groupsKeys.all(organizationId),
-      ...options,
+    });
+
+  const useGetGroup = (groupId?: string) =>
+    useQuery({
+      queryKey: groupsKeys.all(organizationId),
+      enabled: !!groupId,
+      queryFn: () => groupsApi.getAllFromOrganization(organizationId),
+      select: (data) => data.find((group) => group.id === groupId),
     });
 
   const useCreateGroup = () =>
     useMutation({
       mutationFn: groupsApi.create,
-      onMutate: async (newGroup) => {
-        await queryClient.cancelQueries({
-          queryKey: groupsKeys.all(newGroup.organizationId),
-        });
-
-        const previousGroups = queryClient.getQueryData<Group[]>(
-          groupsKeys.all(newGroup.organizationId)
-        );
-
-        if (previousGroups) {
-          queryClient.setQueryData<Group[]>(
-            groupsKeys.all(newGroup.organizationId),
-            [
-              ...previousGroups,
-              {
-                id: "",
-                createdAt: "",
-                updatedAt: "",
-                clients: [],
-                ...newGroup,
-              },
-            ]
-          );
-        }
-
-        return { previousGroups };
-      },
-      onError: (_error, newGroup, context) => {
-        queryClient.setQueryData(
-          groupsKeys.all(newGroup.organizationId),
-          context?.previousGroups
+      onSuccess: (group) => {
+        queryClient.setQueryData<Group[]>(
+          groupsKeys.all(organizationId),
+          (groups) => (groups ? [group, ...groups] : [group])
         );
       },
       onSettled: (_data, _error, newGroup) => {
         queryClient.invalidateQueries({
+          refetchType: "none",
           queryKey: groupsKeys.all(newGroup.organizationId),
+        });
+      },
+    });
+
+  const useUpdateGroup = () =>
+    useMutation({
+      mutationFn: groupsApi.update,
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: groupsKeys.all(organizationId),
         });
       },
     });
@@ -82,5 +61,46 @@ export const useGroupsQueries = () => {
       },
     });
 
-  return { useGetGroups, useCreateGroup, useImportClients };
+  const useDeleteGroup = () =>
+    useMutation({
+      mutationFn: groupsApi.remove,
+      onMutate: async ({ groupId }) => {
+        await queryClient.cancelQueries({
+          queryKey: groupsKeys.all(organizationId),
+        });
+
+        const previousGroups = queryClient.getQueryData<Group[]>(
+          groupsKeys.all(organizationId)
+        );
+
+        queryClient.setQueryData<Group[]>(
+          groupsKeys.all(organizationId),
+          (data) => data?.filter((group) => group.id !== groupId)
+        );
+
+        return { previousGroups };
+      },
+      onError: (_err, _variables, context) => {
+        if (context?.previousGroups) {
+          queryClient.setQueryData<Group[]>(
+            groupsKeys.all(organizationId),
+            context.previousGroups
+          );
+        }
+      },
+      onSettled: () => {
+        queryClient.invalidateQueries({
+          queryKey: groupsKeys.all(organizationId),
+        });
+      },
+    });
+
+  return {
+    useGetGroups,
+    useGetGroup,
+    useCreateGroup,
+    useUpdateGroup,
+    useImportClients,
+    useDeleteGroup,
+  };
 };

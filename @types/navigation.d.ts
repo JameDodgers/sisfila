@@ -57,9 +57,13 @@ export type ClientsStackNavigationProp<T extends keyof ClientsStackParamList> =
 
 export type GroupsStackParamList = {
   Groups: undefined;
-  CreateGroup: undefined;
+  CreateOrUpdateGroup:
+    | {
+        groupId: string;
+      }
+    | undefined;
   Group: {
-    id: string;
+    groupId: string;
   };
   ImportClients: {
     groupId: string;

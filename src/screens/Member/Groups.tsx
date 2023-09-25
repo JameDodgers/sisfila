@@ -16,10 +16,14 @@ export const Groups = () => {
     useNavigation<GroupsStackScreenProps<"Groups">["navigation"]>();
 
   const { currentOrganizationId = "" } = useOrganizerStore();
+  console.log(currentOrganizationId);
+  const { useGetGroups, useDeleteGroup } = useGroupsQueries(
+    currentOrganizationId
+  );
 
-  const { useGetGroups } = useGroupsQueries();
+  const { data: groups = [], refetch } = useGetGroups();
 
-  const { data: groups = [], refetch } = useGetGroups(currentOrganizationId);
+  const { mutate: deleteGroup } = useDeleteGroup();
 
   useRefreshOnFocus(refetch);
 
@@ -32,7 +36,7 @@ export const Groups = () => {
             <Appbar.Action
               icon="plus"
               onPress={() => {
-                navigation.navigate("CreateGroup");
+                navigation.navigate("CreateOrUpdateGroup");
               }}
             />
           }
@@ -41,9 +45,24 @@ export const Groups = () => {
     });
   }, [navigation]);
 
-  const openGroup = (id: string) => {
+  const handleDeleteGroup = (groupId: string) => {
+    const payload = {
+      groupId,
+      organizationId: currentOrganizationId,
+    };
+
+    deleteGroup(payload);
+  };
+
+  const handleOpenGroupSettings = (groupId: string) => {
+    navigation.navigate("CreateOrUpdateGroup", {
+      groupId,
+    });
+  };
+
+  const handleOpenGroup = (groupId: string) => {
     navigation.navigate("Group", {
-      id,
+      groupId,
     });
   };
 
@@ -53,7 +72,12 @@ export const Groups = () => {
         data={groups}
         keyExtractor={(item: any) => item.id.toString()}
         renderItem={({ item }: any) => (
-          <GroupItem item={item} onPress={() => openGroup(item.id)} />
+          <GroupItem
+            item={item}
+            deleteGroup={() => handleDeleteGroup(item.id)}
+            openGroupSettings={() => handleOpenGroupSettings(item.id)}
+            openGroup={() => handleOpenGroup(item.id)}
+          />
         )}
         ItemSeparatorComponent={() => <View className="h-3" />}
       />

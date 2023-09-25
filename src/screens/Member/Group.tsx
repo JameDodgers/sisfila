@@ -7,23 +7,24 @@ import { GroupsStackScreenProps } from "../../../@types/navigation";
 import { FlatList, View } from "react-native";
 import { useGroupsQueries } from "../../queries/groups";
 import { CustomNavigationBar } from "../../components/CustomNavigationBar";
+import { Formik } from "formik";
+import * as Yup from "yup";
+import { FormikTextInput } from "../../components/FormikTextInput";
 
 type Props = GroupsStackScreenProps<"Group">;
 
 export const Group = ({ route, navigation }: Props) => {
-  const { id, name } = route.params;
+  const { groupId } = route.params;
 
   const { currentOrganizationId = "" } = useOrganizerStore();
 
-  const { useGetGroups } = useGroupsQueries();
+  const { useGetGroup } = useGroupsQueries(currentOrganizationId);
 
-  const { data: group } = useGetGroups(currentOrganizationId, {
-    select: (data) => data.find((item) => item.id === id),
-  });
+  const { data: group } = useGetGroup(groupId);
 
   const handleImport = () => {
     navigation.navigate("ImportClients", {
-      groupId: id,
+      groupId,
     });
   };
 
@@ -42,6 +43,12 @@ export const Group = ({ route, navigation }: Props) => {
       ),
     });
   }, [navigation]);
+
+  const validationSchema = Yup.object().shape({
+    name: Yup.string()
+      .min(2, "Escolha um nome maior")
+      .required("Nome é um campo obrigatório"),
+  });
 
   const ListEmptyComponent = useCallback(
     () => (

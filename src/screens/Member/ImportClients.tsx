@@ -26,7 +26,7 @@ export const ImportClients = ({
 
   const { currentOrganizationId = "" } = useOrganizerStore();
 
-  const { useImportClients } = useGroupsQueries();
+  const { useImportClients } = useGroupsQueries(currentOrganizationId);
 
   const { mutate: importClients } = useImportClients();
 
