@@ -1,7 +1,7 @@
 import { Queues } from "../screens/Member/Queues";
 
-import { CreateQueue } from "../screens/Member/CreateQueue";
-import { QueueSettings } from "../screens/Member/QueueSettings";
+import { CreateOrUpdateQueue } from "../screens/Member/CreateOrUpdateQueue";
+
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { CustomNavigationBar } from "../components/CustomNavigationBar";
 
@@ -23,13 +23,12 @@ export const QueuesRoutes = () => {
         }}
       />
       <Screen
-        name="CreateQueue"
-        component={CreateQueue}
+        name="CreateOrUpdateQueue"
+        component={CreateOrUpdateQueue}
         options={{
           title: "Criar fila",
         }}
       />
-      <Screen name="QueueSettings" component={QueueSettings} />
     </Navigator>
   );
 };

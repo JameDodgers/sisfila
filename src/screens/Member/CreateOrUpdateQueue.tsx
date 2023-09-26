@@ -1,9 +1,7 @@
-import { useCallback, useEffect, useState } from "react";
-
-import { useNavigation } from "@react-navigation/native";
+import { useCallback, useEffect, useLayoutEffect, useState } from "react";
 
 import { useServicesQueries } from "../../queries/services";
-import _ from "lodash";
+import _, { update } from "lodash";
 
 import { useOrganizerStore } from "../../store/organizer";
 import { View } from "react-native";
@@ -19,6 +17,7 @@ import { SafeAreaInsetsContainer } from "../../components/SafeInsetsContainer";
 import { CheckboxList } from "../../components/CheckboxList";
 import { CustomTextInput } from "../../components/CustomTextInput";
 import { RadioButtonList } from "../../components/RadioButtonList";
+import { QueuesStackScreenProps } from "../../../@types/navigation";
 
 interface FormValues {
   name: string;
@@ -27,12 +26,17 @@ interface FormValues {
   code: string;
 }
 
-export const CreateQueue = () => {
-  const navigation = useNavigation();
+type Props = QueuesStackScreenProps<"CreateOrUpdateQueue">;
+
+export const CreateOrUpdateQueue = ({ route, navigation }: Props) => {
+  const queueId = route.params?.queueId;
 
   const { currentOrganizationId = "" } = useOrganizerStore();
 
-  const { useCreateQueue } = useQueuesQueries();
+  const { useCreateQueue, useGetQueue, useUpdateQueue } = useQueuesQueries(
+    currentOrganizationId
+  );
+  const { data: queue } = useGetQueue(queueId);
 
   const { useGetGroups } = useGroupsQueries(currentOrganizationId);
 
@@ -42,17 +46,21 @@ export const CreateQueue = () => {
 
   const { data: services = [] } = useGetServices();
 
-  const { mutate: createQueue, isLoading } = useCreateQueue();
+  const { mutate: createQueue, isLoading: isCreatingQueue } = useCreateQueue();
+
+  const { mutate: updateQueue, isLoading: isUpdatingQueue } = useUpdateQueue();
+
+  const isLoading = isCreatingQueue || isUpdatingQueue;
 
   const [selectedGroupIds, setSelectedGroupIds] = useState<string[]>([]);
 
   useEffect(() => {
-    if (groups[0]) {
-      setSelectedGroupIds([groups[0].id]);
+    if (queue) {
+      setSelectedGroupIds(queue.groups.map((group) => group.id));
     }
-  }, [groups]);
+  }, [queue?.groups]);
 
-  const [description, setDescription] = useState("");
+  const [description, setDescription] = useState(queue?.description || "");
 
   const [openPriorityPicker, setOpenPriorityPicker] = useState(false);
 
@@ -68,29 +76,36 @@ export const CreateQueue = () => {
     label: service.name,
   }));
 
-  const handleCreateQueue = ({
-    name,
-    code,
-    priority,
-    serviceId,
-  }: FormValues) => {
+  const onSuccess = () => navigation.goBack();
+
+  const handleSubmit = ({ name, code, priority, serviceId }: FormValues) => {
     if (!priority || !serviceId) return;
 
-    const payload = {
+    const basePayload = {
       name,
       description,
       code,
       priority: Number(priority),
       serviceId,
       organizationId: currentOrganizationId,
-      groupIds: selectedGroupIds,
     };
 
-    createQueue(payload, {
-      onSuccess: () => {
-        navigation.goBack();
-      },
-    });
+    if (queueId) {
+      const updatePayload = {
+        ...basePayload,
+        queueId,
+        groups: selectedGroupIds,
+      };
+
+      updateQueue(updatePayload, { onSuccess });
+    } else {
+      const createPayload = {
+        ...basePayload,
+        groupIds: selectedGroupIds,
+      };
+
+      createQueue(createPayload, { onSuccess });
+    }
   };
 
   const validationSchema = Yup.object().shape({
@@ -104,18 +119,26 @@ export const CreateQueue = () => {
       .required("Código é um campo obrigatório"),
   });
 
+  const actionButtonLabel = queueId ? "Salvar" : "Criar";
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: queue?.name,
+    });
+  }, [navigation, queue]);
+
   return (
     <SafeAreaInsetsContainer>
       <View className="flex-1">
         <Formik
           initialValues={{
-            name: "",
-            priority: "",
-            serviceId: "",
-            code: "",
+            name: queue?.name || "",
+            priority: queue?.priority.toString() || "",
+            serviceId: queue?.serviceId || "",
+            code: queue?.code || "",
           }}
           validationSchema={validationSchema}
-          onSubmit={handleCreateQueue}
+          onSubmit={handleSubmit}
         >
           {({ values, errors, touched, setFieldValue, handleSubmit }) => {
             const setPriorityPickerValue = useCallback((state: any) => {
@@ -180,10 +203,11 @@ export const CreateQueue = () => {
                   <Button
                     className="web:self-end"
                     mode="contained"
+                    loading={isLoading}
                     disabled={isLoading}
                     onPress={() => handleSubmit()}
                   >
-                    Criar
+                    {actionButtonLabel}
                   </Button>
                 </View>
               </View>

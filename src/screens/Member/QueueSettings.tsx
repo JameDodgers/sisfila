@@ -25,9 +25,9 @@ export const QueueSettings = ({ route }: Props) => {
 
   const { currentOrganizationId = "" } = useOrganizerStore();
 
-  const { useGetQueue } = useQueuesQueries();
+  const { useGetQueue } = useQueuesQueries(currentOrganizationId);
 
-  const { data: queue } = useGetQueue(queueId, currentOrganizationId);
+  const { data: queue } = useGetQueue(queueId);
 
   const [selectedServiceId, setSelectedServiceId] = useState<string>(
     queue?.serviceId || ""
@@ -60,7 +60,7 @@ export const QueueSettings = ({ route }: Props) => {
 
   const [selectedGroupIds, setSelectedGroupIds] = useState<string[]>([]);
 
-  const { useAttachGroupsToQueue } = useQueuesQueries();
+  const { useAttachGroupsToQueue } = useQueuesQueries(currentOrganizationId);
 
   const { mutate: attachGroupsToQueue } = useAttachGroupsToQueue();
 

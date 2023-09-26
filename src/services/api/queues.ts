@@ -1,18 +1,21 @@
-import { Queue, QueueBase } from "../../models/Queue";
+import { Queue, QueueBase, QueueCommon } from "../../models/Queue";
 import api from "./config";
+
+interface GetOneResponse extends Array<Queue> {}
 
 interface CreateQueueParams extends QueueBase {}
 
 interface CreateQueueResponse extends Queue {}
 
-interface AttachGroupsAndServiceParams {
-  queueId: string;
-  organizationId: string;
-  serviceId?: string;
+interface UpdateQueueParams extends Partial<QueueCommon> {
   groups?: string[];
+  queueId: string;
 }
 
-interface GetOneResponse extends Array<Queue> {}
+interface RemoveQueueParams {
+  queueId: string;
+  organizationId: string;
+}
 
 const getOne = (organizationId: string) =>
   api.get<GetOneResponse>(`v1/queues/organizations/${organizationId}`);
@@ -24,16 +27,18 @@ const create = (data: CreateQueueParams) =>
     .post<CreateQueueResponse>("v1/queues", data)
     .then((response) => response.data);
 
-const attachGroupsAndServiceToQueue = ({
-  queueId,
-  organizationId,
-  ...data
-}: AttachGroupsAndServiceParams) =>
-  api.patch(`v1/queues/${queueId}/organizations/${organizationId}`, data);
+const update = ({ queueId, organizationId, ...data }: UpdateQueueParams) =>
+  api
+    .patch(`v1/queues/${queueId}/organizations/${organizationId}`, data)
+    .then((response) => response.data);
+
+const remove = ({ queueId, organizationId }: RemoveQueueParams) =>
+  api.delete(`v1/queues/${queueId}/organizations/${organizationId}`);
 
 export default {
   getOne,
   getQueue,
   create,
-  attachGroupsAndServiceToQueue,
+  update,
+  remove,
 };

@@ -15,9 +15,22 @@ export const Queues = () => {
 
   const { currentOrganizationId = "" } = useOrganizerStore();
 
-  const { useGetQueues } = useQueuesQueries();
+  const { useGetQueues, useDeleteQueue } = useQueuesQueries(
+    currentOrganizationId
+  );
 
-  const { data: queues = [] } = useGetQueues(currentOrganizationId);
+  const { mutate: deleteQueue } = useDeleteQueue();
+
+  const { data: queues = [] } = useGetQueues();
+
+  const handleDeleteQueue = (queueId: string) => {
+    const payload = {
+      queueId,
+      organizationId: currentOrganizationId,
+    };
+
+    deleteQueue(payload);
+  };
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -27,7 +40,7 @@ export const Queues = () => {
             <Appbar.Action
               icon="plus"
               onPress={() => {
-                navigation.navigate("CreateQueue");
+                navigation.navigate("CreateOrUpdateQueue");
               }}
             />
           }
@@ -38,7 +51,7 @@ export const Queues = () => {
   }, [navigation]);
 
   const handleOpenQueueSettings = (queueId: string) => {
-    navigation.navigate("QueueSettings", {
+    navigation.navigate("CreateOrUpdateQueue", {
       queueId,
     });
   };
@@ -53,6 +66,7 @@ export const Queues = () => {
           <QueueItem
             item={item}
             openSettings={() => handleOpenQueueSettings(item.id)}
+            remove={() => handleDeleteQueue(item.id)}
           />
         )}
       />

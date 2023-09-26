@@ -4,19 +4,20 @@ import { Queue } from "../models/Queue";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { queuesKeys } from "./keys";
 
-export const useQueuesQueries = () => {
+export const useQueuesQueries = (organizationId: string) => {
   const queryClient = useQueryClient();
 
-  const useGetQueues = (organizationId: string) =>
+  const useGetQueues = () =>
     useQuery({
       queryKey: queuesKeys.list(organizationId),
       queryFn: () =>
         queuesApi.getOne(organizationId).then((response) => response.data),
     });
 
-  const useGetQueue = (queueId: string, organizationId: string) =>
+  const useGetQueue = (queueId?: string) =>
     useQuery({
-      queryKey: queuesKeys.item(organizationId, queueId),
+      enabled: !!queueId,
+      queryKey: queuesKeys.item(organizationId, queueId || ""),
       initialData: () =>
         queryClient
           .getQueryData<Queue[]>(queuesKeys.list(organizationId))
@@ -25,15 +26,15 @@ export const useQueuesQueries = () => {
         queryClient.getQueryState(queuesKeys.list(organizationId))
           ?.dataUpdatedAt,
       queryFn: () =>
-        queuesApi.getQueue(queueId).then((response) => response.data),
+        queuesApi.getQueue(queueId || "").then((response) => response.data),
     });
 
   const useCreateQueue = () =>
     useMutation({
       mutationFn: queuesApi.create,
-      onSuccess(data, variables) {
+      onSuccess(data) {
         queryClient.setQueryData<Queue[]>(
-          queuesKeys.list(variables.organizationId),
+          queuesKeys.list(organizationId),
           (queues) => (queues ? [data, ...queues] : [data])
         );
       },
@@ -45,15 +46,46 @@ export const useQueuesQueries = () => {
       },
     });
 
-  const useAttachGroupsToQueue = () =>
+  const useUpdateQueue = () =>
     useMutation({
-      mutationFn: queuesApi.attachGroupsAndServiceToQueue,
-      onSuccess: (_data, variables) => {
+      mutationFn: queuesApi.update,
+      onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: queuesKeys.item(
-            variables.organizationId,
-            variables.queueId
-          ),
+          queryKey: queuesKeys.all(organizationId),
+        });
+      },
+    });
+
+  const useDeleteQueue = () =>
+    useMutation({
+      mutationFn: queuesApi.remove,
+      onMutate: async ({ queueId }) => {
+        await queryClient.cancelQueries({
+          queryKey: queuesKeys.all(organizationId),
+        });
+
+        const previousQueues = queryClient.getQueryData<Queue[]>(
+          queuesKeys.all(organizationId)
+        );
+
+        queryClient.setQueryData<Queue[]>(
+          queuesKeys.all(organizationId),
+          (data) => data?.filter((queue) => queue.id !== queueId)
+        );
+
+        return { previousQueues };
+      },
+      onError: (_err, _variables, context) => {
+        if (context?.previousQueues) {
+          queryClient.setQueryData<Queue[]>(
+            queuesKeys.all(organizationId),
+            context.previousQueues
+          );
+        }
+      },
+      onSettled: () => {
+        queryClient.invalidateQueries({
+          queryKey: queuesKeys.all(organizationId),
         });
       },
     });
@@ -62,6 +94,7 @@ export const useQueuesQueries = () => {
     useGetQueues,
     useGetQueue,
     useCreateQueue,
-    useAttachGroupsToQueue,
+    useUpdateQueue,
+    useDeleteQueue,
   };
 };

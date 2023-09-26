@@ -93,8 +93,7 @@ export type ServicesStackScreenProps<T extends keyof ServicesStackParamList> =
 
 export type QueuesStackParamList = {
   Queues: undefined;
-  QueueSettings: { queueId: string };
-  CreateQueue: undefined;
+  CreateOrUpdateQueue: { queueId: string } | undefined;
 };
 
 export type QueuesStackScreenProps<T extends keyof QueuesStackParamList> =
