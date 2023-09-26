@@ -8,7 +8,7 @@ import _ from "lodash";
 import { useOrganizerStore } from "../../store/organizer";
 import { View } from "react-native";
 import * as Yup from "yup";
-import { Button } from "react-native-paper";
+import { Button, HelperText } from "react-native-paper";
 import { Picker } from "../../components/Picker";
 import { ScrollView } from "../../libs/styled";
 import { Formik } from "formik";
@@ -18,6 +18,7 @@ import { useGroupsQueries } from "../../queries/groups";
 import { SafeAreaInsetsContainer } from "../../components/SafeInsetsContainer";
 import { CheckboxList } from "../../components/CheckboxList";
 import { CustomTextInput } from "../../components/CustomTextInput";
+import { RadioButtonList } from "../../components/RadioButtonList";
 
 interface FormValues {
   name: string;
@@ -62,18 +63,10 @@ export const CreateQueue = () => {
     }))
   );
 
-  const onOpenPriorityPicker = () => {
-    setOpenServicePicker(false);
-  };
-
-  const [openServicePicker, setOpenServicePicker] = useState(false);
-  const [servicePickerItems, setServicePickerItems] = useState(
-    services.map((service) => ({ value: service.id, label: service.name }))
-  );
-
-  const onOpenServicePicker = () => {
-    setOpenPriorityPicker(false);
-  };
+  const radioButtonsListItems = services.map((service) => ({
+    key: service.id,
+    label: service.name,
+  }));
 
   const handleCreateQueue = ({
     name,
@@ -105,7 +98,7 @@ export const CreateQueue = () => {
       .min(2, "Escolha um nome maior")
       .required("Nome é um campo obrigatório"),
     priority: Yup.string().required(),
-    serviceId: Yup.string().required(),
+    serviceId: Yup.string().required("Escolha um serviço"),
     code: Yup.string()
       .min(2, "Mínimo de 2 caracteres")
       .required("Código é um campo obrigatório"),
@@ -135,16 +128,6 @@ export const CreateQueue = () => {
               setFieldValue("priority", newState);
             }, []);
 
-            const setServiceIdPickerValue = useCallback((state: any) => {
-              let newState = state;
-
-              if (typeof state === "function") {
-                newState = state(values.serviceId);
-              }
-
-              setFieldValue("serviceId", newState);
-            }, []);
-
             return (
               <View className="flex-1 justify-between web:justify-start">
                 <ScrollView
@@ -160,43 +143,38 @@ export const CreateQueue = () => {
                   <FormikTextInput
                     className="mt-6"
                     fieldName="code"
-                    label="Código"
+                    label="Código*"
                   />
                   <Picker
                     placeholder="Selecione uma prioridade*"
                     open={openPriorityPicker}
-                    onOpen={onOpenPriorityPicker}
                     value={values.priority}
                     items={priorityPickerItems}
                     setOpen={setOpenPriorityPicker}
-                    //https://github.com/hossein-zare/react-native-dropdown-picker/issues/255
+                    // https://github.com/hossein-zare/react-native-dropdown-picker/issues/255
                     setValue={setPriorityPickerValue}
                     setItems={setPriorityPickerItems}
                     zIndex={2}
                     error={!!(touched.priority && errors.priority)}
                   />
                   <View className="mt-7" />
-                  <Picker
-                    placeholder="Selecione um serviço*"
-                    open={openServicePicker}
-                    onOpen={onOpenServicePicker}
+                  <RadioButtonList
+                    title="Serviços"
+                    items={radioButtonsListItems}
                     value={values.serviceId}
-                    items={servicePickerItems}
-                    setOpen={setOpenServicePicker}
-                    //https://github.com/hossein-zare/react-native-dropdown-picker/issues/255
-                    setValue={setServiceIdPickerValue}
-                    setItems={setServicePickerItems}
-                    zIndex={1}
-                    error={!!(touched.serviceId && errors.serviceId)}
+                    setValue={(value) => setFieldValue("serviceId", value)}
                   />
-                  <View className="mt-7">
-                    <CheckboxList
-                      title="Grupos"
-                      items={groups}
-                      value={selectedGroupIds}
-                      setValue={setSelectedGroupIds}
-                    />
-                  </View>
+                  <HelperText type="error">
+                    {!!(touched.serviceId && errors.serviceId)
+                      ? errors.serviceId
+                      : " "}
+                  </HelperText>
+                  <CheckboxList
+                    title="Grupos"
+                    items={groups}
+                    value={selectedGroupIds}
+                    setValue={setSelectedGroupIds}
+                  />
                 </ScrollView>
                 <View className="p-4 web:w-full web:self-center web:max-w-sm">
                   <Button
