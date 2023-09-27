@@ -1,7 +1,8 @@
-import { Button, Card } from "react-native-paper";
+import { Button, Card, Chip } from "react-native-paper";
 import { Desk } from "../models/Desk";
 
 import { CardMenu } from "./CardMenu";
+import { ScrollView } from "react-native";
 
 type Props = {
   item: Desk;
@@ -51,6 +52,19 @@ export const DeskItem = ({
         title={item.name}
         right={() => <CardMenu options={cardMenuOptions} />}
       />
+      <Card.Content className="py-4">
+        <ScrollView
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{ columnGap: 8 }}
+          horizontal
+        >
+          {item.services.map((service) => (
+            <Chip className="max-w-[200]" compact>
+              {service.name}
+            </Chip>
+          ))}
+        </ScrollView>
+      </Card.Content>
       <Card.Actions>
         {occupiedByUser && <Button onPress={endService}>Encerrar</Button>}
         {!(vacant && userOccupiesSomeDesk) && (
