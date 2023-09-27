@@ -4,7 +4,14 @@ import { useServicesQueries } from "../../queries/services";
 import { Button, Text } from "react-native-paper";
 import * as Yup from "yup";
 import { DatePickerModal, TimePickerModal } from "react-native-paper-dates";
-import { addDays, format, isAfter, isBefore, parseISO } from "date-fns";
+import {
+  addDays,
+  format,
+  isAfter,
+  isBefore,
+  isSameDay,
+  parseISO,
+} from "date-fns";
 import { useOrganizerStore } from "../../store/organizer";
 import { View } from "react-native";
 import { Formik } from "formik";
@@ -106,14 +113,12 @@ export const CreateOrUpdateService = ({ route, navigation }: Props) => {
     ({ hours, minutes }: hoursAndMinutes) => {
       let _opensAt = new Date(opensAt.setHours(hours, minutes, 0));
 
-      if (isAfter(_opensAt, replaceHours(opensAt, closesAt))) {
-        _opensAt = replaceHours(opensAt, closesAt);
-
-        const _closesAt = new Date(closesAt.setHours(hours, minutes));
-
-        setClosesAt(_closesAt);
+      if (isAfter(_opensAt, closesAt)) {
+        setOpensAt(closesAt);
+        setClosesAt(_opensAt);
+      } else {
+        setOpensAt(_opensAt);
       }
-      setOpensAt(_opensAt);
 
       setStartTimePickerModalVisible(false);
     },
@@ -128,15 +133,12 @@ export const CreateOrUpdateService = ({ route, navigation }: Props) => {
     ({ hours, minutes }: hoursAndMinutes) => {
       let _closesAt = new Date(closesAt.setHours(hours, minutes, 0));
 
-      if (isBefore(_closesAt, replaceHours(closesAt, opensAt))) {
-        _closesAt = replaceHours(closesAt, opensAt);
-
-        const _opensAt = new Date(opensAt.setHours(hours, minutes));
-
-        setOpensAt(_opensAt);
+      if (isBefore(_closesAt, opensAt)) {
+        setOpensAt(_closesAt);
+        setClosesAt(opensAt);
+      } else {
+        setClosesAt(_closesAt);
       }
-
-      setClosesAt(_closesAt);
 
       setEndTimePickerModalVisible(false);
     },
@@ -150,16 +152,23 @@ export const CreateOrUpdateService = ({ route, navigation }: Props) => {
   const onConfirmStartDatePicker = useCallback<SingleChange>(
     ({ date }) => {
       if (date) {
-        if (isAfter(date, closesAt)) {
-          const _closesAt = replaceHours(date, closesAt);
+        const _opensAt = replaceHours(opensAt, date);
 
-          const _opensAt = replaceHours(closesAt, opensAt);
+        if (isAfter(_opensAt, closesAt)) {
+          if (isSameDay(date, closesAt)) {
+            const _opensAt = replaceHours(closesAt, date);
+            const _closesAt = replaceHours(opensAt, closesAt);
 
-          setClosesAt(_closesAt);
-          setOpensAt(_opensAt);
+            setOpensAt(_opensAt);
+            setClosesAt(_closesAt);
+          } else {
+            const _closesAt = replaceHours(closesAt, date);
+            const _opensAt = replaceHours(opensAt, closesAt);
+
+            setOpensAt(_opensAt);
+            setClosesAt(_closesAt);
+          }
         } else {
-          const _opensAt = replaceHours(opensAt, date);
-
           setOpensAt(_opensAt);
         }
       }
@@ -176,15 +185,23 @@ export const CreateOrUpdateService = ({ route, navigation }: Props) => {
   const onConfirmEndDatePicker = useCallback<SingleChange>(
     ({ date }) => {
       if (date) {
-        if (isBefore(date, opensAt)) {
-          const _opensAt = replaceHours(date, opensAt);
+        const _closesAt = replaceHours(closesAt, date);
 
-          const _closesAt = replaceHours(opensAt, closesAt);
+        if (isBefore(_closesAt, opensAt)) {
+          if (isSameDay(date, opensAt)) {
+            const _opensAt = replaceHours(closesAt, date);
+            const _closesAt = replaceHours(opensAt, closesAt);
 
-          setClosesAt(_closesAt);
-          setOpensAt(_opensAt);
+            setOpensAt(_opensAt);
+            setClosesAt(_closesAt);
+          } else {
+            const _opensAt = replaceHours(opensAt, date);
+            const _closesAt = replaceHours(closesAt, opensAt);
+
+            setOpensAt(_opensAt);
+            setClosesAt(_closesAt);
+          }
         } else {
-          const _closesAt = replaceHours(closesAt, date);
           setClosesAt(_closesAt);
         }
       }
