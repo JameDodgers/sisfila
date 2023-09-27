@@ -1,9 +1,9 @@
 import { useCallback, useLayoutEffect, useState } from "react";
 
 import { useServicesQueries } from "../../queries/services";
-import { Button, Text } from "react-native-paper";
+import { Button, HelperText, TextInput } from "react-native-paper";
 import * as Yup from "yup";
-import { DatePickerModal, TimePickerModal } from "react-native-paper-dates";
+import { TimePickerModal } from "react-native-paper-dates";
 import {
   addDays,
   format,
@@ -12,18 +12,23 @@ import {
   isSameDay,
   parseISO,
 } from "date-fns";
+
 import { useOrganizerStore } from "../../store/organizer";
 import { View } from "react-native";
 import { Formik } from "formik";
 import { FormikTextInput } from "../../components/FormikTextInput";
-import { SingleChange } from "react-native-paper-dates/lib/typescript/Date/Calendar";
-import { TouchableWithoutFeedback } from "react-native";
+
 import { SafeAreaInsetsContainer } from "../../components/SafeInsetsContainer";
 import { ServicesStackScreenProps } from "../../../@types/navigation";
 import { CustomTextInput } from "../../components/CustomTextInput";
 
+import { DatePickerInputProps } from "react-native-paper-dates/lib/typescript/Date/DatePickerInput.shared";
+import { FormikDatePickerInput } from "../../components/FormikDatePickerInput";
+
 interface FormValues {
   name: string;
+  opensAt: Date;
+  closesAt: Date;
 }
 
 type hoursAndMinutes = {
@@ -52,23 +57,6 @@ export const CreateOrUpdateService = ({ route, navigation }: Props) => {
     service?.subscriptionToken || ""
   );
 
-  const [opensAt, setOpensAt] = useState<Date>(
-    service
-      ? parseISO(service?.opensAt)
-      : addDays(new Date(new Date().setHours(8, 0, 0)), 1)
-  );
-  const [closesAt, setClosesAt] = useState<Date>(
-    service
-      ? parseISO(service?.closesAt)
-      : addDays(new Date(new Date().setHours(17, 0, 0)), 1)
-  );
-
-  const [startDatePickerModalVisible, setStartDatePickerModalVisible] =
-    useState(false);
-
-  const [endDatePickerModalVisible, setEndDatePickerModalVisible] =
-    useState(false);
-
   const [startTimePickerModalVisible, setStartTimePickerModalVisible] =
     useState(false);
 
@@ -85,7 +73,7 @@ export const CreateOrUpdateService = ({ route, navigation }: Props) => {
 
   const onSuccess = () => navigation.goBack();
 
-  const handleSubmit = ({ name }: FormValues) => {
+  const handleSubmit = ({ name, opensAt, closesAt }: FormValues) => {
     const basePayload = {
       name,
       subscriptionToken,
@@ -109,116 +97,20 @@ export const CreateOrUpdateService = ({ route, navigation }: Props) => {
     }
   };
 
-  const onConfirmStartTimePicker = useCallback(
-    ({ hours, minutes }: hoursAndMinutes) => {
-      let _opensAt = new Date(opensAt.setHours(hours, minutes, 0));
-
-      if (isAfter(_opensAt, closesAt)) {
-        setOpensAt(closesAt);
-        setClosesAt(_opensAt);
-      } else {
-        setOpensAt(_opensAt);
-      }
-
-      setStartTimePickerModalVisible(false);
-    },
-    [opensAt, closesAt]
-  );
-
   const onDismissStartTimePickerModal = useCallback(() => {
     setStartTimePickerModalVisible(false);
   }, []);
 
-  const onConfirmEndTimePicker = useCallback(
-    ({ hours, minutes }: hoursAndMinutes) => {
-      let _closesAt = new Date(closesAt.setHours(hours, minutes, 0));
-
-      if (isBefore(_closesAt, opensAt)) {
-        setOpensAt(_closesAt);
-        setClosesAt(opensAt);
-      } else {
-        setClosesAt(_closesAt);
-      }
-
-      setEndTimePickerModalVisible(false);
-    },
-    [opensAt, closesAt]
-  );
-
   const onDismissEndTimePickerModal = useCallback(() => {
     setEndTimePickerModalVisible(false);
-  }, []);
-
-  const onConfirmStartDatePicker = useCallback<SingleChange>(
-    ({ date }) => {
-      if (date) {
-        const _opensAt = replaceHours(opensAt, date);
-
-        if (isAfter(_opensAt, closesAt)) {
-          if (isSameDay(date, closesAt)) {
-            const _opensAt = replaceHours(closesAt, date);
-            const _closesAt = replaceHours(opensAt, closesAt);
-
-            setOpensAt(_opensAt);
-            setClosesAt(_closesAt);
-          } else {
-            const _closesAt = replaceHours(closesAt, date);
-            const _opensAt = replaceHours(opensAt, closesAt);
-
-            setOpensAt(_opensAt);
-            setClosesAt(_closesAt);
-          }
-        } else {
-          setOpensAt(_opensAt);
-        }
-      }
-
-      setStartDatePickerModalVisible(false);
-    },
-    [opensAt, closesAt]
-  );
-
-  const onDismissStartDatePicker = useCallback(() => {
-    setStartDatePickerModalVisible(false);
-  }, []);
-
-  const onConfirmEndDatePicker = useCallback<SingleChange>(
-    ({ date }) => {
-      if (date) {
-        const _closesAt = replaceHours(closesAt, date);
-
-        if (isBefore(_closesAt, opensAt)) {
-          if (isSameDay(date, opensAt)) {
-            const _opensAt = replaceHours(closesAt, date);
-            const _closesAt = replaceHours(opensAt, closesAt);
-
-            setOpensAt(_opensAt);
-            setClosesAt(_closesAt);
-          } else {
-            const _opensAt = replaceHours(opensAt, date);
-            const _closesAt = replaceHours(closesAt, opensAt);
-
-            setOpensAt(_opensAt);
-            setClosesAt(_closesAt);
-          }
-        } else {
-          setClosesAt(_closesAt);
-        }
-      }
-
-      setEndDatePickerModalVisible(false);
-    },
-    [opensAt, closesAt]
-  );
-
-  const onDismissEndDatePicker = useCallback(() => {
-    setEndDatePickerModalVisible(false);
   }, []);
 
   const validationSchema = Yup.object().shape({
     name: Yup.string()
       .min(2, "Escolha um nome maior")
       .required("Nome é um campo obrigatório"),
+    opensAt: Yup.date(),
+    closesAt: Yup.date(),
   });
 
   const actionButtonLabel = serviceId ? "Salvar" : "Criar";
@@ -230,74 +122,188 @@ export const CreateOrUpdateService = ({ route, navigation }: Props) => {
   }, [service?.name]);
 
   return (
-    <>
-      <SafeAreaInsetsContainer>
-        <View className="flex-1 p-4 web:w-full web:self-center web:max-w-sm">
-          <Formik
-            initialValues={{
-              name: service?.name || "",
-            }}
-            validationSchema={validationSchema}
-            onSubmit={handleSubmit}
-          >
-            {({ handleSubmit }) => {
-              return (
+    <SafeAreaInsetsContainer>
+      <View className="flex-1 p-4 web:w-full web:self-center web:max-w-sm">
+        <Formik
+          initialValues={{
+            name: service?.name || "",
+            opensAt: service
+              ? parseISO(service?.opensAt)
+              : addDays(new Date(new Date().setHours(8, 0, 0)), 1),
+            closesAt: service
+              ? parseISO(service?.closesAt)
+              : addDays(new Date(new Date().setHours(17, 0, 0)), 1),
+          }}
+          validationSchema={validationSchema}
+          onSubmit={handleSubmit}
+        >
+          {({ handleSubmit, values, setFieldValue, errors }) => {
+            const { opensAt, closesAt } = values;
+
+            const setOpensAt = (date: Date) => setFieldValue("opensAt", date);
+
+            const setClosesAt = (date: Date) => setFieldValue("closesAt", date);
+
+            const onConfirmStartTimePicker = useCallback(
+              ({ hours, minutes }: hoursAndMinutes) => {
+                let _opensAt = new Date(opensAt.setHours(hours, minutes, 0));
+
+                if (isAfter(_opensAt, closesAt)) {
+                  setOpensAt(closesAt);
+                  setClosesAt(_opensAt);
+                } else {
+                  setOpensAt(_opensAt);
+                }
+
+                setStartTimePickerModalVisible(false);
+              },
+              [opensAt, closesAt]
+            );
+            const onConfirmEndTimePicker = useCallback(
+              ({ hours, minutes }: hoursAndMinutes) => {
+                let _closesAt = new Date(closesAt.setHours(hours, minutes, 0));
+
+                if (isBefore(_closesAt, opensAt)) {
+                  setOpensAt(_closesAt);
+                  setClosesAt(opensAt);
+                } else {
+                  setClosesAt(_closesAt);
+                }
+
+                setEndTimePickerModalVisible(false);
+              },
+              [opensAt, closesAt]
+            );
+
+            const onConfirmStartDatePicker = useCallback<
+              DatePickerInputProps["onChange"]
+            >(
+              (date) => {
+                if (date) {
+                  const _opensAt = replaceHours(opensAt, date);
+
+                  if (isAfter(_opensAt, closesAt)) {
+                    if (isSameDay(date, closesAt)) {
+                      const _opensAt = replaceHours(closesAt, date);
+                      const _closesAt = replaceHours(opensAt, closesAt);
+
+                      setOpensAt(_opensAt);
+                      setClosesAt(_closesAt);
+                    } else {
+                      const _closesAt = replaceHours(closesAt, date);
+                      const _opensAt = replaceHours(opensAt, closesAt);
+
+                      setOpensAt(_opensAt);
+                      setClosesAt(_closesAt);
+                    }
+                  } else {
+                    setOpensAt(_opensAt);
+                  }
+                }
+              },
+              [opensAt, closesAt]
+            );
+            const onConfirmEndDatePicker = useCallback<
+              DatePickerInputProps["onChange"]
+            >(
+              (date) => {
+                if (date) {
+                  const _closesAt = replaceHours(closesAt, date);
+
+                  if (isBefore(_closesAt, opensAt)) {
+                    if (isSameDay(date, opensAt)) {
+                      const _opensAt = replaceHours(closesAt, date);
+                      const _closesAt = replaceHours(opensAt, closesAt);
+
+                      setOpensAt(_opensAt);
+                      setClosesAt(_closesAt);
+                    } else {
+                      const _opensAt = replaceHours(opensAt, date);
+                      const _closesAt = replaceHours(closesAt, opensAt);
+
+                      setOpensAt(_opensAt);
+                      setClosesAt(_closesAt);
+                    }
+                  } else {
+                    setClosesAt(_closesAt);
+                  }
+                }
+              },
+              [opensAt, closesAt]
+            );
+
+            return (
+              <>
                 <View className="flex-1 justify-between web:justify-start">
                   <View className="mb-6">
                     <FormikTextInput
                       autoFocus={!serviceId}
                       fieldName="name"
-                      label="Nome"
+                      label="Nome*"
                     />
                     <CustomTextInput
                       placeholder="Token"
                       value={subscriptionToken}
                       onChangeText={setSubscriptionToken}
                     />
-                    <Text className="mt-6" variant="titleMedium">
-                      Início
-                    </Text>
-                    <View className="flex-row justify-between">
-                      <TouchableWithoutFeedback
-                        onPress={() => setStartDatePickerModalVisible(true)}
-                      >
-                        <View className="p-2 flex-1">
-                          <Text variant="titleSmall">
-                            {format(opensAt, "EEE, d 'de' MMMM 'de' yyyy")}
-                          </Text>
-                        </View>
-                      </TouchableWithoutFeedback>
-                      <TouchableWithoutFeedback
-                        onPress={() => setStartTimePickerModalVisible(true)}
-                      >
-                        <View className="p-2">
-                          <Text variant="titleSmall">
-                            {format(opensAt, "HH:mm")}
-                          </Text>
-                        </View>
-                      </TouchableWithoutFeedback>
+                    <View className="mt-6 flex-row justify-between">
+                      <View className="flex-1">
+                        <FormikDatePickerInput
+                          fieldName="opensAt"
+                          locale="pt"
+                          label="Início*"
+                          inputMode="start"
+                          onChange={onConfirmStartDatePicker}
+                          validRange={{
+                            startDate: new Date(),
+                          }}
+                        />
+                      </View>
+                      <CustomTextInput
+                        className="ml-2 self-start"
+                        editable={false}
+                        value={format(opensAt, "HH:mm")}
+                        onPressIn={() => setStartTimePickerModalVisible(true)}
+                        right={
+                          <TextInput.Icon
+                            icon="clock-outline"
+                            onPress={() => setStartTimePickerModalVisible(true)}
+                          />
+                        }
+                      />
                     </View>
-                    <Text variant="titleMedium">Término</Text>
+                    <HelperText type="error">
+                      {!!errors.opensAt ? <>{errors.opensAt}</> : " "}
+                    </HelperText>
                     <View className="flex-row justify-between">
-                      <TouchableWithoutFeedback
-                        onPress={() => setEndDatePickerModalVisible(true)}
-                      >
-                        <View className="p-2 flex-1">
-                          <Text variant="titleSmall">
-                            {format(closesAt, "EEE, d 'de' MMMM 'de' yyyy")}
-                          </Text>
-                        </View>
-                      </TouchableWithoutFeedback>
-                      <TouchableWithoutFeedback
-                        onPress={() => setEndTimePickerModalVisible(true)}
-                      >
-                        <View className="p-2">
-                          <Text variant="titleSmall">
-                            {format(closesAt, "HH:mm")}
-                          </Text>
-                        </View>
-                      </TouchableWithoutFeedback>
+                      <View className="flex-1">
+                        <FormikDatePickerInput
+                          fieldName="closesAt"
+                          locale="pt"
+                          label="Término*"
+                          inputMode="start"
+                          onChange={onConfirmEndDatePicker}
+                          validRange={{
+                            startDate: new Date(),
+                          }}
+                        />
+                      </View>
+                      <CustomTextInput
+                        className="ml-2 self-start"
+                        editable={false}
+                        value={format(closesAt, "HH:mm")}
+                        onPressIn={() => setEndTimePickerModalVisible(true)}
+                        right={
+                          <TextInput.Icon
+                            icon="clock-outline"
+                            onPress={() => setEndTimePickerModalVisible(true)}
+                          />
+                        }
+                      />
                     </View>
+                    <HelperText type="error">
+                      {!!errors.closesAt ? <>{errors.closesAt}</> : " "}
+                    </HelperText>
                   </View>
                   <Button
                     className="web:self-end"
@@ -309,49 +315,27 @@ export const CreateOrUpdateService = ({ route, navigation }: Props) => {
                     {actionButtonLabel}
                   </Button>
                 </View>
-              );
-            }}
-          </Formik>
-        </View>
-      </SafeAreaInsetsContainer>
-      <DatePickerModal
-        locale="pt"
-        mode="single"
-        visible={startDatePickerModalVisible}
-        validRange={{
-          startDate: new Date(),
-        }}
-        onDismiss={onDismissStartDatePicker}
-        date={opensAt}
-        onConfirm={onConfirmStartDatePicker}
-      />
-      <DatePickerModal
-        locale="pt"
-        mode="single"
-        visible={endDatePickerModalVisible}
-        validRange={{
-          startDate: new Date(),
-        }}
-        onDismiss={onDismissEndDatePicker}
-        date={closesAt}
-        onConfirm={onConfirmEndDatePicker}
-      />
-      <TimePickerModal
-        locale="pt"
-        visible={startTimePickerModalVisible}
-        onDismiss={onDismissStartTimePickerModal}
-        onConfirm={onConfirmStartTimePicker}
-        hours={opensAt.getHours()}
-        minutes={opensAt.getMinutes()}
-      />
-      <TimePickerModal
-        locale="pt"
-        visible={endTimePickerModalVisible}
-        onDismiss={onDismissEndTimePickerModal}
-        onConfirm={onConfirmEndTimePicker}
-        hours={closesAt.getHours()}
-        minutes={closesAt.getMinutes()}
-      />
-    </>
+                <TimePickerModal
+                  locale="pt"
+                  visible={startTimePickerModalVisible}
+                  onDismiss={onDismissStartTimePickerModal}
+                  onConfirm={onConfirmStartTimePicker}
+                  hours={opensAt.getHours()}
+                  minutes={opensAt.getMinutes()}
+                />
+                <TimePickerModal
+                  locale="pt"
+                  visible={endTimePickerModalVisible}
+                  onDismiss={onDismissEndTimePickerModal}
+                  onConfirm={onConfirmEndTimePicker}
+                  hours={closesAt.getHours()}
+                  minutes={closesAt.getMinutes()}
+                />
+              </>
+            );
+          }}
+        </Formik>
+      </View>
+    </SafeAreaInsetsContainer>
   );
 };
