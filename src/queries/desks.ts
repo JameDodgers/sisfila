@@ -7,13 +7,13 @@ import desksApi from "../services/api/desks";
 
 type QueryOptions<TData, TResult> = {
   select?: (data: TData) => TResult;
+  enabled?: boolean;
 };
 
-export const useDesksQueries = () => {
+export const useDesksQueries = (organizationId: string) => {
   const queryClient = useQueryClient();
 
   const useGetDesks = <TResult = Desk[]>(
-    organizationId: string,
     options?: QueryOptions<Desk[], TResult>
   ) =>
     useQuery({
@@ -22,7 +22,7 @@ export const useDesksQueries = () => {
       ...options,
     });
 
-  const useCreateDesk = (organizationId: string) =>
+  const useCreateDesk = () =>
     useMutation({
       mutationFn: desksApi.createDesk,
       onSuccess: (desk) => {
@@ -39,7 +39,7 @@ export const useDesksQueries = () => {
       },
     });
 
-  const useDeleteDesk = (organizationId: string) =>
+  const useDeleteDesk = () =>
     useMutation({
       mutationFn: desksApi.deleteDesk,
       onMutate: async (deskId) => {
@@ -73,7 +73,7 @@ export const useDesksQueries = () => {
       },
     });
 
-  const useUpdateDesk = (organizationId: string) =>
+  const useUpdateDesk = () =>
     useMutation({
       mutationFn: desksApi.updateDesk,
       onSettled: () => {

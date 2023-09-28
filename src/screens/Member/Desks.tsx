@@ -19,13 +19,15 @@ export const Desks = () => {
 
   const user = useUser();
 
-  const { useGetDesks, useDeleteDesk, useUpdateDesk } = useDesksQueries();
+  const { useGetDesks, useDeleteDesk, useUpdateDesk } = useDesksQueries(
+    currentOrganizationId
+  );
 
-  const { mutate: deleteDesk } = useDeleteDesk(currentOrganizationId);
+  const { mutate: deleteDesk } = useDeleteDesk();
 
-  const { mutate: updateDesk } = useUpdateDesk(currentOrganizationId);
+  const { mutate: updateDesk } = useUpdateDesk();
 
-  const { data: desks = [] } = useGetDesks(currentOrganizationId, {
+  const { data: desks = [] } = useGetDesks({
     select: (desks) =>
       [...desks].sort(
         (a, b) =>
@@ -45,7 +47,7 @@ export const Desks = () => {
   }, [user, desks]);
 
   const handleEditDesk = (deskId: string) => {
-    navigation.navigate("DeskSettings", {
+    navigation.navigate("CreateOrUpdateDesk", {
       deskId,
     });
   };
@@ -89,7 +91,7 @@ export const Desks = () => {
             <Appbar.Action
               icon="plus"
               onPress={() => {
-                navigation.navigate("CreateDesk");
+                navigation.navigate("CreateOrUpdateDesk");
               }}
             />
           }

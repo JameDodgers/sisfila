@@ -20,11 +20,11 @@ export const Desk = ({ route }: Props) => {
 
   const { currentOrganizationId = "" } = useOrganizerStore();
 
-  const { useGetDesks, useCallNext } = useDesksQueries();
+  const { useGetDesks, useCallNext } = useDesksQueries(currentOrganizationId);
 
   const { mutate: callNext } = useCallNext();
 
-  const { data: desk } = useGetDesks(currentOrganizationId, {
+  const { data: desk } = useGetDesks({
     select: (data) => data.find((item) => item.id === deskId),
   });
 

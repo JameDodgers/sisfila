@@ -3,6 +3,7 @@ import api from "./config";
 
 type CreateParams = {
   name: string;
+  servicesIds?: string[];
   organizationId: string;
 };
 
