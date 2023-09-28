@@ -260,21 +260,19 @@ export const CreateOrUpdateService = ({ route, navigation }: Props) => {
                       value={subscriptionToken}
                       onChangeText={setSubscriptionToken}
                     />
-                    <View className="mt-6 flex-row justify-between">
-                      <View className="flex-1">
-                        <FormikDatePickerInput
-                          fieldName="opensAt"
-                          locale="pt"
-                          label="Início*"
-                          inputMode="start"
-                          onChange={onConfirmStartDatePicker}
-                          validRange={{
-                            startDate: new Date(),
-                          }}
-                        />
-                      </View>
+                    <View className="mt-6 flex-row">
+                      <FormikDatePickerInput
+                        fieldName="opensAt"
+                        locale="pt"
+                        label="Início*"
+                        inputMode="start"
+                        onChange={onConfirmStartDatePicker}
+                        validRange={{
+                          startDate: new Date(),
+                        }}
+                      />
                       <CustomTextInput
-                        className="ml-2 self-start"
+                        className="ml-2 w-[115]"
                         editable={false}
                         value={format(opensAt, "HH:mm")}
                         onPressIn={() => setStartTimePickerModalVisible(true)}
@@ -289,21 +287,19 @@ export const CreateOrUpdateService = ({ route, navigation }: Props) => {
                     <HelperText type="error">
                       {!!errors.opensAt ? <>{errors.opensAt}</> : " "}
                     </HelperText>
-                    <View className="flex-row justify-between">
-                      <View className="flex-1">
-                        <FormikDatePickerInput
-                          fieldName="closesAt"
-                          locale="pt"
-                          label="Término*"
-                          inputMode="start"
-                          onChange={onConfirmEndDatePicker}
-                          validRange={{
-                            startDate: new Date(),
-                          }}
-                        />
-                      </View>
+                    <View className="flex-row">
+                      <FormikDatePickerInput
+                        fieldName="closesAt"
+                        locale="pt"
+                        label="Término*"
+                        inputMode="start"
+                        onChange={onConfirmEndDatePicker}
+                        validRange={{
+                          startDate: new Date(),
+                        }}
+                      />
                       <CustomTextInput
-                        className="ml-2 self-start"
+                        className="ml-2 w-[115]"
                         editable={false}
                         value={format(closesAt, "HH:mm")}
                         onPressIn={() => setEndTimePickerModalVisible(true)}
