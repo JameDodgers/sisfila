@@ -33,8 +33,6 @@ export const CreateOrUpdateGroup = ({ navigation, route }: Props) => {
 
   const isLoading = isCreatingGroup || isUpdatingGroup;
 
-  const onSuccess = () => navigation.goBack();
-
   const handleSubmit = ({ name }: FormValues) => {
     const payload = {
       name,
@@ -47,9 +45,17 @@ export const CreateOrUpdateGroup = ({ navigation, route }: Props) => {
         groupId,
       };
 
-      updateGroup(updatePayload, { onSuccess });
+      updateGroup(updatePayload, {
+        onSuccess: () => navigation.goBack(),
+      });
     } else {
-      createGroup(payload, { onSuccess });
+      createGroup(payload, {
+        onSuccess: (group) => {
+          navigation.replace("Group", {
+            groupId: group.id,
+          });
+        },
+      });
     }
   };
 
