@@ -4,11 +4,18 @@ import { Queue } from "../models/Queue";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { queuesKeys } from "./keys";
 
+type QueryOptions<TData, TResult> = {
+  select?: (data: TData) => TResult;
+};
+
 export const useQueuesQueries = (organizationId: string) => {
   const queryClient = useQueryClient();
 
-  const useGetQueues = () =>
+  const useGetQueues = <TResult = Queue[]>(
+    options?: QueryOptions<Queue[], TResult>
+  ) =>
     useQuery({
+      ...options,
       queryKey: queuesKeys.list(organizationId),
       queryFn: () =>
         queuesApi.getOne(organizationId).then((response) => response.data),

@@ -1,7 +1,7 @@
-import { useCallback, useLayoutEffect, useState } from "react";
-
+import { useCallback, useEffect, useLayoutEffect, useState } from "react";
+import DraggableFlatList from "react-native-draggable-flatlist";
 import { useServicesQueries } from "../../queries/services";
-import { Button, HelperText, TextInput } from "react-native-paper";
+import { Button, HelperText, List, TextInput } from "react-native-paper";
 import * as Yup from "yup";
 import { TimePickerModal } from "react-native-paper-dates";
 import {
@@ -24,6 +24,8 @@ import { CustomTextInput } from "../../components/CustomTextInput";
 
 import { DatePickerInputProps } from "react-native-paper-dates/lib/typescript/Date/DatePickerInput.shared";
 import { FormikDatePickerInput } from "../../components/FormikDatePickerInput";
+import { useQueuesQueries } from "../../queries/queues";
+import { CustomListAccordion } from "../../components/CustomListAccordion";
 
 interface FormValues {
   name: string;
@@ -47,6 +49,18 @@ export const CreateOrUpdateService = ({ route, navigation }: Props) => {
   const serviceId = route.params?.serviceId;
 
   const { currentOrganizationId = "" } = useOrganizerStore();
+
+  const { useGetQueues } = useQueuesQueries(currentOrganizationId);
+
+  const { data: serviceQueues = [] } = useGetQueues({
+    select: (queues) => queues.filter((queue) => queue.serviceId === serviceId),
+  });
+
+  const [sortedServiceQueues, setSortedServiceQueues] = useState(serviceQueues);
+
+  useEffect(() => {
+    setSortedServiceQueues(serviceQueues);
+  }, [serviceQueues]);
 
   const { useGetService, useCreateService, useUpdateService } =
     useServicesQueries(currentOrganizationId);
@@ -304,6 +318,29 @@ export const CreateOrUpdateService = ({ route, navigation }: Props) => {
                     <HelperText type="error">
                       {!!errors.closesAt ? <>{errors.closesAt}</> : " "}
                     </HelperText>
+                    <CustomListAccordion title="Filas">
+                      <HelperText type="info">
+                        Arraste a fila de maior prioridade para o topo
+                      </HelperText>
+                      <DraggableFlatList
+                        bounces={false}
+                        data={sortedServiceQueues}
+                        keyExtractor={(item) => item.id}
+                        renderItem={({ item, drag }) => (
+                          <List.Item
+                            left={(props) => (
+                              <List.Icon
+                                {...props}
+                                icon="drag-horizontal-variant"
+                              />
+                            )}
+                            onLongPress={drag}
+                            title={item.name}
+                          />
+                        )}
+                        onDragEnd={({ data }) => setSortedServiceQueues(data)}
+                      />
+                    </CustomListAccordion>
                   </View>
                   <Button
                     className="web:self-end"
