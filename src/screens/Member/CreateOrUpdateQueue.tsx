@@ -1,13 +1,12 @@
-import { useCallback, useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 
 import { useServicesQueries } from "../../queries/services";
-import _, { update } from "lodash";
+import _ from "lodash";
 
 import { useOrganizerStore } from "../../store/organizer";
 import { View } from "react-native";
 import * as Yup from "yup";
 import { Button, HelperText } from "react-native-paper";
-import { Picker } from "../../components/Picker";
 import { ScrollView } from "../../libs/styled";
 import { Formik } from "formik";
 import { FormikTextInput } from "../../components/FormikTextInput";
@@ -21,7 +20,6 @@ import { QueuesStackScreenProps } from "../../../@types/navigation";
 
 interface FormValues {
   name: string;
-  priority: string;
   serviceId: string;
   code: string;
 }
@@ -62,15 +60,6 @@ export const CreateOrUpdateQueue = ({ route, navigation }: Props) => {
 
   const [description, setDescription] = useState(queue?.description || "");
 
-  const [openPriorityPicker, setOpenPriorityPicker] = useState(false);
-
-  const [priorityPickerItems, setPriorityPickerItems] = useState(
-    _.range(1, 11).map((priority) => ({
-      value: priority.toString(),
-      label: priority.toString(),
-    }))
-  );
-
   const radioButtonsListItems = services.map((service) => ({
     key: service.id,
     label: service.name,
@@ -78,14 +67,13 @@ export const CreateOrUpdateQueue = ({ route, navigation }: Props) => {
 
   const onSuccess = () => navigation.goBack();
 
-  const handleSubmit = ({ name, code, priority, serviceId }: FormValues) => {
-    if (!priority || !serviceId) return;
+  const handleSubmit = ({ name, code, serviceId }: FormValues) => {
+    if (!serviceId) return;
 
     const basePayload = {
       name,
       description,
       code,
-      priority: Number(priority),
       serviceId,
       organizationId: currentOrganizationId,
     };
@@ -112,7 +100,6 @@ export const CreateOrUpdateQueue = ({ route, navigation }: Props) => {
     name: Yup.string()
       .min(2, "Escolha um nome maior")
       .required("Nome é um campo obrigatório"),
-    priority: Yup.string().required(),
     serviceId: Yup.string().required("Escolha um serviço"),
     code: Yup.string()
       .min(2, "Mínimo de 2 caracteres")
@@ -133,7 +120,6 @@ export const CreateOrUpdateQueue = ({ route, navigation }: Props) => {
         <Formik
           initialValues={{
             name: queue?.name || "",
-            priority: queue?.priority.toString() || "",
             serviceId: queue?.serviceId || "",
             code: queue?.code || "",
           }}
@@ -141,16 +127,6 @@ export const CreateOrUpdateQueue = ({ route, navigation }: Props) => {
           onSubmit={handleSubmit}
         >
           {({ values, errors, touched, setFieldValue, handleSubmit }) => {
-            const setPriorityPickerValue = useCallback((state: any) => {
-              let newState = state;
-
-              if (typeof state === "function") {
-                newState = state(values.priority);
-              }
-
-              setFieldValue("priority", newState);
-            }, []);
-
             return (
               <View className="flex-1 justify-between web:justify-start">
                 <ScrollView
@@ -167,18 +143,6 @@ export const CreateOrUpdateQueue = ({ route, navigation }: Props) => {
                     className="mt-6"
                     fieldName="code"
                     label="Código*"
-                  />
-                  <Picker
-                    placeholder="Selecione uma prioridade*"
-                    open={openPriorityPicker}
-                    value={values.priority}
-                    items={priorityPickerItems}
-                    setOpen={setOpenPriorityPicker}
-                    // https://github.com/hossein-zare/react-native-dropdown-picker/issues/255
-                    setValue={setPriorityPickerValue}
-                    setItems={setPriorityPickerItems}
-                    zIndex={2}
-                    error={!!(touched.priority && errors.priority)}
                   />
                   <View className="mt-7" />
                   <RadioButtonList

@@ -5,7 +5,6 @@ export type QueueCommon = {
   name: string;
   description: string;
   code: string;
-  priority: number;
   organizationId: string;
   serviceId: string;
 };
