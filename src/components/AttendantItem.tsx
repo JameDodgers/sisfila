@@ -1,21 +1,21 @@
 import { Button, Card } from "react-native-paper";
-import { Attendant } from "../models/Attendant";
+import { User } from "../models/User";
 
 type Props = {
-  item: Attendant;
+  item: User;
   onPressRemove: () => void;
 };
 
 export const AttendantItem = ({ item, onPressRemove }: Props) => {
   return (
-    <Card>
+    <Card mode="contained">
       <Card.Title
-        title={item.name}
-        right={(props) => (
-          <Button className="mx-2" {...props} onPress={onPressRemove}>
-            Remover
-          </Button>
-        )}
+        title={item.email}
+        // right={(props) => (
+        //   <Button className="mx-2" {...props} onPress={onPressRemove}>
+        //     Remover
+        //   </Button>
+        // )}
       />
     </Card>
   );

@@ -2,40 +2,35 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { attendantsKeys } from "./keys";
 import { Attendant } from "../models/Attendant";
-import {
-  AddAttendantParams,
-  RemoveAttendantParams,
-} from "../services/api/attendants";
 
-const attendants = [
-  {
-    id: "1",
-    name: "John Doe",
-  },
-  {
-    id: "2",
-    name: "John Doe",
-  },
-];
+import usersApi from "../services/api/users";
+import { useUser } from "../store/auth";
+import { User } from "../models/User";
 
 export const useAttendantsQueries = () => {
   const queryClient = useQueryClient();
 
+  const user = useUser();
+
   const useGetAttendants = (organizationId: string) =>
     useQuery({
-      queryFn: () =>
-        new Promise<Attendant[]>((resolve) =>
-          setTimeout(() => resolve(attendants), 1000)
-        ),
+      queryFn: () => usersApi.getAllFromOrganization(organizationId),
       queryKey: attendantsKeys.all(organizationId),
+      select: (data) => data.filter((u) => u.id !== user?.id),
     });
 
   const useAddAttendant = () =>
     useMutation({
-      mutationFn: (variables: AddAttendantParams) =>
-        new Promise<void>((resolve) => setTimeout(() => resolve(), 1000)),
-      onSuccess: (_data, variables) => {
+      mutationFn: usersApi.setUserRoleInOrganizationByEmail,
+      onSuccess: (user, variables) => {
+        queryClient.setQueryData<User[]>(
+          attendantsKeys.all(variables.organizationId),
+          (users) => (users ? [user, ...users] : [user])
+        );
+      },
+      onSettled: (_data, _error, variables) => {
         queryClient.invalidateQueries({
+          refetchType: "none",
           queryKey: attendantsKeys.all(variables.organizationId),
         });
       },
@@ -43,7 +38,7 @@ export const useAttendantsQueries = () => {
 
   const useRemoveAttendant = () =>
     useMutation({
-      mutationFn: (variables: RemoveAttendantParams) =>
+      mutationFn: (variables: any) =>
         new Promise<void>((resolve) => setTimeout(() => resolve(), 1000)),
       onMutate: async ({ attendantId, organizationId }) => {
         await queryClient.cancelQueries({

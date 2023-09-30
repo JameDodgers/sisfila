@@ -1,4 +1,4 @@
-import { User } from "../../models/User";
+import { Role, User } from "../../models/User";
 import api from "./config";
 
 interface AuthenticateUserRequest {
@@ -43,8 +43,23 @@ const authenticateWithGoogle = (data: AuthenticateWithGoogleRequest) =>
 interface SetUserRoleInOrganizationByIdRequest {
   userId: string;
   organizationId: string;
-  role: "TYPE_COORDINATOR" | "";
+  role: Role;
 }
+
+interface SetUserRoleInOrganizationByEmailParams {
+  userEmail: string;
+  organizationId: string;
+  role: Role;
+}
+
+type GetAllFromOrganizationResponse = User[];
+
+const getAllFromOrganization = (organizationId: string) =>
+  api
+    .get<GetAllFromOrganizationResponse>(
+      `v1/users/organizations/${organizationId}`
+    )
+    .then((response) => response.data);
 
 const setUserRoleInOrganizationById = ({
   userId,
@@ -52,12 +67,23 @@ const setUserRoleInOrganizationById = ({
   ...data
 }: SetUserRoleInOrganizationByIdRequest) =>
   api
-    .patch(`v1/users/${userId}/organizations/${organizationId}`, data)
+    .patch<User>(`v1/users/${userId}/organizations/${organizationId}`, data)
+    .then((response) => response.data);
+
+const setUserRoleInOrganizationByEmail = ({
+  userEmail,
+  organizationId,
+  ...data
+}: SetUserRoleInOrganizationByEmailParams) =>
+  api
+    .patch(`v1/users/email/${userEmail}/organizations/${organizationId}`, data)
     .then((response) => response.data);
 
 export default {
   authenticateUser,
   createUser,
   authenticateWithGoogle,
+  getAllFromOrganization,
   setUserRoleInOrganizationById,
+  setUserRoleInOrganizationByEmail,
 };

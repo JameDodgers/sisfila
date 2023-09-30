@@ -1,4 +1,4 @@
-import { FlatList, View } from "react-native";
+import { View } from "react-native";
 import { AttendantItem } from "../../components/AttendantItem";
 import { useAttendantsQueries } from "../../queries/attendants";
 import { useOrganizerStore } from "../../store/organizer";
@@ -11,9 +11,14 @@ import { CustomNavigationBar } from "../../components/CustomNavigationBar";
 import { CustomFlatList, Dialog as StyledDialog } from "../../libs/styled";
 import { CustomTextInput } from "../../components/CustomTextInput";
 
+import { useMessageStore } from "../../store/message";
+import { Role } from "../../models/User";
+
 export const Attendants = () => {
   const navigation =
     useNavigation<OrganizationDrawerScreenProps<"Attendants">["navigation"]>();
+
+  const showMessage = useMessageStore((state) => state.show);
 
   const { currentOrganizationId = "" } = useOrganizerStore();
 
@@ -44,11 +49,16 @@ export const Attendants = () => {
 
   const handleAddAttendant = () => {
     const payload = {
-      email,
+      userEmail: email,
       organizationId: currentOrganizationId,
+      role: "TYPE_ATTENDENT" as Role,
     };
 
-    addAttendant(payload);
+    addAttendant(payload, {
+      onSuccess: () => {
+        showMessage(`Um convite foi enviado para ${email}`);
+      },
+    });
   };
 
   useEffect(() => {
