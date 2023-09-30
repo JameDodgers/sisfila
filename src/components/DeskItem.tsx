@@ -52,14 +52,14 @@ export const DeskItem = ({
         title={item.name}
         right={() => <CardMenu options={cardMenuOptions} />}
       />
-      <Card.Content className="py-4">
+      <Card.Content className="pb-2">
         <ScrollView
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{ columnGap: 8 }}
           horizontal
         >
           {item.services.map((service) => (
-            <Chip className="max-w-[200]" compact>
+            <Chip key={service.id} className="max-w-[200]" compact>
               {service.name}
             </Chip>
           ))}
