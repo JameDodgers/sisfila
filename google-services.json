@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "739635649757",
+    "project_id": "sisfila-2",
+    "storage_bucket": "sisfila-2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:739635649757:android:5f3d01c9a59fd675954f34",
+        "android_client_info": {
+          "package_name": "com.sisfila"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "739635649757-uac3fra9aj5l8156f29tejsq70ppbt09.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCYrsk2FT_ublp93VusJxzD9Hc1AbZTyd4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "739635649757-uac3fra9aj5l8156f29tejsq70ppbt09.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

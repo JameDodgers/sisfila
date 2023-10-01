@@ -19,9 +19,11 @@ module.exports = {
     ios: {
       supportsTablet: true,
       bundleIdentifier: "com.sisfila",
+      googleServicesFile: "./GoogleService-Info.plist",
     },
     android: {
       package: "com.sisfila",
+      googleServicesFile: "./google-services.json",
       adaptiveIcon: {
         foregroundImage: "./assets/adaptive-icon.png",
         backgroundColor: "#FFFFFF",
@@ -39,5 +41,16 @@ module.exports = {
         projectId: "515731f1-e512-42a3-9ed7-d338898e50aa",
       },
     },
+    plugins: [
+      "@react-native-firebase/app",
+      [
+        "expo-build-properties",
+        {
+          ios: {
+            useFrameworks: "static",
+          },
+        },
+      ],
+    ],
   },
 };
