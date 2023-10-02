@@ -24,6 +24,8 @@ import { ptBR } from "date-fns/locale";
 import { pt, registerTranslation } from "react-native-paper-dates";
 import { useMessageStore } from "./src/store/message";
 
+import { useRequestPermissions } from "./src/hooks/useRequestPermissions";
+
 registerTranslation("pt", pt);
 
 setDefaultOptions({ locale: ptBR });
@@ -41,6 +43,8 @@ const onAppStateChange = (status: AppStateStatus) => {
 };
 
 export default function App() {
+  useRequestPermissions();
+
   const messageStore = useMessageStore();
 
   const [fontsLoaded] = useFonts({

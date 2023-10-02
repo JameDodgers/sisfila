@@ -28,6 +28,7 @@ module.exports = {
         foregroundImage: "./assets/adaptive-icon.png",
         backgroundColor: "#FFFFFF",
       },
+      permissions: ["android.permission.POST_NOTIFICATIONS"],
     },
     web: {
       favicon: "./assets/favicon.png",
