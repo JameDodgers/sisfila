@@ -35,7 +35,6 @@ export type DrawerParamList = {
   ClientsRoutes: NavigatorScreenParams<ClientsStackParamList>;
   GroupsRoutes: NavigatorScreenParams<GroupsStackParamList>;
   ServicesRoutes: NavigatorScreenParams<ServicesStackParamList>;
-  QueuesRoutes: NavigatorScreenParams<QueuesStackParamList>;
   Desks: NavigatorScreenParams<DeskStackParamList>;
   Attendants: undefined;
 };
@@ -83,22 +82,14 @@ export type ServicesStackParamList = {
         serviceId: string;
       }
     | undefined;
+  CreateOrUpdateQueue:
+    | { serviceId: string; queueId?: never }
+    | { serviceId?: never; queueId: string };
 };
 
 export type ServicesStackScreenProps<T extends keyof ServicesStackParamList> =
   CompositeScreenProps<
     NativeStackScreenProps<ServicesStackParamList, T>,
-    OrganizationDrawerScreenProps<keyof DrawerParamList>
-  >;
-
-export type QueuesStackParamList = {
-  Queues: undefined;
-  CreateOrUpdateQueue: { queueId: string } | undefined;
-};
-
-export type QueuesStackScreenProps<T extends keyof QueuesStackParamList> =
-  CompositeScreenProps<
-    NativeStackScreenProps<QueuesStackParamList, T>,
     OrganizationDrawerScreenProps<keyof DrawerParamList>
   >;
 

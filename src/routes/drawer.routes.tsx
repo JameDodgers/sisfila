@@ -4,7 +4,6 @@ import CustomDrawerContent from "../components/CustomDrawerContent";
 
 import { Platform } from "react-native";
 import { GroupsRoutes } from "./groups.routes";
-import { QueuesRoutes } from "./queues.routes";
 import { ServicesRoutes } from "./services.routes";
 import { DesksRoutes } from "./desks.routes";
 import { CustomNavigationBar } from "../components/CustomNavigationBar";
@@ -43,13 +42,6 @@ export const DrawerRoutes = () => {
         component={OrganizationDetails}
       />
       <Screen
-        name="Clients"
-        options={{
-          title: "Clientes",
-        }}
-        component={Clients}
-      />
-      <Screen
         name="Attendants"
         options={{
           title: "Atendentes",
@@ -57,12 +49,11 @@ export const DrawerRoutes = () => {
         component={Attendants}
       />
       <Screen
-        name="DesksRoutes"
+        name="Clients"
         options={{
-          title: "Guichês",
-          headerShown: false,
+          title: "Clientes",
         }}
-        component={DesksRoutes}
+        component={Clients}
       />
       <Screen
         name="GroupsRoutes"
@@ -81,12 +72,12 @@ export const DrawerRoutes = () => {
         component={ServicesRoutes}
       />
       <Screen
-        name="QueuesRoutes"
+        name="DesksRoutes"
         options={{
-          title: "Filas",
+          title: "Guichês",
           headerShown: false,
         }}
-        component={QueuesRoutes}
+        component={DesksRoutes}
       />
     </Navigator>
   );

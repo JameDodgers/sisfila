@@ -3,6 +3,8 @@ import { Dialog as PaperDialog } from "react-native-paper";
 import { styled } from "nativewind";
 import { ComponentProps } from "react";
 
+import { NestableScrollContainer } from "react-native-draggable-flatlist";
+
 export const StyledFlatList = styled(FlatList, {
   props: {
     contentContainerStyle: true,
@@ -20,6 +22,12 @@ export const CustomFlatList = (props: CustomFlatListProps) => (
 
 export const ScrollView = styled(RNScrollView, {
   props: { contentContainerStyle: true },
+});
+
+export const StyledNestableScrollContainer = styled(NestableScrollContainer, {
+  props: {
+    contentContainerStyle: true,
+  },
 });
 
 export const Dialog = styled(

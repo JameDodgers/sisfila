@@ -39,7 +39,7 @@ export const useQueuesQueries = (organizationId: string) => {
   const useCreateQueue = () =>
     useMutation({
       mutationFn: queuesApi.create,
-      onSuccess(data) {
+      onSuccess: (data) => {
         queryClient.setQueryData<Queue[]>(
           queuesKeys.list(organizationId),
           (queues) => (queues ? [data, ...queues] : [data])

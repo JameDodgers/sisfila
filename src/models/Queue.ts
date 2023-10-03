@@ -15,6 +15,7 @@ export type QueueBase = QueueCommon & {
 
 export type Queue = QueueCommon & {
   id: string;
+  priority: number;
   createdAt: string;
   updatedAt: string;
   clients: Client[];

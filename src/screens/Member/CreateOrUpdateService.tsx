@@ -1,7 +1,13 @@
 import { useCallback, useEffect, useLayoutEffect, useState } from "react";
-import DraggableFlatList from "react-native-draggable-flatlist";
+import { NestableDraggableFlatList } from "react-native-draggable-flatlist";
 import { useServicesQueries } from "../../queries/services";
-import { Button, HelperText, List, TextInput } from "react-native-paper";
+import {
+  Button,
+  HelperText,
+  IconButton,
+  Text,
+  TextInput,
+} from "react-native-paper";
 import * as Yup from "yup";
 import { TimePickerModal } from "react-native-paper-dates";
 import {
@@ -25,7 +31,9 @@ import { CustomTextInput } from "../../components/CustomTextInput";
 import { DatePickerInputProps } from "react-native-paper-dates/lib/typescript/Date/DatePickerInput.shared";
 import { FormikDatePickerInput } from "../../components/FormikDatePickerInput";
 import { useQueuesQueries } from "../../queries/queues";
-import { CustomListAccordion } from "../../components/CustomListAccordion";
+import { QueueItem } from "../../components/QueueItem";
+import { StyledNestableScrollContainer } from "../../libs/styled";
+import { Queue } from "../../models/Queue";
 
 interface FormValues {
   name: string;
@@ -50,16 +58,22 @@ export const CreateOrUpdateService = ({ route, navigation }: Props) => {
 
   const { currentOrganizationId = "" } = useOrganizerStore();
 
-  const { useGetQueues } = useQueuesQueries(currentOrganizationId);
+  const { useGetQueues, useDeleteQueue } = useQueuesQueries(
+    currentOrganizationId
+  );
+
+  const { mutate: deleteQueue } = useDeleteQueue();
 
   const { data: serviceQueues = [] } = useGetQueues({
     select: (queues) => queues.filter((queue) => queue.serviceId === serviceId),
   });
 
-  const [sortedServiceQueues, setSortedServiceQueues] = useState(serviceQueues);
+  const [sortedServiceQueues, setSortedServiceQueues] = useState<Queue[]>([]);
 
   useEffect(() => {
-    setSortedServiceQueues(serviceQueues);
+    setSortedServiceQueues(
+      [...serviceQueues].sort((a, b) => a.priority - b.priority)
+    );
   }, [serviceQueues]);
 
   const { useGetService, useCreateService, useUpdateService } =
@@ -100,7 +114,9 @@ export const CreateOrUpdateService = ({ route, navigation }: Props) => {
       const payload = {
         ...basePayload,
         serviceId,
+        queueIds: sortedServiceQueues.map((queue) => queue.id),
       };
+
       updateService(payload, { onSuccess });
     } else {
       const payload = {
@@ -109,6 +125,29 @@ export const CreateOrUpdateService = ({ route, navigation }: Props) => {
       };
       createService(payload, { onSuccess });
     }
+  };
+
+  const handleDeleteQueue = (queueId: string) => {
+    const payload = {
+      queueId,
+      organizationId: currentOrganizationId,
+    };
+
+    deleteQueue(payload);
+  };
+
+  const handleCreateQueue = () => {
+    if (serviceId) {
+      navigation.navigate("CreateOrUpdateQueue", {
+        serviceId,
+      });
+    }
+  };
+
+  const handleOpenQueueSettings = (queueId: string) => {
+    navigation.navigate("CreateOrUpdateQueue", {
+      queueId,
+    });
   };
 
   const onDismissStartTimePickerModal = useCallback(() => {
@@ -137,7 +176,7 @@ export const CreateOrUpdateService = ({ route, navigation }: Props) => {
 
   return (
     <SafeAreaInsetsContainer>
-      <View className="flex-1 p-4 web:w-full web:self-center web:max-w-sm">
+      <View className="flex-1">
         <Formik
           initialValues={{
             name: service?.name || "",
@@ -248,8 +287,11 @@ export const CreateOrUpdateService = ({ route, navigation }: Props) => {
 
             return (
               <>
-                <View className="flex-1 justify-between web:justify-start">
-                  <View className="mb-6">
+                <View className="flex-1">
+                  <StyledNestableScrollContainer
+                    showsVerticalScrollIndicator={false}
+                    contentContainerStyle="web:w-full p-4 web:self-center web:max-w-md"
+                  >
                     <FormikTextInput
                       autoFocus={!serviceId}
                       fieldName="name"
@@ -314,39 +356,48 @@ export const CreateOrUpdateService = ({ route, navigation }: Props) => {
                     <HelperText type="error">
                       {!!errors.closesAt ? <>{errors.closesAt}</> : " "}
                     </HelperText>
-                    <CustomListAccordion title="Filas">
-                      <HelperText type="info">
-                        Arraste a fila de maior prioridade para o topo
-                      </HelperText>
-                      <DraggableFlatList
-                        bounces={false}
-                        data={sortedServiceQueues}
-                        keyExtractor={(item) => item.id}
-                        renderItem={({ item, drag }) => (
-                          <List.Item
-                            left={(props) => (
-                              <List.Icon
-                                {...props}
-                                icon="drag-horizontal-variant"
-                              />
-                            )}
-                            onLongPress={drag}
-                            title={item.name}
-                          />
-                        )}
-                        onDragEnd={({ data }) => setSortedServiceQueues(data)}
-                      />
-                    </CustomListAccordion>
+                    {serviceId && (
+                      <View>
+                        <View className="px-3 flex-row justify-between items-center">
+                          <Text variant="titleMedium">Filas</Text>
+                          <IconButton icon="plus" onPress={handleCreateQueue} />
+                        </View>
+                        <HelperText type="info">
+                          {sortedServiceQueues.length > 0
+                            ? "Arraste a fila de maior prioridade para o topo"
+                            : "Crie uma fila para habilitar o serviço"}
+                        </HelperText>
+                        <NestableDraggableFlatList
+                          bounces={false}
+                          data={sortedServiceQueues}
+                          keyExtractor={(item) => item.id}
+                          renderItem={({ item, drag, isActive }) => (
+                            <QueueItem
+                              item={item}
+                              disabled={isActive}
+                              onPressIn={drag}
+                              remove={() => handleDeleteQueue(item.id)}
+                              openSettings={() =>
+                                handleOpenQueueSettings(item.id)
+                              }
+                            />
+                          )}
+                          onDragEnd={({ data }) => setSortedServiceQueues(data)}
+                        />
+                      </View>
+                    )}
+                  </StyledNestableScrollContainer>
+                  <View className="p-4 border-t-gray-400 border-t">
+                    <Button
+                      className="web:self-end"
+                      loading={isLoading}
+                      disabled={isLoading}
+                      mode="contained"
+                      onPress={() => handleSubmit()}
+                    >
+                      {actionButtonLabel}
+                    </Button>
                   </View>
-                  <Button
-                    className="web:self-end"
-                    loading={isLoading}
-                    disabled={isLoading}
-                    mode="contained"
-                    onPress={() => handleSubmit()}
-                  >
-                    {actionButtonLabel}
-                  </Button>
                 </View>
                 <TimePickerModal
                   locale="pt"

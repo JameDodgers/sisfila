@@ -75,7 +75,7 @@ export const CreateOrUpdateGroup = ({ navigation, route }: Props) => {
 
   return (
     <SafeAreaInsetsContainer>
-      <View className="flex-1  p-4 web:w-full web:self-center web:max-w-sm">
+      <View className="flex-1 p-4 web:w-full web:self-center web:max-w-sm">
         <Formik
           initialValues={{
             name: group?.name || "",

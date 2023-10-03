@@ -3,6 +3,7 @@ import { CreateOrUpdateService } from "../screens/Member/CreateOrUpdateService";
 import { Services } from "../screens/Member/Services";
 
 import { CustomNavigationBar } from "../components/CustomNavigationBar";
+import { CreateOrUpdateQueue } from "../screens/Member/CreateOrUpdateQueue";
 
 const { Navigator, Screen } = createNativeStackNavigator();
 
@@ -26,6 +27,13 @@ export const ServicesRoutes = () => {
         component={CreateOrUpdateService}
         options={{
           title: "Criar serviço",
+        }}
+      />
+      <Screen
+        name="CreateOrUpdateQueue"
+        component={CreateOrUpdateQueue}
+        options={{
+          title: "Criar fila",
         }}
       />
     </Navigator>

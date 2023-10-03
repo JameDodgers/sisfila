@@ -5,6 +5,7 @@ interface CreateServiceParams extends ServiceBase {}
 
 interface UpdateServiceParams
   extends Partial<Omit<ServiceBase, "organizationId">> {
+  queueIds: string[];
   serviceId: string;
 }
 

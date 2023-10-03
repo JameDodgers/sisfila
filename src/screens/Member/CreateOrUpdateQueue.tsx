@@ -1,12 +1,11 @@
 import { useEffect, useLayoutEffect, useState } from "react";
 
-import { useServicesQueries } from "../../queries/services";
 import _ from "lodash";
 
 import { useOrganizerStore } from "../../store/organizer";
 import { View } from "react-native";
 import * as Yup from "yup";
-import { Button, HelperText } from "react-native-paper";
+import { Button } from "react-native-paper";
 import { ScrollView } from "../../libs/styled";
 import { Formik } from "formik";
 import { FormikTextInput } from "../../components/FormikTextInput";
@@ -15,19 +14,17 @@ import { useGroupsQueries } from "../../queries/groups";
 import { SafeAreaInsetsContainer } from "../../components/SafeInsetsContainer";
 import { CheckboxList } from "../../components/CheckboxList";
 import { CustomTextInput } from "../../components/CustomTextInput";
-import { RadioButtonList } from "../../components/RadioButtonList";
-import { QueuesStackScreenProps } from "../../../@types/navigation";
+import { ServicesStackScreenProps } from "../../../@types/navigation";
 
 interface FormValues {
   name: string;
-  serviceId: string;
   code: string;
 }
 
-type Props = QueuesStackScreenProps<"CreateOrUpdateQueue">;
+type Props = ServicesStackScreenProps<"CreateOrUpdateQueue">;
 
 export const CreateOrUpdateQueue = ({ route, navigation }: Props) => {
-  const queueId = route.params?.queueId;
+  const { queueId, serviceId } = route.params;
 
   const { currentOrganizationId = "" } = useOrganizerStore();
 
@@ -39,10 +36,6 @@ export const CreateOrUpdateQueue = ({ route, navigation }: Props) => {
   const { useGetGroups } = useGroupsQueries(currentOrganizationId);
 
   const { data: groups = [] } = useGetGroups();
-
-  const { useGetServices } = useServicesQueries(currentOrganizationId);
-
-  const { data: services = [] } = useGetServices();
 
   const { mutate: createQueue, isLoading: isCreatingQueue } = useCreateQueue();
 
@@ -60,21 +53,14 @@ export const CreateOrUpdateQueue = ({ route, navigation }: Props) => {
 
   const [description, setDescription] = useState(queue?.description || "");
 
-  const radioButtonsListItems = services.map((service) => ({
-    key: service.id,
-    label: service.name,
-  }));
-
   const onSuccess = () => navigation.goBack();
 
-  const handleSubmit = ({ name, code, serviceId }: FormValues) => {
-    if (!serviceId) return;
-
+  const handleSubmit = ({ name, code }: FormValues) => {
     const basePayload = {
       name,
       description,
       code,
-      serviceId,
+
       organizationId: currentOrganizationId,
     };
 
@@ -86,10 +72,11 @@ export const CreateOrUpdateQueue = ({ route, navigation }: Props) => {
       };
 
       updateQueue(updatePayload, { onSuccess });
-    } else {
+    } else if (serviceId) {
       const createPayload = {
         ...basePayload,
         groupIds: selectedGroupIds,
+        serviceId,
       };
 
       createQueue(createPayload, { onSuccess });
@@ -100,7 +87,6 @@ export const CreateOrUpdateQueue = ({ route, navigation }: Props) => {
     name: Yup.string()
       .min(2, "Escolha um nome maior")
       .required("Nome é um campo obrigatório"),
-    serviceId: Yup.string().required("Escolha um serviço"),
     code: Yup.string()
       .min(2, "Mínimo de 2 caracteres")
       .required("Código é um campo obrigatório"),
@@ -120,13 +106,12 @@ export const CreateOrUpdateQueue = ({ route, navigation }: Props) => {
         <Formik
           initialValues={{
             name: queue?.name || "",
-            serviceId: queue?.serviceId || "",
             code: queue?.code || "",
           }}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
-          {({ values, errors, touched, setFieldValue, handleSubmit }) => {
+          {({ handleSubmit }) => {
             return (
               <View className="flex-1 justify-between web:justify-start">
                 <ScrollView
@@ -144,18 +129,6 @@ export const CreateOrUpdateQueue = ({ route, navigation }: Props) => {
                     fieldName="code"
                     label="Código*"
                   />
-                  <View className="mt-7" />
-                  <RadioButtonList
-                    title="Serviços"
-                    items={radioButtonsListItems}
-                    value={values.serviceId}
-                    setValue={(value) => setFieldValue("serviceId", value)}
-                  />
-                  <HelperText type="error">
-                    {!!(touched.serviceId && errors.serviceId)
-                      ? errors.serviceId
-                      : " "}
-                  </HelperText>
                   <CheckboxList
                     title="Grupos"
                     items={groups}
