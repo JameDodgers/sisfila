@@ -114,11 +114,8 @@ export const CreateOrUpdateQueue = ({ route, navigation }: Props) => {
           {({ handleSubmit }) => {
             return (
               <View className="flex-1 justify-between web:justify-start">
-                <ScrollView
-                  className="web:grow-0"
-                  contentContainerStyle="p-4 web:w-full web:self-center web:max-w-sm"
-                >
-                  <FormikTextInput autoFocus fieldName="name" label="Nome" />
+                <ScrollView contentContainerStyle="p-4 web:w-full web:self-center web:max-w-md">
+                  <FormikTextInput autoFocus fieldName="name" label="Nome*" />
                   <CustomTextInput
                     label="Descrição"
                     value={description}
@@ -136,7 +133,7 @@ export const CreateOrUpdateQueue = ({ route, navigation }: Props) => {
                     setValue={setSelectedGroupIds}
                   />
                 </ScrollView>
-                <View className="p-4 web:w-full web:self-center web:max-w-sm">
+                <View className="p-4 border-t-gray-400 border-t">
                   <Button
                     className="web:self-end"
                     mode="contained"
