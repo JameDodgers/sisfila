@@ -37,11 +37,13 @@ export const Organization = ({ route }: Props) => {
 
   const { data: organization } = useGetOrganization(organizationId);
 
-  const { data: services = [] } = useGetServices(organizationId);
+  const { data: services = [], refetch } = useGetServices(organizationId);
 
   const { mutate: enterService } = useEnterService();
 
   const showMessage = useMessageStore((state) => state.show);
+
+  const { isRefetchingByUser, refetchByUser } = useRefreshByUser(refetch);
 
   const handleEnterQueue = () => {
     if (selectedServiceId) {
@@ -83,6 +85,8 @@ export const Organization = ({ route }: Props) => {
             />
           )}
           contentContainerStyle="p-4 web:w-full web:self-center web:max-w-screen-sm"
+          onRefresh={refetchByUser}
+          refreshing={isRefetchingByUser}
           keyExtractor={(item: any) => item.id}
           ItemSeparatorComponent={() => <View className="h-3" />}
         />
