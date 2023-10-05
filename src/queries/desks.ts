@@ -4,22 +4,29 @@ import { desksKeys } from "./keys";
 import { Desk } from "../models/Desk";
 
 import desksApi from "../services/api/desks";
-
-type QueryOptions<TData, TResult> = {
-  select?: (data: TData) => TResult;
-  enabled?: boolean;
-};
+import { Client } from "../models/Client";
 
 export const useDesksQueries = (organizationId: string) => {
   const queryClient = useQueryClient();
 
-  const useGetDesks = <TResult = Desk[]>(
-    options?: QueryOptions<Desk[], TResult>
-  ) =>
+  const useGetDesks = () =>
     useQuery({
       queryFn: () => desksApi.getAll(organizationId),
-      queryKey: desksKeys.all(organizationId),
-      ...options,
+      queryKey: desksKeys.list(organizationId),
+    });
+
+  const useGetDesk = (deskId = "") =>
+    useQuery({
+      enabled: !!deskId,
+      queryKey: desksKeys.item(organizationId, deskId),
+      initialData: () =>
+        queryClient
+          .getQueryData<Desk[]>(desksKeys.list(organizationId))
+          ?.find((m) => m.id === deskId),
+      initialDataUpdatedAt: () =>
+        queryClient.getQueryState(desksKeys.list(organizationId))
+          ?.dataUpdatedAt,
+      queryFn: () => desksApi.getOne({ organizationId, deskId }),
     });
 
   const useCreateDesk = () =>
@@ -27,14 +34,14 @@ export const useDesksQueries = (organizationId: string) => {
       mutationFn: desksApi.createDesk,
       onSuccess: (desk) => {
         queryClient.setQueryData<Desk[]>(
-          desksKeys.all(organizationId),
+          desksKeys.list(organizationId),
           (desks) => (desks ? [desk, ...desks] : [desk])
         );
       },
       onSettled: () => {
         queryClient.invalidateQueries({
           refetchType: "none",
-          queryKey: desksKeys.all(organizationId),
+          queryKey: desksKeys.list(organizationId),
         });
       },
     });
@@ -44,15 +51,15 @@ export const useDesksQueries = (organizationId: string) => {
       mutationFn: desksApi.deleteDesk,
       onMutate: async (deskId) => {
         await queryClient.cancelQueries({
-          queryKey: desksKeys.all(organizationId),
+          queryKey: desksKeys.list(organizationId),
         });
 
         const previousDesks = queryClient.getQueryData<Desk[]>(
-          desksKeys.all(organizationId)
+          desksKeys.list(organizationId)
         );
 
         queryClient.setQueryData<Desk[]>(
-          desksKeys.all(organizationId),
+          desksKeys.list(organizationId),
           (data) => data?.filter((desk) => desk.id !== deskId)
         );
 
@@ -61,14 +68,14 @@ export const useDesksQueries = (organizationId: string) => {
       onError: (_err, _variables, context) => {
         if (context?.previousDesks) {
           queryClient.setQueryData<Desk[]>(
-            desksKeys.all(organizationId),
+            desksKeys.list(organizationId),
             context.previousDesks
           );
         }
       },
       onSettled: (_data, _error) => {
         queryClient.invalidateQueries({
-          queryKey: desksKeys.all(organizationId),
+          queryKey: desksKeys.list(organizationId),
         });
       },
     });
@@ -78,7 +85,7 @@ export const useDesksQueries = (organizationId: string) => {
       mutationFn: desksApi.updateDesk,
       onSettled: () => {
         queryClient.invalidateQueries({
-          queryKey: desksKeys.all(organizationId),
+          queryKey: desksKeys.list(organizationId),
         });
       },
     });
@@ -86,10 +93,21 @@ export const useDesksQueries = (organizationId: string) => {
   const useCallNext = () =>
     useMutation({
       mutationFn: desksApi.callNext,
+      onSuccess: (data, deskId) => {
+        queryClient.setQueryData<Client>(
+          desksKeys.client(organizationId, deskId),
+          data.client
+        );
+        queryClient.setQueryData<Desk>(
+          desksKeys.item(organizationId, deskId),
+          data.desk
+        );
+      },
     });
 
   return {
     useGetDesks,
+    useGetDesk,
     useCreateDesk,
     useDeleteDesk,
     useUpdateDesk,

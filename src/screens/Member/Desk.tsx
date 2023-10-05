@@ -1,7 +1,7 @@
 import { useOrganizerStore } from "../../store/organizer";
 import { DesksStackScreenProps } from "../../../@types/navigation";
 
-import { Button } from "react-native-paper";
+import { Button, Text } from "react-native-paper";
 import { View } from "react-native";
 import { SafeAreaInsetsContainer } from "../../components/SafeInsetsContainer";
 import { useLayoutEffect } from "react";
@@ -20,13 +20,11 @@ export const Desk = ({ route }: Props) => {
 
   const { currentOrganizationId = "" } = useOrganizerStore();
 
-  const { useGetDesks, useCallNext } = useDesksQueries(currentOrganizationId);
+  const { useGetDesk, useCallNext } = useDesksQueries(currentOrganizationId);
 
-  const { mutate: callNext } = useCallNext();
+  const { mutate: callNext, isLoading } = useCallNext();
 
-  const { data: desk } = useGetDesks({
-    select: (data) => data.find((item) => item.id === deskId),
-  });
+  const { data: desk } = useGetDesk(deskId);
 
   useLayoutEffect(() => {
     navigation.setOptions({

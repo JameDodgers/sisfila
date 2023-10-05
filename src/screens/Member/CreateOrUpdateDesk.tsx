@@ -30,14 +30,11 @@ export const CreateOrUpdateDesk = ({ route, navigation }: Props) => {
 
   const { data: services = [] } = useGetServices();
 
-  const { useGetDesks, useCreateDesk, useUpdateDesk } = useDesksQueries(
+  const { useGetDesk, useCreateDesk, useUpdateDesk } = useDesksQueries(
     currentOrganizationId
   );
 
-  const { data: desk } = useGetDesks({
-    enabled: !!deskId,
-    select: (data) => data.find((item) => item.id === deskId),
-  });
+  const { data: desk } = useGetDesk(deskId);
 
   const { mutate: createDesk, isLoading: isCreatingDesk } = useCreateDesk();
 
