@@ -7,6 +7,7 @@ import { User } from "../models/User";
 export interface Auth {
   user?: User;
   token?: string;
+  fcmToken?: string;
 }
 
 export const useAuthStore = create<Auth>()(
@@ -15,6 +16,7 @@ export const useAuthStore = create<Auth>()(
       ({
         token: undefined,
         user: undefined,
+        fcmToken: undefined,
       } as Auth),
     {
       name: "tokens",

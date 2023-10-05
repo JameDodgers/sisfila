@@ -25,7 +25,7 @@ export const useRequestPermissions = () => {
       if (enabled) {
         const fcmToken = await messaging().getToken();
 
-        useAuthStore.setState({ token: fcmToken });
+        useAuthStore.setState({ fcmToken });
       }
     };
     requestUserPermission();
