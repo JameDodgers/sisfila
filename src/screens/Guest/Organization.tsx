@@ -8,8 +8,8 @@ import { useLayoutEffect, useState } from "react";
 import { useMessageStore } from "../../store/message";
 import { useServicesQueries } from "../../queries/guest/services";
 import { useNavigation } from "@react-navigation/native";
-import { CustomFlatList } from "../../libs/styled";
-import { Dialog as StyledDialog } from "../../libs/styled";
+
+import { Dialog as StyledDialog, StyledFlatList } from "../../libs/styled";
 import { CustomTextInput } from "../../components/CustomTextInput";
 type Props = {
   route: RootNavigatorScreenProps<"Organization">["route"];
@@ -73,7 +73,7 @@ export const Organization = ({ route }: Props) => {
   return (
     <>
       <View className="flex-1">
-        <CustomFlatList
+        <StyledFlatList
           data={services}
           renderItem={({ item }: any) => (
             <ServiceItem
@@ -82,6 +82,7 @@ export const Organization = ({ route }: Props) => {
               enterOnQueue={() => handleSelectService(item.id)}
             />
           )}
+          contentContainerStyle="p-4 web:w-full web:self-center web:max-w-screen-sm"
           keyExtractor={(item: any) => item.id}
           ItemSeparatorComponent={() => <View className="h-3" />}
         />

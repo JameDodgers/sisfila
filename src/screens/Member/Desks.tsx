@@ -7,7 +7,7 @@ import { DeskItem } from "../../components/DeskItem";
 import { useEffect, useLayoutEffect, useState } from "react";
 
 import { useUser } from "../../store/auth";
-import { CustomFlatList } from "../../libs/styled";
+import { StyledFlatList } from "../../libs/styled";
 import { CustomNavigationBar } from "../../components/CustomNavigationBar";
 import { Appbar } from "react-native-paper";
 
@@ -103,10 +103,11 @@ export const Desks = () => {
 
   return (
     <View className="flex-1">
-      <CustomFlatList
+      <StyledFlatList
         data={desks}
         keyExtractor={(item: any) => item.id}
         ItemSeparatorComponent={() => <View className="h-3" />}
+        contentContainerStyle="p-4 web:w-full web:self-center web:max-w-screen-sm"
         renderItem={({ item }: any) => (
           <DeskItem
             item={item}

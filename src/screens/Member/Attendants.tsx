@@ -8,7 +8,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Button, Dialog, Portal } from "react-native-paper";
 import { OrganizationDrawerScreenProps } from "../../../@types/navigation";
 import { CustomNavigationBar } from "../../components/CustomNavigationBar";
-import { CustomFlatList, Dialog as StyledDialog } from "../../libs/styled";
+import { Dialog as StyledDialog, StyledFlatList } from "../../libs/styled";
 import { CustomTextInput } from "../../components/CustomTextInput";
 
 import { useMessageStore } from "../../store/message";
@@ -79,9 +79,10 @@ export const Attendants = () => {
   return (
     <>
       <View className="flex-1">
-        <CustomFlatList
+        <StyledFlatList
           data={attendants}
           keyExtractor={(item: any) => item.id}
+          contentContainerStyle="p-4 web:w-full web:self-center web:max-w-screen-sm"
           ItemSeparatorComponent={() => <View className="h-3" />}
           renderItem={({ item }: any) => (
             <AttendantItem

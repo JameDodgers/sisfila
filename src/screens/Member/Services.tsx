@@ -8,7 +8,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useOrganizerStore } from "../../store/organizer";
 
 import { View } from "react-native";
-import { CustomFlatList } from "../../libs/styled";
+import { StyledFlatList } from "../../libs/styled";
 import { CustomNavigationBar } from "../../components/CustomNavigationBar";
 import { ServicesStackScreenProps } from "../../../@types/navigation";
 
@@ -56,8 +56,9 @@ export const Services = () => {
 
   return (
     <View className="flex-1">
-      <CustomFlatList
+      <StyledFlatList
         data={services}
+        contentContainerStyle="p-4 web:w-full web:self-center web:max-w-screen-sm"
         renderItem={({ item }: any) => (
           <ServiceItem
             item={item}

@@ -9,7 +9,7 @@ import { useOrganizerStore } from "../../store/organizer";
 import { GroupsStackScreenProps } from "../../../@types/navigation";
 import { View } from "react-native";
 import { CustomNavigationBar } from "../../components/CustomNavigationBar";
-import { CustomFlatList } from "../../libs/styled";
+import { StyledFlatList } from "../../libs/styled";
 
 export const Groups = () => {
   const navigation =
@@ -68,9 +68,10 @@ export const Groups = () => {
 
   return (
     <View className="flex-1">
-      <CustomFlatList
+      <StyledFlatList
         data={groups}
         keyExtractor={(item: any) => item.id.toString()}
+        contentContainerStyle="p-4 web:w-full web:self-center web:max-w-screen-sm"
         renderItem={({ item }: any) => (
           <GroupItem
             item={item}
