@@ -1,4 +1,4 @@
-import { Divider, Menu, Text } from "react-native-paper";
+import { Divider, List, Menu, Text } from "react-native-paper";
 import { useOrganizationsQueries } from "../queries/organizations";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import {
@@ -8,6 +8,8 @@ import {
 import { useState } from "react";
 import { Pressable, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { Organization } from "../models/Organization";
+import { Role } from "../models/User";
 
 export const OrganizationSelector = () => {
   const navigation = useNavigation();
@@ -26,6 +28,40 @@ export const OrganizationSelector = () => {
 
   const { data: organization } = useGetOrganization(currentOrganizationId);
 
+  const groups = organizations.reduce(
+    (acc: { [key: string]: Organization[] }, obj) => {
+      const key = obj.userRoleInOrganization;
+      const curGroup = acc[key] ?? [];
+      return { ...acc, [key]: [...curGroup, obj] };
+    },
+    {}
+  );
+
+  const renderOrganizationList = (
+    title: string,
+    organizations?: Organization[]
+  ) => {
+    if (!organizations) {
+      return;
+    }
+
+    return (
+      <View>
+        <List.Subheader>{title}</List.Subheader>
+        {organizations?.map(({ id, name }) => (
+          <Menu.Item
+            key={id}
+            disabled={id === currentOrganizationId}
+            onPress={() => {
+              setCurrentOrganizationId(id);
+              closeMenu();
+            }}
+            title={name}
+          />
+        ))}
+      </View>
+    );
+  };
 
   return (
     <Menu
@@ -57,17 +93,9 @@ export const OrganizationSelector = () => {
         title="Adicionar organização"
       />
       <Divider />
-      {organizations.map(({ id, name }) => (
-        <Menu.Item
-          key={id}
-          disabled={id === currentOrganizationId}
-          onPress={() => {
-            setCurrentOrganizationId(id);
-            closeMenu();
-          }}
-          title={name}
-        />
-      ))}
+
+      {renderOrganizationList("Coordenador", groups[Role.TYPE_COORDINATOR])}
+      {renderOrganizationList("Atendente", groups[Role.TYPE_ATTENDENT])}
     </Menu>
   );
 };

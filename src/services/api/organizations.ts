@@ -1,9 +1,12 @@
 import { Organization } from "../../models/Organization";
+import { Role } from "../../models/User";
 import api from "./config";
 
-interface GetOneResponse extends Organization {}
+interface GetOneResponse extends Organization {
+  userRoleInOrganization: Role;
+}
 
-interface GetAllResponse extends Array<Organization> {}
+interface GetAllResponse extends Array<GetOneResponse> {}
 
 interface CreateRequest {
   name: string;

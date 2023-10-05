@@ -54,11 +54,26 @@ interface SetUserRoleInOrganizationByEmailParams {
 
 type GetAllFromOrganizationResponse = User[];
 
+type GetOneParms = {
+  userId: string;
+  organizationId: string;
+};
+
+type RemoveUserFromOrganizationByIdParams = {
+  userId: string;
+  organizationId: string;
+};
+
 const getAllFromOrganization = (organizationId: string) =>
   api
     .get<GetAllFromOrganizationResponse>(
       `v1/users/organizations/${organizationId}`
     )
+    .then((response) => response.data);
+
+const getOne = ({ userId, organizationId }: GetOneParms) =>
+  api
+    .get<User>(`v1/users/${userId}/organizations/${organizationId}`)
     .then((response) => response.data);
 
 const setUserRoleInOrganizationById = ({
@@ -79,11 +94,19 @@ const setUserRoleInOrganizationByEmail = ({
     .patch(`v1/users/email/${userEmail}/organizations/${organizationId}`, data)
     .then((response) => response.data);
 
+const removeUserFromOrganizationById = ({
+  userId,
+  organizationId,
+}: RemoveUserFromOrganizationByIdParams) =>
+  api.delete(`v1/users/${userId}/organizations/${organizationId}`);
+
 export default {
   authenticateUser,
   createUser,
   authenticateWithGoogle,
+  getOne,
   getAllFromOrganization,
   setUserRoleInOrganizationById,
   setUserRoleInOrganizationByEmail,
+  removeUserFromOrganizationById,
 };

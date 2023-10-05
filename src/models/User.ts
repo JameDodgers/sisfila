@@ -1,4 +1,7 @@
-export type Role = "TYPE_COORDINATOR" | "TYPE_ATTENDENT";
+export enum Role {
+  TYPE_COORDINATOR = "TYPE_COORDINATOR",
+  TYPE_ATTENDENT = "TYPE_ATTENDENT",
+}
 
 type RolesInOrganizations = {
   organizationId: string;

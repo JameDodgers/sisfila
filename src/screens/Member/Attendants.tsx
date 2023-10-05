@@ -41,7 +41,7 @@ export const Attendants = () => {
 
   const handleRemoveAttendant = (id: string) => {
     const payload = {
-      attendantId: id,
+      userId: id,
       organizationId: currentOrganizationId,
     };
     removeAttendant(payload);
@@ -51,7 +51,7 @@ export const Attendants = () => {
     const payload = {
       userEmail: email,
       organizationId: currentOrganizationId,
-      role: "TYPE_ATTENDENT" as Role,
+      role: Role.TYPE_ATTENDENT,
     };
 
     addAttendant(payload, {

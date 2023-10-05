@@ -38,9 +38,8 @@ export const useAttendantsQueries = () => {
 
   const useRemoveAttendant = () =>
     useMutation({
-      mutationFn: (variables: any) =>
-        new Promise<void>((resolve) => setTimeout(() => resolve(), 1000)),
-      onMutate: async ({ attendantId, organizationId }) => {
+      mutationFn: usersApi.removeUserFromOrganizationById,
+      onMutate: async ({ userId, organizationId }) => {
         await queryClient.cancelQueries({
           queryKey: attendantsKeys.all(organizationId),
         });
@@ -51,7 +50,7 @@ export const useAttendantsQueries = () => {
 
         queryClient.setQueryData<Attendant[]>(
           attendantsKeys.all(organizationId),
-          (data) => data?.filter((attendant) => attendant.id !== attendantId)
+          (data) => data?.filter((attendant) => attendant.id !== userId)
         );
 
         return { previousAttendants };
