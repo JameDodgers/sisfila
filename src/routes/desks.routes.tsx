@@ -2,6 +2,7 @@ import { Desks } from "../screens/Member/Desks";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { CustomNavigationBar } from "../components/CustomNavigationBar";
 import { CreateOrUpdateDesk } from "../screens/Member/CreateOrUpdateDesk";
+import { Desk } from "../screens/Member/Desk";
 
 const { Navigator, Screen } = createNativeStackNavigator();
 
@@ -27,6 +28,7 @@ export const DesksRoutes = () => {
           title: "Criar guichê",
         }}
       />
+      <Screen name="Desk" component={Desk} />
     </Navigator>
   );
 };
