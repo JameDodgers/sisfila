@@ -1,16 +1,17 @@
 import { View } from "react-native";
 import { RootNavigatorScreenProps } from "../../../@types/navigation";
 import { Button, Dialog, Portal } from "react-native-paper";
-import { useOrganizationsQueries } from "../../queries/organizations";
 
 import { ServiceItem } from "../../components/ServiceItem";
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useMessageStore } from "../../store/message";
 import { useServicesQueries } from "../../queries/guest/services";
 import { useNavigation } from "@react-navigation/native";
 
 import { Dialog as StyledDialog, StyledFlatList } from "../../libs/styled";
 import { CustomTextInput } from "../../components/CustomTextInput";
+import { useOrganizationsQueries } from "../../queries/guest/organizations";
+
 type Props = {
   route: RootNavigatorScreenProps<"Organization">["route"];
 };
@@ -66,11 +67,11 @@ export const Organization = ({ route }: Props) => {
     openModal();
   };
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     navigation.setOptions({
       headerTitle: organization?.name,
     });
-  }, [navigation, organization]);
+  }, [navigation, organization?.name]);
 
   return (
     <>

@@ -34,9 +34,3 @@ export const queuesKeys = {
     queueId,
   ],
 };
-
-export const publicQueuesKeys = {
-  all: ["publicQueues"],
-  items: () => [...publicQueuesKeys.all, "item"],
-  item: (queueId: string) => [...publicQueuesKeys.items(), queueId],
-};
