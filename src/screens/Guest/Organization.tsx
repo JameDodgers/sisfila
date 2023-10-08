@@ -1,6 +1,12 @@
 import { View } from "react-native";
 import { RootNavigatorScreenProps } from "../../../@types/navigation";
-import { Button, Dialog, Portal } from "react-native-paper";
+import {
+  ActivityIndicator,
+  Button,
+  Dialog,
+  Portal,
+  Text,
+} from "react-native-paper";
 
 import { ServiceItem } from "../../components/ServiceItem";
 import { useEffect, useState } from "react";
@@ -17,10 +23,10 @@ type Props = {
 };
 
 export const Organization = ({ route }: Props) => {
+  const { id: organizationId } = route.params;
+
   const navigation =
     useNavigation<RootNavigatorScreenProps<"Organization">["navigation"]>();
-
-  const { id: organizationId } = route.params;
 
   const [visible, setVisible] = useState(false);
 
@@ -34,17 +40,30 @@ export const Organization = ({ route }: Props) => {
 
   const { useGetOrganization } = useOrganizationsQueries();
 
+  const {
+    data: organization,
+    isError: isErrorGetOrganization,
+    isLoading: isLoadingGetOrganization,
+  } = useGetOrganization(organizationId);
+
   const { useGetServices, useEnterService } = useServicesQueries();
 
-  const { data: organization } = useGetOrganization(organizationId);
-
-  const { data: services = [], refetch } = useGetServices(organizationId);
+  const {
+    data: services = [],
+    refetch,
+    isError: isErrorGetServices,
+    isLoading: isLoadingGetServices,
+  } = useGetServices(organizationId);
 
   const { mutate: enterService } = useEnterService();
 
   const showMessage = useMessageStore((state) => state.show);
 
   const { isRefetchingByUser, refetchByUser } = useRefreshByUser(refetch);
+
+  const isError = isErrorGetOrganization || isErrorGetServices;
+
+  const isLoading = isLoadingGetOrganization || isLoadingGetServices;
 
   const handleEnterQueue = () => {
     if (selectedServiceId) {
@@ -72,6 +91,25 @@ export const Organization = ({ route }: Props) => {
       headerTitle: organization?.name,
     });
   }, [navigation, organization?.name]);
+
+  if (isError) {
+    return (
+      <View className="flex-1 p-4">
+        <Text variant="displayMedium">Erro 404 😵</Text>
+        <Text variant="bodyLarge">
+          Não encontramos uma organização com esse ID
+        </Text>
+      </View>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <View className="flex-1 items-center">
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
 
   return (
     <>

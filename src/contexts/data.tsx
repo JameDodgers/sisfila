@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
 
-import { MutationCache, QueryClient } from "@tanstack/react-query";
+import { MutationCache, QueryCache, QueryClient } from "@tanstack/react-query";
 import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
 import { createAsyncStoragePersister } from "@tanstack/query-async-storage-persister";
 
@@ -15,13 +15,32 @@ interface DataProviderProps {
   children: ReactNode;
 }
 
-const mutationCache = new MutationCache({
-  onError: (_error, _variables, _context, _mutation) => {
-    useMessageStore.getState().show("Ocorreu um erro");
+const queryCache = new QueryCache({
+  onError: (error, query) => {
+    useMessageStore
+      .getState()
+      .show(error.response?.data.message || "Ocorreu um erro");
   },
 });
 
-const queryClient = new QueryClient({ mutationCache });
+const mutationCache = new MutationCache({
+  onError: (error, _variables, _context, _mutation) => {
+    useMessageStore
+      .getState()
+      .show(error.response?.data.message || "Ocorreu um erro");
+  },
+});
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: (failureCount, error) =>
+        error.response?.status >= 500 && failureCount <= 3,
+    },
+  },
+  queryCache,
+  mutationCache,
+});
 
 export const DataProvider = ({ children }: DataProviderProps) => {
   return (

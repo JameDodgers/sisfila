@@ -20,6 +20,7 @@ export type AppStackParamList = {
 };
 
 export type GuestStackParamList = {
+  Home: undefined;
   SignIn: undefined;
   SignUp: undefined;
   Queue: { queueId: string };
