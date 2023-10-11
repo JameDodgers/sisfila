@@ -1,11 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import organizationsApi from "../services/api/admin/organizations";
-import { Organization } from "../models/Organization";
+
 import { useUserQueries } from "./user";
 import { useUser } from "../store/auth";
 
 import { setCurrentOrganizationId } from "../store/organizer";
 import { organizationsKeys } from "./keys";
+import { PrivateOrganization } from "../models/Organization";
 
 export const useOrganizationsQueries = () => {
   const queryClient = useQueryClient();
@@ -17,9 +18,21 @@ export const useOrganizationsQueries = () => {
   const { mutateAsync: setUserRoleInOrganizationById } =
     useSetUserRoleInOrganizationById();
 
+  const useGetOrganizations = () =>
+    useQuery({
+      queryFn: organizationsApi.getAll,
+      queryKey: organizationsKeys.list(),
+    });
+
   const useGetOrganization = (id: string) =>
     useQuery({
       queryFn: () => organizationsApi.getOne(id),
+      initialData: () =>
+        queryClient
+          .getQueryData<PrivateOrganization[]>(organizationsKeys.list())
+          ?.find((organization) => organization.id === id),
+      initialDataUpdatedAt: () =>
+        queryClient.getQueryState(organizationsKeys.list())?.dataUpdatedAt,
       queryKey: organizationsKeys.item(id),
     });
 
@@ -27,12 +40,12 @@ export const useOrganizationsQueries = () => {
     useMutation({
       mutationFn: organizationsApi.create,
       onSuccess: (data) => {
-        queryClient.setQueryData<Organization[]>(
+        queryClient.setQueryData<PrivateOrganization[]>(
           organizationsKeys.list(),
           (organizations) => (organizations ? [...organizations, data] : [data])
         );
 
-        queryClient.setQueryData<Organization>(
+        queryClient.setQueryData<PrivateOrganization>(
           organizationsKeys.item(data.id),
           data
         );
@@ -66,7 +79,7 @@ export const useOrganizationsQueries = () => {
           organizationsKeys.list()
         );
 
-        queryClient.setQueryData<Organization[]>(
+        queryClient.setQueryData<PrivateOrganization[]>(
           organizationsKeys.list(),
           (data) => data?.filter((organization) => organization.id !== id)
         );
@@ -89,12 +102,6 @@ export const useOrganizationsQueries = () => {
       onSettled: () => {
         queryClient.invalidateQueries({ queryKey: organizationsKeys.items() });
       },
-    });
-
-  const useGetOrganizations = () =>
-    useQuery({
-      queryFn: organizationsApi.getAll,
-      queryKey: organizationsKeys.list(),
     });
 
   return {

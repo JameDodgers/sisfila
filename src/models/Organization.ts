@@ -1,3 +1,5 @@
+import { Role } from "./User";
+
 export type Organization = {
   id: string;
   name: string;
@@ -5,3 +7,7 @@ export type Organization = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export type PrivateOrganization = {
+  userRoleInOrganization: Role;
+} & Organization;

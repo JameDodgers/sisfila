@@ -1,12 +1,6 @@
-import { Organization } from "../../../models/Organization";
-import { Role } from "../../../models/User";
+import { PrivateOrganization } from "../../../models/Organization";
+
 import api from "../config";
-
-interface GetOneResponse extends Organization {
-  userRoleInOrganization: Role;
-}
-
-interface GetAllResponse extends Array<GetOneResponse> {}
 
 interface CreateRequest {
   name: string;
@@ -21,17 +15,17 @@ interface UpdateRequest {
 
 const getOne = (id: string) =>
   api
-    .get<GetOneResponse>(`v1/admin/organizations/${id}`)
+    .get<PrivateOrganization>(`v1/admin/organizations/${id}`)
     .then((response) => response.data);
 
 const getAll = () =>
   api
-    .get<GetAllResponse>(`v1/admin/organizations`)
+    .get<PrivateOrganization[]>(`v1/admin/organizations`)
     .then((response) => response.data);
 
 const create = (data: CreateRequest) =>
   api
-    .post<Organization>("v1/admin/organizations", data)
+    .post<PrivateOrganization>("v1/admin/organizations", data)
     .then((response) => response.data);
 
 const update = (data: UpdateRequest) =>
