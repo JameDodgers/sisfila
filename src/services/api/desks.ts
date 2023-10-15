@@ -8,6 +8,11 @@ type CreateParams = {
   organizationId: string;
 };
 
+type GetOneResponse = {
+  desk: Desk;
+  lastClientCalled: Client;
+};
+
 const getAll = (organizationId: string) =>
   api
     .get<Desk[]>(`v1/desks/organizations/${organizationId}`)
@@ -20,7 +25,7 @@ type GetOneParams = {
 
 const getOne = ({ organizationId, deskId }: GetOneParams) =>
   api
-    .get<Desk>(`v1/desks/${deskId}/organizations/${organizationId}`)
+    .get<GetOneResponse>(`v1/desks/${deskId}/organizations/${organizationId}`)
     .then((response) => response.data);
 
 const createDesk = (data: CreateParams) =>

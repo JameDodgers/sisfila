@@ -35,7 +35,23 @@ export const useDesksQueries = (organizationId: string) => {
       initialDataUpdatedAt: () =>
         queryClient.getQueryState(desksKeys.list(organizationId))
           ?.dataUpdatedAt,
-      queryFn: () => desksApi.getOne({ organizationId, deskId }),
+      queryFn: async () => {
+        const data = await desksApi.getOne({ organizationId, deskId });
+
+        queryClient.setQueryData<Client>(
+          desksKeys.client(organizationId, deskId),
+          data.lastClientCalled
+        );
+
+        return data.desk;
+      },
+    });
+
+  // https://github.com/TanStack/query/discussions/846#discussioncomment-6885174
+  const useGetLastClientCalledInDesk = (deskId: string) =>
+    useQuery<Client>({
+      queryKey: desksKeys.client(organizationId, deskId),
+      enabled: false,
     });
 
   const useCreateDesk = () =>
@@ -107,6 +123,11 @@ export const useDesksQueries = (organizationId: string) => {
           desksKeys.client(organizationId, deskId),
           data.client
         );
+
+        queryClient.setQueryDefaults(desksKeys.client(organizationId, deskId), {
+          cacheTime: Infinity,
+        });
+
         queryClient.setQueryData<Desk>(
           desksKeys.item(organizationId, deskId),
           data.desk
@@ -117,6 +138,7 @@ export const useDesksQueries = (organizationId: string) => {
   return {
     useGetDesks,
     useGetDesk,
+    useGetLastClientCalledInDesk,
     useCreateDesk,
     useDeleteDesk,
     useUpdateDesk,
