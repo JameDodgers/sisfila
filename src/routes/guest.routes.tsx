@@ -45,7 +45,7 @@ export const GuestRoutes = () => {
         }}
         component={Organization}
       />
-      <Screen name="Queue" component={Queue} options={{ headerShown: false }} />
+      <Screen name="Queue" component={Queue} options={{ title: "" }} />
     </Navigator>
   );
 };

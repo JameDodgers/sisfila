@@ -23,7 +23,12 @@ export type GuestStackParamList = {
   Home: undefined;
   SignIn: undefined;
   SignUp: undefined;
-  Queue: { queueId: string };
+  Queue: {
+    queueId: string;
+    serviceId: string;
+    registrationId: string;
+    queueName: string;
+  };
   Organization: { id: string };
 };
 

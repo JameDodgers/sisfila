@@ -73,8 +73,16 @@ export const Organization = ({ route }: Props) => {
       };
 
       enterService(data, {
-        onSuccess: () => {
-          showMessage("Você entrou na fila");
+        onSuccess: (data) => {
+          navigation.navigate("Queue", {
+            ...data,
+            registrationId,
+            serviceId: selectedServiceId,
+          });
+
+          if (data.position !== 0) {
+            showMessage("Você entrou na fila");
+          }
         },
       });
     }
