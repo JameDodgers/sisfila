@@ -5,14 +5,23 @@ import { Desk } from "../models/Desk";
 
 import desksApi from "../services/api/desks";
 import { Client } from "../models/Client";
+import { useUser } from "../store/auth";
 
 export const useDesksQueries = (organizationId: string) => {
   const queryClient = useQueryClient();
+
+  const user = useUser();
 
   const useGetDesks = () =>
     useQuery({
       queryFn: () => desksApi.getAll(organizationId),
       queryKey: desksKeys.list(organizationId),
+      select: (desks) =>
+        [...desks].sort(
+          (a, b) =>
+            Number(b.attendantId === user?.id) -
+            Number(a.attendantId === user?.id)
+        ),
     });
 
   const useGetDesk = (deskId = "") =>

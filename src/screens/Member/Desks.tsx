@@ -27,14 +27,7 @@ export const Desks = () => {
 
   const { mutate: updateDesk } = useUpdateDesk();
 
-  const { data: desks = [] } = useGetDesks({
-    select: (desks) =>
-      [...desks].sort(
-        (a, b) =>
-          Number(b.attendantId === user?.id) -
-          Number(a.attendantId === user?.id)
-      ),
-  });
+  const { data: desks = [] } = useGetDesks();
 
   const [userOccupiesSomeDesk, setUserOccupiesSomeDesk] = useState(false);
 
