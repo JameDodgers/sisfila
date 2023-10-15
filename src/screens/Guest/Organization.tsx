@@ -54,7 +54,7 @@ export const Organization = ({ route }: Props) => {
     data: services = [],
     refetch,
     isLoading: isLoadingGetServices,
-  } = useGetServices(organizationId);
+  } = useGetServices({ organizationId, enabled: isSuccess });
 
   const { mutate: enterService } = useEnterService();
 

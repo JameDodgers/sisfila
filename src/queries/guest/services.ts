@@ -4,6 +4,11 @@ import { servicesKeys } from "../keys";
 import { useNotificationsQueries } from "./notifications";
 import { useAuthStore } from "../../store/auth";
 
+type UseGetServices = {
+  organizationId: string;
+  enabled?: boolean;
+};
+
 export const useServicesQueries = () => {
   const { fcmToken } = useAuthStore();
 
@@ -14,10 +19,11 @@ export const useServicesQueries = () => {
 
   const { mutateAsync: subscribeToQueue } = useSubscribeToQueue();
 
-  const useGetServices = (organizationId: string) =>
+  const useGetServices = ({ organizationId, enabled }: UseGetServices) =>
     useQuery({
       queryKey: servicesKeys.all(organizationId),
       queryFn: () => servicesApi.getAllFromOrganization(organizationId),
+      enabled,
     });
 
   const useEnterService = () =>
