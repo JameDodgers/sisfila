@@ -25,6 +25,8 @@ import { pt, registerTranslation } from "react-native-paper-dates";
 import { useMessageStore } from "./src/store/message";
 
 import { useRequestPermissions } from "./src/hooks/useRequestPermissions";
+import { Loading } from "./src/components/Loading";
+import { LoadingProvider } from "./src/contexts/loading";
 
 registerTranslation("pt", pt);
 
@@ -74,14 +76,17 @@ export default function App() {
       <GestureHandlerRootView style={{ flex: 1 }}>
         <PaperProvider theme={CombinedDefaultTheme}>
           <DataProvider>
-            <StatusBar style="auto" translucent={false} />
-            <Routes />
-            <Snackbar
-              visible={messageStore.visible}
-              onDismiss={messageStore.dismiss}
-            >
-              {messageStore.message}
-            </Snackbar>
+            <LoadingProvider>
+              <StatusBar style="auto" translucent={false} />
+              <Routes />
+              <Snackbar
+                visible={messageStore.visible}
+                onDismiss={messageStore.dismiss}
+              >
+                {messageStore.message}
+              </Snackbar>
+              <Loading />
+            </LoadingProvider>
           </DataProvider>
         </PaperProvider>
       </GestureHandlerRootView>

@@ -16,7 +16,9 @@ import { useNavigation } from "@react-navigation/native";
 
 import { Dialog as StyledDialog, StyledFlatList } from "../../libs/styled";
 import { CustomTextInput } from "../../components/CustomTextInput";
+import { useRefreshByUser } from "../../hooks/useRefreshByUser";
 import { useOrganizationsQueries } from "../../queries/guest/organizations";
+import { useLoadingAPI } from "../../contexts/loading";
 import { isAxiosError } from "axios";
 
 type Props = {
@@ -29,13 +31,18 @@ export const Organization = ({ route }: Props) => {
   const navigation =
     useNavigation<RootNavigatorScreenProps<"Organization">["navigation"]>();
 
+  const { showLoading, hideLoading } = useLoadingAPI();
+
+  const [registrationId, setRegistrationId] = useState<string>("");
+
   const [visible, setVisible] = useState(false);
 
   const openModal = () => setVisible(true);
 
-  const closeModal = () => setVisible(false);
-
-  const [registrationId, setRegistrationId] = useState<string>("");
+  const closeModal = () => {
+    setRegistrationId("");
+    setVisible(false);
+  };
 
   const [selectedServiceId, setSelectedServiceId] = useState<string>();
 
@@ -65,6 +72,9 @@ export const Organization = ({ route }: Props) => {
   const isLoading = isLoadingGetOrganization || isLoadingGetServices;
 
   const handleEnterQueue = () => {
+    closeModal();
+    showLoading();
+
     if (selectedServiceId) {
       const data = {
         organizationId,
@@ -84,6 +94,7 @@ export const Organization = ({ route }: Props) => {
             showMessage("Você entrou na fila");
           }
         },
+        onSettled: hideLoading,
       });
     }
   };
