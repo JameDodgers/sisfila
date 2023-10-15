@@ -15,6 +15,9 @@ export const CustomTextInput = forwardRef<Ref, Props>((props, ref) => {
     <PaperTextInput
       ref={ref}
       className="web:bg-transparent"
+      style={{
+        textAlign: "auto",
+      }}
       mode={Platform.select({
         native: "outlined",
         web: "flat",
