@@ -17,6 +17,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Dialog as StyledDialog, StyledFlatList } from "../../libs/styled";
 import { CustomTextInput } from "../../components/CustomTextInput";
 import { useOrganizationsQueries } from "../../queries/guest/organizations";
+import { isAxiosError } from "axios";
 
 type Props = {
   route: RootNavigatorScreenProps<"Organization">["route"];
@@ -41,8 +42,9 @@ export const Organization = ({ route }: Props) => {
   const { useGetOrganization } = useOrganizationsQueries();
 
   const {
+    error,
     data: organization,
-    isError: isErrorGetOrganization,
+    isSuccess,
     isLoading: isLoadingGetOrganization,
   } = useGetOrganization(organizationId);
 
@@ -51,7 +53,6 @@ export const Organization = ({ route }: Props) => {
   const {
     data: services = [],
     refetch,
-    isError: isErrorGetServices,
     isLoading: isLoadingGetServices,
   } = useGetServices(organizationId);
 
@@ -60,8 +61,6 @@ export const Organization = ({ route }: Props) => {
   const showMessage = useMessageStore((state) => state.show);
 
   const { isRefetchingByUser, refetchByUser } = useRefreshByUser(refetch);
-
-  const isError = isErrorGetOrganization || isErrorGetServices;
 
   const isLoading = isLoadingGetOrganization || isLoadingGetServices;
 
@@ -92,7 +91,7 @@ export const Organization = ({ route }: Props) => {
     });
   }, [navigation, organization?.name]);
 
-  if (isError) {
+  if (isAxiosError(error) && error.response?.status === 400) {
     return (
       <View className="flex-1 p-4">
         <Text variant="displayMedium">Erro 404 😵</Text>

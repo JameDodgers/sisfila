@@ -6,6 +6,9 @@ import { organizationsKeys } from "./keys";
 export const useOrganizationsQueries = () => {
   const useGetOrganization = (id: string) =>
     useQuery({
+      meta: {
+        shouldBeHandledByGlobalErrorHandler: true,
+      },
       queryFn: () => organizationsApi.getOne(id),
       queryKey: organizationsKeys.item(id),
     });

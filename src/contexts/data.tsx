@@ -6,6 +6,7 @@ import { createAsyncStoragePersister } from "@tanstack/query-async-storage-persi
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useMessageStore } from "../store/message";
+import { isAxiosError } from "axios";
 
 const asyncStoragePersister = createAsyncStoragePersister({
   storage: AsyncStorage,
@@ -15,19 +16,29 @@ interface DataProviderProps {
   children: ReactNode;
 }
 
+const handleError = (error: unknown) => {
+  const message =
+    (isAxiosError(error) && error.response?.data.message) || "Ocorreu um erro";
+
+  useMessageStore.getState().show(message);
+};
+
 const queryCache = new QueryCache({
   onError: (error, query) => {
-    useMessageStore
-      .getState()
-      .show(error.response?.data.message || "Ocorreu um erro");
+    if (query.meta?.shouldBeHandledByGlobalErrorHandler) {
+      handleError(error);
+    }
   },
 });
 
 const mutationCache = new MutationCache({
-  onError: (error, _variables, _context, _mutation) => {
-    useMessageStore
-      .getState()
-      .show(error.response?.data.message || "Ocorreu um erro");
+  onError: (error, _variables, _context, mutation) => {
+    if (
+      !mutation.options.onError ||
+      mutation.meta?.shouldBeHandledByGlobalErrorHandler
+    ) {
+      handleError(error);
+    }
   },
 });
 
@@ -35,7 +46,9 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       retry: (failureCount, error) =>
-        error.response?.status >= 500 && failureCount <= 3,
+        isAxiosError(error) && error.response?.status
+          ? error.response?.status >= 500 && failureCount <= 3
+          : false,
     },
   },
   queryCache,
