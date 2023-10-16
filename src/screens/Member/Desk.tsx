@@ -85,7 +85,7 @@ export const Desk = ({ route }: Props) => {
   return (
     <SafeAreaInsetsContainer>
       <View className="flex-1">
-        <Card className="bg-slate-100 mb-2 web:w-full web:self-center rounded-xl web:max-w-md">
+        <Card className="m-4 bg-slate-100 web:w-full web:self-center rounded-xl web:max-w-md">
           <Card.Title
             title={client ? "Cliente atual" : "Guichê vazio"}
             right={() => <CardMenu options={cardMenuOptions} />}
@@ -110,10 +110,7 @@ export const Desk = ({ route }: Props) => {
             </Button>
           </Card.Actions>
         </Card>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle="p-4 web:w-full web:self-center web:max-w-md"
-        >
+        <ScrollView contentContainerStyle="px-4 pb-4 web:w-full web:self-center web:max-w-md">
           {services?.map((service) => {
             const numberQueues = service.queues?.length;
 
@@ -124,39 +121,57 @@ export const Desk = ({ route }: Props) => {
 
             return (
               <CustomListAccordion
+                className="bg-slate-200 border-b border-slate-300"
                 title={service.name}
                 description={description}
               >
-                {service.queues?.map((queue) => (
-                  <List.Accordion
-                    title={`${queue.name} (${queue.clients.length} aguardando)`}
-                    description={
-                      <View className="flex-row-reverse">
-                        {queue.clients.length > CLIENTS_LIMIT && (
-                          <Avatar.Icon
-                            icon="dots-horizontal"
-                            className="-mr-3 bg-slate-300 border border-white"
-                            size={24}
-                          />
-                        )}
-                        {queue.clients
-                          .slice(0, CLIENTS_LIMIT)
-                          .reverse()
-                          .map((client) => (
-                            <Avatar.Text
-                              className="-mr-3 border border-white"
-                              size={24}
-                              label={client.name.charAt(0)}
-                            />
-                          ))}
-                      </View>
-                    }
-                  >
-                    {queue.clients.map((client, index) => (
-                      <ClientItem index={index + 1} item={client} />
-                    ))}
-                  </List.Accordion>
-                ))}
+                {service.queues?.map((queue) => {
+                  let title = queue.name;
+
+                  if (queue.clients.length > 0) {
+                    title += ` (${queue.clients.length} cliente)`;
+                  }
+
+                  return (
+                    <CustomListAccordion
+                      title={title}
+                      className="bg-slate-100 border-b border-slate-200"
+                      description={
+                        queue.clients.length > 0 ? (
+                          <View className="flex-row-reverse">
+                            {queue.clients.length > CLIENTS_LIMIT && (
+                              <Avatar.Icon
+                                icon="dots-horizontal"
+                                className="-mr-3 bg-slate-300 border border-white"
+                                size={24}
+                              />
+                            )}
+                            {queue.clients
+                              .slice(0, CLIENTS_LIMIT)
+                              .reverse()
+                              .map((client) => (
+                                <Avatar.Text
+                                  className="-mr-3 border border-white"
+                                  size={24}
+                                  label={client.name.charAt(0)}
+                                />
+                              ))}
+                          </View>
+                        ) : (
+                          "Nenhum cliente"
+                        )
+                      }
+                    >
+                      {queue.clients.map((client, index) => (
+                        <ClientItem
+                          className="bg-slate-50 border-b border-slate-200"
+                          index={index + 1}
+                          item={client}
+                        />
+                      ))}
+                    </CustomListAccordion>
+                  );
+                })}
               </CustomListAccordion>
             );
           })}
