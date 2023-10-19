@@ -37,8 +37,8 @@ export const ImportClients = ({
 
     for (const match of matches) {
       clients.push({
-        name: match[2],
-        registrationId: match[1],
+        name: match[2].trim(),
+        registrationId: match[1].trim(),
       });
     }
 
