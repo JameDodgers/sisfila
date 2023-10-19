@@ -110,7 +110,7 @@ export const CreateOrUpdateDesk = ({ route, navigation }: Props) => {
                   <FormikTextInput
                     autoFocus={!deskId}
                     fieldName="name"
-                    label="Nome"
+                    label="Nome*"
                   />
                   <CheckboxList
                     title="Serviços"

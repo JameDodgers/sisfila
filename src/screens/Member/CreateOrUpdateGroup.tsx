@@ -90,7 +90,7 @@ export const CreateOrUpdateGroup = ({ navigation, route }: Props) => {
                   <FormikTextInput
                     autoFocus={!groupId}
                     fieldName="name"
-                    label="Nome"
+                    label="Nome*"
                   />
                 </View>
                 <Button

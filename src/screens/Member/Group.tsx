@@ -43,7 +43,7 @@ export const Group = ({ route, navigation }: Props) => {
 
   const ListEmptyComponent = useCallback(
     () => (
-      <View className="p-2 items-center">
+      <View className="mt-4 items-center">
         <Text variant="labelMedium">Nenhum cliente adicionado ao grupo</Text>
       </View>
     ),

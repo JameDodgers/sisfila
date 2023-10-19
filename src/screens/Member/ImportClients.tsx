@@ -97,6 +97,7 @@ export const ImportClients = ({
                       </Text>
                     </View>
                     <FormikTextInput
+                      mode="outlined"
                       fieldName="data"
                       className="mt-2"
                       label="Dados"
@@ -105,7 +106,7 @@ export const ImportClients = ({
                     />
                   </View>
                   <Button
-                    className="mt-4 web:self-end"
+                    className="web:self-end"
                     mode="contained"
                     disabled={isLoading}
                     loading={isLoading}
