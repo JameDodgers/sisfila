@@ -46,7 +46,7 @@ export const DrawerRoutes = () => {
       {organization?.userRoleInOrganization === Role.TYPE_COORDINATOR && (
         <>
           <Screen
-            name="OrganizationRoutes"
+            name="OrganizationDetails"
             options={{
               title: "Organização",
             }}
@@ -60,7 +60,7 @@ export const DrawerRoutes = () => {
             component={Attendants}
           />
           <Screen
-            name="Clients"
+            name="ClientsRoutes"
             options={{
               title: "Clientes",
             }}

@@ -38,26 +38,18 @@ export type RootNavigatorScreenProps<T extends keyof RootNavigatorParamList> =
   NativeStackScreenProps<RootNavigatorParamList, T>;
 
 export type DrawerParamList = {
-  ClientsRoutes: NavigatorScreenParams<ClientsStackParamList>;
+  OrganizationDetails: undefined;
+  Attendants: undefined;
+  ClientsRoutes: undefined;
   GroupsRoutes: NavigatorScreenParams<GroupsStackParamList>;
   ServicesRoutes: NavigatorScreenParams<ServicesStackParamList>;
   Desks: NavigatorScreenParams<DeskStackParamList>;
-  Attendants: undefined;
 };
 
 export type OrganizationDrawerScreenProps<T extends keyof DrawerParamList> =
   CompositeScreenProps<
     DrawerScreenProps<DrawerParamList, T>,
     RootNavigatorScreenProps<keyof RootNavigatorParamList>
-  >;
-
-export type ClientsStackParamList = {
-  Clients: undefined;
-};
-export type ClientsStackNavigationProp<T extends keyof ClientsStackParamList> =
-  CompositeNavigationProp<
-    NativeStackNavigationProp<ClientsStackParamList, T>,
-    OrganizationDrawerScreenProps<keyof DrawerParamList>["navigation"]
   >;
 
 export type GroupsStackParamList = {
