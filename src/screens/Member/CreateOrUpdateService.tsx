@@ -64,16 +64,18 @@ export const CreateOrUpdateService = ({ route, navigation }: Props) => {
 
   const { mutate: deleteQueue } = useDeleteQueue();
 
-  const { data: serviceQueues = [] } = useGetQueues({
+  const { data: serviceQueues } = useGetQueues({
     select: (queues) => queues.filter((queue) => queue.serviceId === serviceId),
   });
 
   const [sortedServiceQueues, setSortedServiceQueues] = useState<Queue[]>([]);
 
   useEffect(() => {
-    setSortedServiceQueues(
-      [...serviceQueues].sort((a, b) => a.priority - b.priority)
-    );
+    if (serviceQueues) {
+      setSortedServiceQueues(
+        [...serviceQueues].sort((a, b) => a.priority - b.priority)
+      );
+    }
   }, [serviceQueues]);
 
   const { useGetService, useCreateService, useUpdateService } =
