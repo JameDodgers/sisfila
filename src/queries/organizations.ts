@@ -6,6 +6,7 @@ import { useUser } from "../store/auth";
 
 import { setCurrentOrganizationId } from "../store/organizer";
 import { organizationsKeys } from "./keys";
+import { Role } from "../models/User";
 import { PrivateOrganization } from "../models/Organization";
 
 export const useOrganizationsQueries = () => {
@@ -56,7 +57,7 @@ export const useOrganizationsQueries = () => {
           return setUserRoleInOrganizationById({
             userId: user.id,
             organizationId: data.id,
-            role: "TYPE_COORDINATOR",
+            role: Role.TYPE_COORDINATOR,
           });
         }
       },
