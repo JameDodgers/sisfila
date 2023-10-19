@@ -4,12 +4,12 @@ import { useNavigation } from "@react-navigation/native";
 import { DesksStackScreenProps } from "../../../@types/navigation";
 import { useDesksQueries } from "../../queries/desks";
 import { DeskItem } from "../../components/DeskItem";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useState } from "react";
 
 import { useUser } from "../../store/auth";
 import { StyledFlatList } from "../../libs/styled";
 import { CustomNavigationBar } from "../../components/CustomNavigationBar";
-import { Appbar } from "react-native-paper";
+import { ActivityIndicator, Appbar } from "react-native-paper";
 
 export const Desks = () => {
   const navigation =
@@ -27,7 +27,7 @@ export const Desks = () => {
 
   const { mutate: updateDesk } = useUpdateDesk();
 
-  const { data: desks = [] } = useGetDesks();
+  const { data: desks, isLoading: isLoadingDesks } = useGetDesks();
 
   const [userOccupiesSomeDesk, setUserOccupiesSomeDesk] = useState(false);
 
@@ -94,10 +94,22 @@ export const Desks = () => {
     });
   }, [navigation]);
 
+  const ListEmptyComponent = useCallback(() => {
+    if (isLoadingDesks) {
+      return (
+        <View className="flex-1 items-center">
+          <ActivityIndicator size="large" />
+        </View>
+      );
+    }
+    return null;
+  }, [isLoadingDesks]);
+
   return (
     <View className="flex-1">
       <StyledFlatList
         data={desks}
+        ListEmptyComponent={ListEmptyComponent}
         keyExtractor={(item: any) => item.id}
         ItemSeparatorComponent={() => <View className="h-3" />}
         contentContainerStyle="p-4 web:w-full web:self-center web:max-w-screen-sm"

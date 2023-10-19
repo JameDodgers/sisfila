@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { useCallback, useEffect } from "react";
 import { OrganizationItem } from "../../components/OrganizationItem";
-import { Appbar, Text } from "react-native-paper";
+import { ActivityIndicator, Appbar, Text } from "react-native-paper";
 
 import { useOrganizationsQueries } from "../../queries/organizations";
 import { useRefreshOnFocus } from "../../hooks/useRefreshOnFocus";
@@ -17,7 +17,11 @@ export const Organizations = () => {
 
   const { useGetOrganizations } = useOrganizationsQueries();
 
-  const { data: organizations = [], refetch } = useGetOrganizations();
+  const {
+    data: organizations,
+    refetch,
+    isLoading: isLoadingOrganizations,
+  } = useGetOrganizations();
 
   useRefreshOnFocus(refetch);
 
@@ -39,14 +43,21 @@ export const Organizations = () => {
     });
   }, [navigation]);
 
-  const ListEmptyComponent = useCallback(
-    () => (
+  const ListEmptyComponent = useCallback(() => {
+    if (isLoadingOrganizations) {
+      return (
+        <View className="flex-1 items-center">
+          <ActivityIndicator size="large" />
+        </View>
+      );
+    }
+
+    return (
       <View className="items-center">
         <Text>Você ainda não possui organizações</Text>
       </View>
-    ),
-    []
-  );
+    );
+  }, [isLoadingOrganizations]);
 
   const handleOpenOrganization = (id: string) => {
     setCurrentOrganizationId(id);

@@ -3,9 +3,9 @@ import { AttendantItem } from "../../components/AttendantItem";
 import { useAttendantsQueries } from "../../queries/attendants";
 import { useOrganizerStore } from "../../store/organizer";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { Button, Dialog, Portal } from "react-native-paper";
+import { ActivityIndicator, Button, Dialog, Portal } from "react-native-paper";
 import { OrganizationDrawerScreenProps } from "../../../@types/navigation";
 import { CustomNavigationBar } from "../../components/CustomNavigationBar";
 import { Dialog as StyledDialog, StyledFlatList } from "../../libs/styled";
@@ -25,7 +25,9 @@ export const Attendants = () => {
   const { useGetAttendants, useRemoveAttendant, useAddAttendant } =
     useAttendantsQueries();
 
-  const { data: attendants = [] } = useGetAttendants(currentOrganizationId);
+  const { data: attendants, isLoading: isLoadingAttendants } = useGetAttendants(
+    currentOrganizationId
+  );
 
   const { mutate: removeAttendant } = useRemoveAttendant();
 
@@ -76,6 +78,18 @@ export const Attendants = () => {
     });
   }, [navigation]);
 
+  const ListEmptyComponent = useCallback(() => {
+    if (isLoadingAttendants) {
+      return (
+        <View className="flex-1 items-center">
+          <ActivityIndicator size="large" />
+        </View>
+      );
+    }
+
+    return null;
+  }, [isLoadingAttendants]);
+
   return (
     <>
       <View className="flex-1">
@@ -90,6 +104,7 @@ export const Attendants = () => {
               onPressRemove={() => handleRemoveAttendant(item.id)}
             />
           )}
+          ListEmptyComponent={ListEmptyComponent}
         />
       </View>
       <Portal>

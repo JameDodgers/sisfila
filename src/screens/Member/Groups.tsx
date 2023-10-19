@@ -1,6 +1,6 @@
-import { useLayoutEffect } from "react";
+import { useCallback, useLayoutEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { Appbar } from "react-native-paper";
+import { ActivityIndicator, Appbar } from "react-native-paper";
 import { GroupItem } from "../../components/GroupItem";
 
 import { useGroupsQueries } from "../../queries/groups";
@@ -16,12 +16,12 @@ export const Groups = () => {
     useNavigation<GroupsStackScreenProps<"Groups">["navigation"]>();
 
   const { currentOrganizationId = "" } = useOrganizerStore();
-  console.log(currentOrganizationId);
+
   const { useGetGroups, useDeleteGroup } = useGroupsQueries(
     currentOrganizationId
   );
 
-  const { data: groups = [], refetch } = useGetGroups();
+  const { data: groups, refetch, isLoading: isLoadingGroups } = useGetGroups();
 
   const { mutate: deleteGroup } = useDeleteGroup();
 
@@ -66,6 +66,18 @@ export const Groups = () => {
     });
   };
 
+  const ListEmptyComponent = useCallback(() => {
+    if (isLoadingGroups) {
+      return (
+        <View className="flex-1 items-center">
+          <ActivityIndicator size="large" />
+        </View>
+      );
+    }
+
+    return null;
+  }, [isLoadingGroups]);
+
   return (
     <View className="flex-1">
       <StyledFlatList
@@ -81,6 +93,7 @@ export const Groups = () => {
           />
         )}
         ItemSeparatorComponent={() => <View className="h-3" />}
+        ListEmptyComponent={ListEmptyComponent}
       />
     </View>
   );

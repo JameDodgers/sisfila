@@ -2,8 +2,8 @@ import { ServiceItem } from "../../components/ServiceItem";
 
 import { useServicesQueries } from "../../queries/services";
 
-import { useLayoutEffect } from "react";
-import { Appbar } from "react-native-paper";
+import { useCallback, useLayoutEffect } from "react";
+import { Appbar, ActivityIndicator } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { useOrganizerStore } from "../../store/organizer";
 
@@ -22,7 +22,8 @@ export const Services = () => {
     currentOrganizationId
   );
 
-  const { data: services = [] } = useGetServices();
+  const { data: services = [], isLoading: isLoadingServices } =
+    useGetServices();
 
   const { mutate: deleteService } = useDeleteService();
 
@@ -54,10 +55,22 @@ export const Services = () => {
     });
   }, [navigation]);
 
+  const ListEmptyComponent = useCallback(() => {
+    if (isLoadingServices) {
+      return (
+        <View className="flex-1 items-center">
+          <ActivityIndicator size="large" />
+        </View>
+      );
+    }
+    return null;
+  }, [isLoadingServices]);
+
   return (
     <View className="flex-1">
       <StyledFlatList
         data={services}
+        ListEmptyComponent={ListEmptyComponent}
         contentContainerStyle="p-4 web:w-full web:self-center web:max-w-screen-sm"
         renderItem={({ item }: any) => (
           <ServiceItem
