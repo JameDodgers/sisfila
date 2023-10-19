@@ -122,6 +122,7 @@ export const Desk = ({ route }: Props) => {
 
             return (
               <CustomListAccordion
+                key={service.id}
                 className="bg-slate-200 border-b border-slate-300"
                 title={service.name}
                 description={description}
@@ -135,6 +136,7 @@ export const Desk = ({ route }: Props) => {
 
                   return (
                     <CustomListAccordion
+                      key={queue.id}
                       title={title}
                       className="bg-slate-100 border-b border-slate-200"
                       description={
@@ -152,6 +154,7 @@ export const Desk = ({ route }: Props) => {
                               .reverse()
                               .map((client) => (
                                 <Avatar.Text
+                                  key={client.id}
                                   className="-mr-3 border border-white"
                                   size={24}
                                   label={client.name.charAt(0)}
@@ -165,6 +168,7 @@ export const Desk = ({ route }: Props) => {
                     >
                       {queue.clients.map((client, index) => (
                         <ClientItem
+                          key={client.id}
                           className="bg-slate-50 border-b border-slate-200"
                           index={index + 1}
                           item={client}
