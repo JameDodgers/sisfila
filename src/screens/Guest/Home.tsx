@@ -7,10 +7,16 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { Button, Text, TextInput, useTheme } from "react-native-paper";
+import { Button, Text, useTheme } from "react-native-paper";
 
-import { useState } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Formik } from "formik";
+import * as Yup from "yup";
+import { FormikTextInput } from "../../components/FormikTextInput";
+
+type FormValues = {
+  organizationId: string;
+};
 
 export const Home = () => {
   const insets = useSafeAreaInsets();
@@ -20,11 +26,9 @@ export const Home = () => {
 
   const theme = useTheme();
 
-  const [organizationId, setOrganizationId] = useState("");
-
-  const handleOpenOrganization = () => {
+  const handleOpenOrganization = (values: FormValues) => {
     navigation.navigate("Organization", {
-      id: organizationId,
+      id: values.organizationId,
     });
   };
 
@@ -38,6 +42,10 @@ export const Home = () => {
     }
   };
 
+  const validationSchema = Yup.object().shape({
+    organizationId: Yup.string().required("Insira o id da organização"),
+  });
+
   return (
     <SafeAreaInsetsContainer>
       <TouchableWithoutFeedback onPress={handleDismiss}>
@@ -48,44 +56,55 @@ export const Home = () => {
           className="flex-1"
         >
           <View className="p-4 web:self-center max-w-[90%] w-full self-center web:max-w-sm">
-            <Text
-              style={{ color: theme.colors.primary }}
-              className="mb-12 self-center"
-              variant="headlineLarge"
+            <Formik
+              initialValues={{
+                organizationId: "",
+              }}
+              validationSchema={validationSchema}
+              onSubmit={handleOpenOrganization}
             >
-              Sisfila 2
-            </Text>
-            <Text className="mb-2" variant="titleSmall">
-              Cole o ID da organização abaixo ou abra o link compartilhado pelo
-              coordenador
-            </Text>
-            <View>
-              <TextInput
-                style={{ textAlign: "auto" }}
-                mode={Platform.OS === "web" ? "flat" : "outlined"}
-                label="ID"
-                className="mb-4"
-                value={organizationId}
-                onChangeText={setOrganizationId}
-              />
-              <Button
-                className="mb-2"
-                mode="contained"
-                onPress={handleOpenOrganization}
-              >
-                Avançar
-              </Button>
-              <Text variant="bodyMedium" className="self-end">
-                É um coordenador?{" "}
-                <Text
-                  variant="bodyMedium"
-                  className="text-indigo-500"
-                  onPress={handleSignIn}
-                >
-                  Faça login
-                </Text>
-              </Text>
-            </View>
+              {({ handleSubmit }) => {
+                return (
+                  <View>
+                    <Text
+                      style={{ color: theme.colors.primary }}
+                      className="mb-12 self-center"
+                      variant="headlineLarge"
+                    >
+                      Sisfila 2
+                    </Text>
+                    <Text className="mb-2" variant="titleSmall">
+                      Cole o ID da organização abaixo ou abra o link
+                      compartilhado pelo coordenador
+                    </Text>
+                    <View>
+                      <FormikTextInput
+                        fieldName="organizationId"
+                        mode="outlined"
+                        style={{ textAlign: "auto" }}
+                      />
+                      <Button
+                        className="mb-2"
+                        mode="contained"
+                        onPress={() => handleSubmit()}
+                      >
+                        Avançar
+                      </Button>
+                      <Text variant="bodyMedium" className="self-end">
+                        É um coordenador?{" "}
+                        <Text
+                          variant="bodyMedium"
+                          className="text-indigo-500"
+                          onPress={handleSignIn}
+                        >
+                          Faça login
+                        </Text>
+                      </Text>
+                    </View>
+                  </View>
+                );
+              }}
+            </Formik>
           </View>
         </View>
       </TouchableWithoutFeedback>

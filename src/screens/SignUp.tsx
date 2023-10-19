@@ -2,7 +2,6 @@ import { useRef } from "react";
 import {
   KeyboardAvoidingView,
   Platform,
-  ScrollView,
   View,
   TextInput as RNTextInput,
 } from "react-native";
@@ -11,11 +10,10 @@ import { useNavigation } from "@react-navigation/native";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { useUserQueries } from "../queries/user";
-import { Button, HelperText, Text } from "react-native-paper";
-import { CustomTextInput } from "../components/CustomTextInput";
+import { Button, Text } from "react-native-paper";
+import { FormikTextInput } from "../components/FormikTextInput";
 
 export const SignUp = () => {
-  const nameInputRef = useRef<RNTextInput>(null);
   const emailInputRef = useRef<RNTextInput>(null);
   const passwordInputRef = useRef<RNTextInput>(null);
   const confirmPasswordInputRef = useRef<RNTextInput>(null);
@@ -50,7 +48,7 @@ export const SignUp = () => {
         <Text className="mt-1" variant="headlineSmall">
           Cadastre-se para continuar
         </Text>
-        <View className="gap-y-3 mt-5">
+        <View className="mt-5">
           <Formik
             initialValues={{
               name: "",
@@ -63,101 +61,56 @@ export const SignUp = () => {
               signUp(values);
             }}
           >
-            {({
-              values,
-              errors,
-              touched,
-              handleChange,
-              handleBlur,
-              handleSubmit,
-            }) => {
+            {({ handleSubmit }) => {
               return (
                 <View>
-                  <CustomTextInput
+                  <FormikTextInput
+                    autoFocus
                     label="Nome"
-                    error={touched.email && !!errors.email}
-                    ref={nameInputRef}
-                    value={values.name}
-                    onChangeText={handleChange("name")}
-                    onBlur={handleBlur("name")}
+                    fieldName="name"
                     returnKeyType="next"
+                    autoCapitalize="none"
+                    blurOnSubmit={false}
                     onSubmitEditing={() => {
                       emailInputRef.current?.focus();
                     }}
-                    blurOnSubmit={false}
                   />
-                  <HelperText
-                    type="error"
-                    visible={touched.email && !!errors.email}
-                  >
-                    {errors.name}
-                  </HelperText>
-                  <CustomTextInput
-                    label="E-mail"
-                    error={touched.email && !!errors.email}
+                  <FormikTextInput
                     ref={emailInputRef}
-                    value={values.email}
+                    label="E-mail"
+                    fieldName="email"
                     keyboardType="email-address"
-                    returnKeyType="next"
                     autoCapitalize="none"
-                    onChangeText={handleChange("email")}
-                    onBlur={handleBlur("email")}
+                    blurOnSubmit={false}
                     onSubmitEditing={() => {
                       passwordInputRef.current?.focus();
                     }}
-                    blurOnSubmit={false}
                   />
-                  <HelperText
-                    type="error"
-                    visible={touched.email && !!errors.email}
-                  >
-                    {errors.email}
-                  </HelperText>
-                  <CustomTextInput
-                    label="Senha"
-                    error={touched.password && !!errors.password}
+                  <FormikTextInput
                     ref={passwordInputRef}
-                    value={values.password}
+                    label="Senha"
+                    fieldName="password"
                     returnKeyType="next"
                     autoCapitalize="none"
-                    onChangeText={handleChange("password")}
-                    onBlur={handleBlur("password")}
+                    blurOnSubmit={false}
+                    secureTextEntry
                     onSubmitEditing={() => {
                       confirmPasswordInputRef.current?.focus();
                     }}
-                    blurOnSubmit={false}
-                    secureTextEntry
                   />
-                  <HelperText
-                    type="error"
-                    visible={touched.password && !!errors.password}
-                  >
-                    {errors.password}
-                  </HelperText>
-                  <CustomTextInput
-                    label="Confirmar senha"
-                    error={touched.confirmPassword && !!errors.confirmPassword}
+                  <FormikTextInput
                     ref={confirmPasswordInputRef}
-                    value={values.confirmPassword}
+                    label="Confirmar senha"
+                    fieldName="confirmPassword"
                     returnKeyType="done"
                     autoCapitalize="none"
-                    onChangeText={handleChange("confirmPassword")}
-                    onBlur={handleBlur("confirmPassword")}
                     onSubmitEditing={() => handleSubmit()}
                     secureTextEntry
                   />
-                  <HelperText
-                    type="error"
-                    visible={
-                      touched.confirmPassword && !!errors.confirmPassword
-                    }
-                  >
-                    {errors.confirmPassword}
-                  </HelperText>
                   <Button
                     mode="contained"
-                    className="mt-8"
                     loading={isLoading}
+                    disabled={isLoading}
                     onPress={() => handleSubmit()}
                   >
                     Cadastrar
@@ -166,8 +119,9 @@ export const SignUp = () => {
               );
             }}
           </Formik>
-          <View className="mt-6 flex-row">
-            <Text variant="bodyMedium">Já possui uma conta? </Text>
+
+          <Text className="self-end mt-2" variant="bodyMedium">
+            Já possui uma conta?{" "}
             <Text
               variant="bodyMedium"
               className="underline text-indigo-500"
@@ -177,7 +131,7 @@ export const SignUp = () => {
             >
               Entrar
             </Text>
-          </View>
+          </Text>
         </View>
       </View>
     </KeyboardAvoidingView>

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import {
   KeyboardAvoidingView,
   Platform,
@@ -12,8 +12,10 @@ import * as WebBrowser from "expo-web-browser";
 import Constants from "expo-constants";
 import { useUserQueries } from "../queries/user";
 import { Button, Text } from "react-native-paper";
-import { CustomTextInput } from "../components/CustomTextInput";
 
+import * as Yup from "yup";
+import { Formik } from "formik";
+import { FormikTextInput } from "../components/FormikTextInput";
 const EXPO_CLIENT_ID = process.env.EXPO_CLIENT_ID;
 const IOS_CLIENT_ID = process.env.ANDROID_CLIENT_ID;
 const ANDROID_CLIENT_ID = process.env.IOS_CLIENT_ID;
@@ -32,13 +34,15 @@ const AUDIENCE =
 
 WebBrowser.maybeCompleteAuthSession();
 
+type FormValues = {
+  email: string;
+  password: string;
+};
+
 export const SignIn = () => {
   const navigation = useNavigation();
 
   const passwordInputRef = useRef<RNTextInput>(null);
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
 
   const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
     expoClientId: EXPO_CLIENT_ID,
@@ -49,7 +53,7 @@ export const SignIn = () => {
 
   const { useAuthenticateUser, useAuthenticateWithGoogle } = useUserQueries();
 
-  const { mutate: signIn } = useAuthenticateUser();
+  const { mutate: signIn, isLoading } = useAuthenticateUser();
 
   const { mutate: signInWithGoogle } = useAuthenticateWithGoogle();
 
@@ -60,11 +64,16 @@ export const SignIn = () => {
     }
   }, [response]);
 
-  const handleSignIn = () => {
-    signIn({ email, password });
+  const handleSignInWithGoogle = () => promptAsync();
+
+  const handleSignIn = (values: FormValues) => {
+    signIn(values);
   };
 
-  const handleSignInWithGoogle = () => promptAsync();
+  const validationSchema = Yup.object().shape({
+    email: Yup.string().required("Insira seu e-mail"),
+    password: Yup.string().required("Insira a senha"),
+  });
 
   return (
     <KeyboardAvoidingView
@@ -73,55 +82,62 @@ export const SignIn = () => {
     >
       <View className="flex-1 p-4 max-w-[90%] w-full self-center web:max-w-sm">
         <Text variant="displaySmall">Bem-vindo</Text>
-        <View className="gap-y-3 mt-5">
-          <CustomTextInput
-            label="E-mail"
-            value={email}
-            onChangeText={setEmail}
-            keyboardType="email-address"
-            autoComplete="email"
-            returnKeyType="next"
-            onSubmitEditing={() => {
-              passwordInputRef.current?.focus();
-            }}
-            blurOnSubmit={false}
-          />
-          <CustomTextInput
-            label="Senha"
-            ref={passwordInputRef}
-            returnKeyType="next"
-            secureTextEntry
-            autoComplete="current-password"
-            value={password}
-            onChangeText={setPassword}
-            onSubmitEditing={handleSignIn}
-            blurOnSubmit={false}
-          />
-          <View className="gap-y-2 mt-8">
-            <Button onPress={handleSignInWithGoogle}>
-              <Text>Entrar com o Google</Text>
-            </Button>
-            <Button
-              mode="contained-tonal"
-              disabled={!email || !password}
-              onPress={handleSignIn}
-            >
-              Entrar
-            </Button>
-          </View>
-          <View className="flex-row mt-6">
-            <Text variant="bodyMedium">Ainda não tem uma conta? </Text>
-            <Text
-              variant="bodyMedium"
-              className="underline text-indigo-500"
-              onPress={() => {
-                navigation.navigate("SignUp");
-              }}
-            >
-              Cadastre-se
-            </Text>
-          </View>
-        </View>
+        <Formik
+          initialValues={{
+            email: "",
+            password: "",
+          }}
+          validationSchema={validationSchema}
+          onSubmit={handleSignIn}
+        >
+          {({ handleSubmit }) => {
+            return (
+              <View className="mt-5">
+                <FormikTextInput
+                  fieldName="email"
+                  label="E-mail"
+                  keyboardType="email-address"
+                  autoComplete="email"
+                  returnKeyType="next"
+                  onSubmitEditing={() => {
+                    passwordInputRef.current?.focus();
+                  }}
+                  blurOnSubmit={false}
+                />
+                <FormikTextInput
+                  ref={passwordInputRef}
+                  fieldName="password"
+                  label="Senha"
+                  returnKeyType="next"
+                  secureTextEntry
+                  autoComplete="current-password"
+                  onSubmitEditing={() => handleSubmit()}
+                  blurOnSubmit={false}
+                />
+                <Button
+                  mode="contained"
+                  loading={isLoading}
+                  disabled={isLoading}
+                  onPress={() => handleSubmit()}
+                >
+                  Entrar
+                </Button>
+                <Text className="self-end mt-2" variant="bodyMedium">
+                  Ainda não tem uma conta?{" "}
+                  <Text
+                    variant="bodyMedium"
+                    className="underline text-indigo-500"
+                    onPress={() => {
+                      navigation.navigate("SignUp");
+                    }}
+                  >
+                    Cadastre-se
+                  </Text>
+                </Text>
+              </View>
+            );
+          }}
+        </Formik>
       </View>
     </KeyboardAvoidingView>
   );
