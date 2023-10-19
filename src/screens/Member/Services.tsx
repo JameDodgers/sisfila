@@ -11,6 +11,7 @@ import { View } from "react-native";
 import { StyledFlatList } from "../../libs/styled";
 import { CustomNavigationBar } from "../../components/CustomNavigationBar";
 import { ServicesStackScreenProps } from "../../../@types/navigation";
+import { SafeAreaInsetsContainer } from "../../components/SafeInsetsContainer";
 
 export const Services = () => {
   const navigation =
@@ -67,21 +68,23 @@ export const Services = () => {
   }, [isLoadingServices]);
 
   return (
-    <View className="flex-1">
-      <StyledFlatList
-        data={services}
-        ListEmptyComponent={ListEmptyComponent}
-        contentContainerStyle="p-4 web:w-full web:self-center web:max-w-screen-sm"
-        renderItem={({ item }: any) => (
-          <ServiceItem
-            item={item}
-            openServiceSettings={() => handleOpenServiceSettings(item.id)}
-            deleteService={() => handleDeleteService(item.id)}
-          />
-        )}
-        keyExtractor={(item: any) => item.id.toString()}
-        ItemSeparatorComponent={() => <View className="h-3" />}
-      />
-    </View>
+    <SafeAreaInsetsContainer>
+      <View className="flex-1">
+        <StyledFlatList
+          data={services}
+          ListEmptyComponent={ListEmptyComponent}
+          contentContainerStyle="p-4 web:w-full web:self-center web:max-w-screen-sm"
+          renderItem={({ item }: any) => (
+            <ServiceItem
+              item={item}
+              openServiceSettings={() => handleOpenServiceSettings(item.id)}
+              deleteService={() => handleDeleteService(item.id)}
+            />
+          )}
+          keyExtractor={(item: any) => item.id.toString()}
+          ItemSeparatorComponent={() => <View className="h-3" />}
+        />
+      </View>
+    </SafeAreaInsetsContainer>
   );
 };

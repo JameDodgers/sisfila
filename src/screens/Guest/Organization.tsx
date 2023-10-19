@@ -20,6 +20,7 @@ import { useRefreshByUser } from "../../hooks/useRefreshByUser";
 import { useOrganizationsQueries } from "../../queries/guest/organizations";
 import { useLoadingAPI } from "../../contexts/loading";
 import { isAxiosError } from "axios";
+import { SafeAreaInsetsContainer } from "../../components/SafeInsetsContainer";
 
 type Props = {
   route: RootNavigatorScreenProps<"Organization">["route"];
@@ -131,23 +132,25 @@ export const Organization = ({ route }: Props) => {
 
   return (
     <>
-      <View className="flex-1">
-        <StyledFlatList
-          data={services}
-          renderItem={({ item }: any) => (
-            <ServiceItem
-              guest
-              item={item}
-              enterOnQueue={() => handleSelectService(item.id)}
-            />
-          )}
-          contentContainerStyle="p-4 web:w-full web:self-center web:max-w-screen-sm"
-          onRefresh={refetchByUser}
-          refreshing={isRefetchingByUser}
-          keyExtractor={(item: any) => item.id}
-          ItemSeparatorComponent={() => <View className="h-3" />}
-        />
-      </View>
+      <SafeAreaInsetsContainer>
+        <View className="flex-1">
+          <StyledFlatList
+            data={services}
+            renderItem={({ item }: any) => (
+              <ServiceItem
+                guest
+                item={item}
+                enterOnQueue={() => handleSelectService(item.id)}
+              />
+            )}
+            contentContainerStyle="p-4 web:w-full web:self-center web:max-w-screen-sm"
+            onRefresh={refetchByUser}
+            refreshing={isRefetchingByUser}
+            keyExtractor={(item: any) => item.id}
+            ItemSeparatorComponent={() => <View className="h-3" />}
+          />
+        </View>
+      </SafeAreaInsetsContainer>
       <Portal>
         <StyledDialog visible={visible} onDismiss={closeModal}>
           <Dialog.Title>Entrar na fila</Dialog.Title>
