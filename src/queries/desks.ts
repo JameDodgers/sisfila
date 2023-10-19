@@ -128,10 +128,12 @@ export const useDesksQueries = (organizationId: string) => {
           cacheTime: Infinity,
         });
 
-        queryClient.setQueryData<Desk>(
-          desksKeys.item(organizationId, deskId),
-          data.desk
-        );
+        if (data.desk) {
+          queryClient.setQueryData<Desk>(
+            desksKeys.item(organizationId, deskId),
+            data.desk
+          );
+        }
       },
     });
 
