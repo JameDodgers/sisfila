@@ -5,7 +5,13 @@ import { useOrganizerStore } from "../../store/organizer";
 
 import { useCallback, useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { ActivityIndicator, Button, Dialog, Portal } from "react-native-paper";
+import {
+  ActivityIndicator,
+  Button,
+  Dialog,
+  Portal,
+  Text,
+} from "react-native-paper";
 import { OrganizationDrawerScreenProps } from "../../../@types/navigation";
 import { CustomNavigationBar } from "../../components/CustomNavigationBar";
 import { Dialog as StyledDialog, StyledFlatList } from "../../libs/styled";
@@ -111,6 +117,7 @@ export const Attendants = () => {
         <StyledDialog visible={visible} onDismiss={closeModal}>
           <Dialog.Title>Adicionar atendente</Dialog.Title>
           <Dialog.Content>
+            <Text>Um e-mail será enviado para o colaborador adicionado</Text>
             <CustomTextInput
               label="E-mail"
               value={email}

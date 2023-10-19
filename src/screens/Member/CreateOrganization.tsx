@@ -18,7 +18,7 @@ export const CreateOrganization = () => {
 
   const { useCreateOrganization } = useOrganizationsQueries();
 
-  const { mutate: createOrganization } = useCreateOrganization();
+  const { mutate: createOrganization, isLoading } = useCreateOrganization();
 
   const handleCreateOrganization = (values: FormValues) => {
     createOrganization(values, {
@@ -59,6 +59,8 @@ export const CreateOrganization = () => {
                 <Button
                   className="web:self-end"
                   mode="contained"
+                  disabled={isLoading}
+                  loading={isLoading}
                   onPress={() => handleSubmit()}
                 >
                   Criar

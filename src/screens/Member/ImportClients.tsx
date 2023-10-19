@@ -28,7 +28,7 @@ export const ImportClients = ({
 
   const { useImportClients } = useGroupsQueries(currentOrganizationId);
 
-  const { mutate: importClients } = useImportClients();
+  const { mutate: importClients, isLoading } = useImportClients();
 
   const handleImportClients = ({ data }: FormValues) => {
     const matches = data.matchAll(dataLinePattern);
@@ -107,6 +107,8 @@ export const ImportClients = ({
                   <Button
                     className="mt-4 web:self-end"
                     mode="contained"
+                    disabled={isLoading}
+                    loading={isLoading}
                     onPress={() => handleSubmit()}
                   >
                     Importar

@@ -36,7 +36,7 @@ export const Desk = ({ route }: Props) => {
     useDeleteDesk,
   } = useDesksQueries(currentOrganizationId);
 
-  const { mutate: callNext, isLoading } = useCallNext();
+  const { mutate: callNext, isLoading: isCallingNext } = useCallNext();
 
   const { data: client } = useGetLastClientCalledInDesk(deskId);
 
@@ -103,8 +103,8 @@ export const Desk = ({ route }: Props) => {
             <Button
               mode="contained"
               className="web:self-center"
-              disabled={isLoading}
-              loading={isLoading}
+              disabled={isCallingNext}
+              loading={isCallingNext}
               onPress={handleCallNext}
             >
               Chamar próximo
