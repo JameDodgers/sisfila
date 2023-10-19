@@ -81,7 +81,7 @@ export const Attendants = () => {
   const ListEmptyComponent = useCallback(() => {
     if (isLoadingAttendants) {
       return (
-        <View className="flex-1 items-center">
+        <View className="items-center">
           <ActivityIndicator size="large" />
         </View>
       );

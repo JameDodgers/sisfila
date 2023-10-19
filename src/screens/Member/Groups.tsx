@@ -69,7 +69,7 @@ export const Groups = () => {
   const ListEmptyComponent = useCallback(() => {
     if (isLoadingGroups) {
       return (
-        <View className="flex-1 items-center">
+        <View className="items-center">
           <ActivityIndicator size="large" />
         </View>
       );

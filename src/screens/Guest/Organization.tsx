@@ -123,7 +123,7 @@ export const Organization = ({ route }: Props) => {
 
   if (isLoading) {
     return (
-      <View className="flex-1 items-center">
+      <View className="items-center">
         <ActivityIndicator size="large" />
       </View>
     );

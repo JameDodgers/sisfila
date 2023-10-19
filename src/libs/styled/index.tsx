@@ -22,5 +22,5 @@ export const StyledNestableScrollContainer = styled(NestableScrollContainer, {
 
 export const Dialog = styled(
   PaperDialog,
-  "web:w-full web:self-center web:max-w-screen-sm"
+  "web:w-full web:self-center web:max-w-md"
 );

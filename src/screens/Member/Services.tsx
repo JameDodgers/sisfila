@@ -58,7 +58,7 @@ export const Services = () => {
   const ListEmptyComponent = useCallback(() => {
     if (isLoadingServices) {
       return (
-        <View className="flex-1 items-center">
+        <View className="items-center">
           <ActivityIndicator size="large" />
         </View>
       );

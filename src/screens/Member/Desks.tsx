@@ -97,7 +97,7 @@ export const Desks = () => {
   const ListEmptyComponent = useCallback(() => {
     if (isLoadingDesks) {
       return (
-        <View className="flex-1 items-center">
+        <View className="items-center">
           <ActivityIndicator size="large" />
         </View>
       );

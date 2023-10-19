@@ -1,7 +1,7 @@
 import { useOrganizerStore } from "../../store/organizer";
 import { DesksStackScreenProps } from "../../../@types/navigation";
 
-import { Avatar, Button, Card, List, Text } from "react-native-paper";
+import { Avatar, Button, Card, Text } from "react-native-paper";
 import { View } from "react-native";
 import { SafeAreaInsetsContainer } from "../../components/SafeInsetsContainer";
 import { useEffect, useLayoutEffect, useState } from "react";
@@ -43,6 +43,7 @@ export const Desk = ({ route }: Props) => {
   const { data: desk } = useGetDesk(deskId);
 
   const [services, setServices] = useState<Service[]>([]);
+
   useEffect(() => {
     if (desk) {
       setServices(desk?.services.filter((service) => service.isOpened));

@@ -12,6 +12,7 @@ import { DesksStackScreenProps } from "../../../@types/navigation";
 import { useEffect, useLayoutEffect, useState } from "react";
 import { useServicesQueries } from "../../queries/services";
 import { CheckboxList } from "../../components/CheckboxList";
+import { ScrollView } from "../../libs/styled";
 
 interface FormValues {
   name: string;
@@ -94,7 +95,7 @@ export const CreateOrUpdateDesk = ({ route, navigation }: Props) => {
 
   return (
     <SafeAreaInsetsContainer>
-      <View className="flex-1 p-4 web:items-center">
+      <View className="flex-1">
         <Formik
           initialValues={{
             name: desk?.name || "",
@@ -104,8 +105,8 @@ export const CreateOrUpdateDesk = ({ route, navigation }: Props) => {
         >
           {({ handleSubmit }) => {
             return (
-              <View className="flex-1 ios:justify-between android:justify-between web:sm:w-96">
-                <View>
+              <View className="flex-1 justify-between">
+                <ScrollView contentContainerStyle="p-4 web:w-full web:self-center web:max-w-md">
                   <FormikTextInput
                     autoFocus={!deskId}
                     fieldName="name"
@@ -117,15 +118,18 @@ export const CreateOrUpdateDesk = ({ route, navigation }: Props) => {
                     value={selectedServiceIds}
                     setValue={setSelectedServiceIds}
                   />
+                </ScrollView>
+                <View className="p-4 border-t-gray-400 border-t">
+                  <Button
+                    className="web:self-end"
+                    loading={isLoading}
+                    disabled={isLoading}
+                    mode="contained"
+                    onPress={() => handleSubmit()}
+                  >
+                    {actionButtonLabel}
+                  </Button>
                 </View>
-                <Button
-                  className="web:self-end"
-                  disabled={isLoading}
-                  mode="contained"
-                  onPress={() => handleSubmit()}
-                >
-                  {actionButtonLabel}
-                </Button>
               </View>
             );
           }}

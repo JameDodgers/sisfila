@@ -46,7 +46,7 @@ export const Organizations = () => {
   const ListEmptyComponent = useCallback(() => {
     if (isLoadingOrganizations) {
       return (
-        <View className="flex-1 items-center">
+        <View className="items-center">
           <ActivityIndicator size="large" />
         </View>
       );
