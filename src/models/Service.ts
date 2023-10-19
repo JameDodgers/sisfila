@@ -1,3 +1,5 @@
+import { Queue } from "./Queue";
+
 export type ServiceBase = {
   name: string;
   subscriptionToken: string;
@@ -10,6 +12,7 @@ export type ServiceBase = {
 export type Service = ServiceBase & {
   id: string;
   isOpened: boolean;
+  queues: Queue[];
   createdAt: string;
   updatedAt: string;
 };
