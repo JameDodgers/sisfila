@@ -20,7 +20,7 @@ const config = {
     SignIn: "signin",
     SignUp: "signup",
     Organization: "organization/:id",
-    Queue: "queue/:queueId/:serviceId/:registrationId/:queueName",
+    Queue: "queue",
     Organizations: "organizations",
     CreateOrganization: "organization/create",
     Drawer: {
@@ -32,7 +32,7 @@ const config = {
         GroupsRoutes: {
           screens: {
             Groups: "groups",
-            CreateOrUpdateGroup: "group/edit/:groupId?",
+            CreateOrUpdateGroup: "group/:groupId?",
             Group: "group/:groupId/details",
             ImportClients: "group/:groupId/import",
           },
@@ -41,7 +41,7 @@ const config = {
           screens: {
             Services: "services",
             CreateOrUpdateService: "service/:serviceId?",
-            CreateOrUpdateQueue: "service/:serviceId?/queue/:queueId?",
+            CreateOrUpdateQueue: "queue",
           },
         },
         DesksRoutes: {
