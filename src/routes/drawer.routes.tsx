@@ -70,7 +70,7 @@ export const DrawerRoutes = ({ route }: Props) => {
             component={Attendants}
           />
           <Screen
-            name="ClientsRoutes"
+            name="Clients"
             options={{
               title: "Clientes",
             }}

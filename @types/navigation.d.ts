@@ -45,7 +45,7 @@ export type DrawerParamList = {
   ClientsRoutes: undefined;
   GroupsRoutes: NavigatorScreenParams<GroupsStackParamList>;
   ServicesRoutes: NavigatorScreenParams<ServicesStackParamList>;
-  Desks: NavigatorScreenParams<DeskStackParamList>;
+  DesksRoutes: NavigatorScreenParams<DesksStackParamList>;
 };
 
 export type OrganizationDrawerScreenProps<T extends keyof DrawerParamList> =
