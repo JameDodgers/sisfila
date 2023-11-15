@@ -1,7 +1,8 @@
 module.exports = {
   root: true,
-  extends: ["universe/native"],
+  extends: ["prettier"],
   plugins: ["import"],
+  parser: "@typescript-eslint/parser",
   rules: {
     "import/order": [
       "warn",
