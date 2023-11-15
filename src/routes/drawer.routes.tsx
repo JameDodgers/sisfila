@@ -10,18 +10,28 @@ import { CustomNavigationBar } from "../components/CustomNavigationBar";
 import { OrganizationDetails } from "../screens/Member/OrganizationDetails";
 import { Attendants } from "../screens/Member/Attendants";
 import { Clients } from "../screens/Member/Clients";
-import { useOrganizerStore } from "../store/organizer";
+import { setCurrentOrganizationId } from "../store/organizer";
 import { useOrganizationsQueries } from "../queries/organizations";
 import { Role } from "../models/User";
+import { RootNavigatorScreenProps } from "../../@types/navigation";
+import { useEffect } from "react";
 
 const { Navigator, Screen } = createDrawerNavigator();
 
-export const DrawerRoutes = () => {
-  const { currentOrganizationId = "" } = useOrganizerStore();
+type Props = {
+  route: RootNavigatorScreenProps<"Drawer">["route"];
+};
+
+export const DrawerRoutes = ({ route }: Props) => {
+  const { organizationId } = route.params;
+
+  useEffect(() => {
+    setCurrentOrganizationId(organizationId);
+  }, [organizationId]);
 
   const { useGetOrganization } = useOrganizationsQueries();
 
-  const { data: organization } = useGetOrganization(currentOrganizationId);
+  const { data: organization } = useGetOrganization(organizationId);
 
   return (
     <Navigator

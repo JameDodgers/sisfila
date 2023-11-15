@@ -5,7 +5,7 @@ import { ActivityIndicator, Appbar, Text } from "react-native-paper";
 
 import { useOrganizationsQueries } from "../../queries/organizations";
 import { useRefreshOnFocus } from "../../hooks/useRefreshOnFocus";
-import { setCurrentOrganizationId } from "../../store/organizer";
+
 import { View } from "react-native";
 import { StyledFlatList } from "../../libs/styled";
 import { CustomNavigationBar } from "../../components/CustomNavigationBar";
@@ -59,9 +59,8 @@ export const Organizations = () => {
     );
   }, [isLoadingOrganizations]);
 
-  const handleOpenOrganization = (id: string) => {
-    setCurrentOrganizationId(id);
-    navigation.navigate("Drawer");
+  const handleOpenOrganization = (organizationId: string) => {
+    navigation.navigate("Drawer", { organizationId });
   };
 
   return (

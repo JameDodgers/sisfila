@@ -1,10 +1,7 @@
 import { Divider, List, Menu, Text } from "react-native-paper";
 import { useOrganizationsQueries } from "../queries/organizations";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
-import {
-  setCurrentOrganizationId,
-  useOrganizerStore,
-} from "../store/organizer";
+import { useOrganizerStore } from "../store/organizer";
 import { useState } from "react";
 import { Pressable, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -53,7 +50,7 @@ export const OrganizationSelector = () => {
             key={id}
             disabled={id === currentOrganizationId}
             onPress={() => {
-              setCurrentOrganizationId(id);
+              navigation.setParams({ organizationId: id });
               closeMenu();
             }}
             title={name}

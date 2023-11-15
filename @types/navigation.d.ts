@@ -14,7 +14,9 @@ import {
 } from "@react-navigation/native-stack";
 
 export type AppStackParamList = {
-  Drawer: NavigatorScreenParams<DrawerParamList> | undefined;
+  Drawer:
+    | { organizationId: string }
+    | ({ organizationId: string } & NavigatorScreenParams<DrawerParamList>);
   Organizations: undefined;
   CreateOrganization: undefined;
 };
