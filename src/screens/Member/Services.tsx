@@ -1,17 +1,18 @@
-import { ServiceItem } from "../../components/ServiceItem";
 
-import { useServicesQueries } from "../../queries/services";
 
 import { useCallback, useLayoutEffect } from "react";
-import { Appbar, ActivityIndicator } from "react-native-paper";
-import { useNavigation } from "@react-navigation/native";
-import { useOrganizerStore } from "../../store/organizer";
-
 import { View } from "react-native";
-import { StyledFlatList } from "../../libs/styled";
-import { CustomNavigationBar } from "../../components/CustomNavigationBar";
+
+import { useNavigation } from "@react-navigation/native";
+import { Appbar, ActivityIndicator } from "react-native-paper";
+
 import { ServicesStackScreenProps } from "../../../@types/navigation";
+import { CustomNavigationBar } from "../../components/CustomNavigationBar";
 import { SafeAreaInsetsContainer } from "../../components/SafeInsetsContainer";
+import { ServiceItem } from "../../components/ServiceItem";
+import { StyledFlatList } from "../../libs/styled";
+import { useServicesQueries } from "../../queries/services";
+import { useOrganizerStore } from "../../store/organizer";
 
 export const Services = () => {
   const navigation =

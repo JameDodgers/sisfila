@@ -1,18 +1,19 @@
-import { useOrganizerStore } from "../../store/organizer";
 
-import { useDesksQueries } from "../../queries/desks";
-import { Button } from "react-native-paper";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { View } from "react-native";
-import { Formik } from "formik";
 
+import { Formik } from "formik";
+import { Button } from "react-native-paper";
 import * as Yup from "yup";
+
+import { DesksStackScreenProps } from "../../../@types/navigation";
+import { CheckboxList } from "../../components/CheckboxList";
 import { FormikTextInput } from "../../components/FormikTextInput";
 import { SafeAreaInsetsContainer } from "../../components/SafeInsetsContainer";
-import { DesksStackScreenProps } from "../../../@types/navigation";
-import { useEffect, useLayoutEffect, useState } from "react";
-import { useServicesQueries } from "../../queries/services";
-import { CheckboxList } from "../../components/CheckboxList";
 import { ScrollView } from "../../libs/styled";
+import { useDesksQueries } from "../../queries/desks";
+import { useServicesQueries } from "../../queries/services";
+import { useOrganizerStore } from "../../store/organizer";
 
 interface FormValues {
   name: string;

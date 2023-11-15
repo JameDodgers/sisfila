@@ -1,15 +1,17 @@
-import { useNavigation } from "@react-navigation/native";
 import { useCallback, useEffect } from "react";
-import { OrganizationItem } from "../../components/OrganizationItem";
+import { View } from "react-native";
+
+import { useNavigation } from "@react-navigation/native";
 import { ActivityIndicator, Appbar, Text } from "react-native-paper";
 
-import { useOrganizationsQueries } from "../../queries/organizations";
-import { useRefreshOnFocus } from "../../hooks/useRefreshOnFocus";
-
-import { View } from "react-native";
-import { StyledFlatList } from "../../libs/styled";
-import { CustomNavigationBar } from "../../components/CustomNavigationBar";
 import { RootNavigatorScreenProps } from "../../../@types/navigation";
+import { CustomNavigationBar } from "../../components/CustomNavigationBar";
+import { OrganizationItem } from "../../components/OrganizationItem";
+import { useRefreshOnFocus } from "../../hooks/useRefreshOnFocus";
+import { StyledFlatList } from "../../libs/styled";
+import { useOrganizationsQueries } from "../../queries/organizations";
+
+
 
 export const Organizations = () => {
   const navigation =

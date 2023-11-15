@@ -5,8 +5,9 @@ import {
   DrawerItem,
 } from "@react-navigation/drawer";
 
-import { useToken } from "../store/auth";
 import { useUserQueries } from "../queries/user";
+import { useToken } from "../store/auth";
+
 import { OrganizationSelector } from "./OrganizationSelector";
 
 type Props = DrawerContentComponentProps & {};

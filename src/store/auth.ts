@@ -1,8 +1,9 @@
 import { persist, createJSONStorage } from "zustand/middleware";
 
 import Storage from "../libs/storage";
-import { create } from "./helpers";
 import { User } from "../models/User";
+
+import { create } from "./helpers";
 
 export interface Auth {
   user?: User;

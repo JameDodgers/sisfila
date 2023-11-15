@@ -1,5 +1,8 @@
+import { useEffect, useState } from "react";
 import { View } from "react-native";
-import { RootNavigatorScreenProps } from "../../../@types/navigation";
+
+import { useNavigation } from "@react-navigation/native";
+import { isAxiosError } from "axios";
 import {
   ActivityIndicator,
   Button,
@@ -8,19 +11,20 @@ import {
   Text,
 } from "react-native-paper";
 
-import { ServiceItem } from "../../components/ServiceItem";
-import { useEffect, useState } from "react";
-import { useMessageStore } from "../../store/message";
-import { useServicesQueries } from "../../queries/guest/services";
-import { useNavigation } from "@react-navigation/native";
-
-import { Dialog as StyledDialog, StyledFlatList } from "../../libs/styled";
+import { RootNavigatorScreenProps } from "../../../@types/navigation";
 import { CustomTextInput } from "../../components/CustomTextInput";
-import { useRefreshByUser } from "../../hooks/useRefreshByUser";
-import { useOrganizationsQueries } from "../../queries/guest/organizations";
-import { useLoadingAPI } from "../../contexts/loading";
-import { isAxiosError } from "axios";
 import { SafeAreaInsetsContainer } from "../../components/SafeInsetsContainer";
+import { ServiceItem } from "../../components/ServiceItem";
+import { useLoadingAPI } from "../../contexts/loading";
+import { useRefreshByUser } from "../../hooks/useRefreshByUser";
+import { Dialog as StyledDialog, StyledFlatList } from "../../libs/styled";
+import { useOrganizationsQueries } from "../../queries/guest/organizations";
+import { useServicesQueries } from "../../queries/guest/services";
+import { useMessageStore } from "../../store/message";
+
+
+
+
 
 type Props = {
   route: RootNavigatorScreenProps<"Organization">["route"];

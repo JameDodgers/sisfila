@@ -1,4 +1,5 @@
 import { Client } from "../../models/Client";
+
 import api from "./config";
 
 interface GetOrganizationClientsResponse extends Array<Client> {}

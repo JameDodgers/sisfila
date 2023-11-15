@@ -1,8 +1,8 @@
 import { FlatList, ScrollView as RNScrollView } from "react-native";
-import { Dialog as PaperDialog } from "react-native-paper";
-import { styled } from "nativewind";
 
+import { styled } from "nativewind";
 import { NestableScrollContainer } from "react-native-draggable-flatlist";
+import { Dialog as PaperDialog } from "react-native-paper";
 
 export const StyledFlatList = styled(FlatList, {
   props: {

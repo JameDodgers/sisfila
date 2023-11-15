@@ -1,12 +1,13 @@
-import { useQueuesQueries } from "../../queries/guest/queues";
-import { RootNavigatorScreenProps } from "../../../@types/navigation";
-import { Text } from "react-native-paper";
 import { View } from "react-native";
 
+import { Text } from "react-native-paper";
+
+import { RootNavigatorScreenProps } from "../../../@types/navigation";
 import { ClientItem } from "../../components/ClientItem";
-import { useServicesQueries } from "../../queries/guest/services";
 import { SafeAreaInsetsContainer } from "../../components/SafeInsetsContainer";
 import { StyledFlatList } from "../../libs/styled";
+import { useQueuesQueries } from "../../queries/guest/queues";
+import { useServicesQueries } from "../../queries/guest/services";
 
 type Props = {
   route: RootNavigatorScreenProps<"Queue">["route"];

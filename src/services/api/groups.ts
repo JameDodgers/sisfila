@@ -1,5 +1,6 @@
 import { Client } from "../../models/Client";
 import { Group, GroupBase } from "../../models/Group";
+
 import api from "./config";
 
 interface getOrganizationGroupsResponse extends Array<Group> {

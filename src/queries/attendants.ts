@@ -1,11 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { attendantsKeys } from "./keys";
 import { Attendant } from "../models/Attendant";
-
+import { User } from "../models/User";
 import usersApi from "../services/api/users";
 import { useUser } from "../store/auth";
-import { User } from "../models/User";
+
+import { attendantsKeys } from "./keys";
 
 export const useAttendantsQueries = () => {
   const queryClient = useQueryClient();

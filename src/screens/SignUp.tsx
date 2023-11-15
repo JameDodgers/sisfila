@@ -8,10 +8,11 @@ import {
 
 import { useNavigation } from "@react-navigation/native";
 import { Formik } from "formik";
-import * as Yup from "yup";
-import { useUserQueries } from "../queries/user";
 import { Button, Text } from "react-native-paper";
+import * as Yup from "yup";
+
 import { FormikTextInput } from "../components/FormikTextInput";
+import { useUserQueries } from "../queries/user";
 
 export const SignUp = () => {
   const emailInputRef = useRef<RNTextInput>(null);

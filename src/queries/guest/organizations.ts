@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+
 import organizationsApi from "../../services/api/organizations";
 
 import { organizationsKeys } from "./keys";

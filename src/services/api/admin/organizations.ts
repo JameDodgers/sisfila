@@ -1,5 +1,4 @@
 import { PrivateOrganization } from "../../../models/Organization";
-
 import api from "../config";
 
 interface CreateRequest {

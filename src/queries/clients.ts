@@ -1,8 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import clientsApi from "../services/api/clients";
+
 
 import { Client } from "../models/Client";
 import { Group } from "../models/Group";
+import clientsApi from "../services/api/clients";
+
 import { clientsKeys, groupsKeys } from "./keys";
 
 export const useClientsQueries = () => {

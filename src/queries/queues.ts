@@ -1,7 +1,9 @@
-import queuesApi from "../services/api/queues";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { Queue } from "../models/Queue";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import queuesApi from "../services/api/queues";
+
+
 import { queuesKeys } from "./keys";
 
 type QueryOptions<TData, TResult> = {

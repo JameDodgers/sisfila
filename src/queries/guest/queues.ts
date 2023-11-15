@@ -1,5 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
+
 import queuesApi from "../../services/api/queues";
+
 import { queuesKeys } from "./keys";
 
 export const useQueuesQueries = () => {

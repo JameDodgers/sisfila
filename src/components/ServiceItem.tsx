@@ -1,10 +1,13 @@
-import { Button, Card, Text, useTheme } from "react-native-paper";
-
-import { format, parseISO } from "date-fns";
-import { Service } from "../models/Service";
+import { View } from "react-native";
 
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
-import { View } from "react-native";
+import { format, parseISO } from "date-fns";
+import { Button, Card, Text, useTheme } from "react-native-paper";
+
+import { Service } from "../models/Service";
+
+
+
 import { CardMenu } from "./CardMenu";
 
 const formatServiceDate = (date: string) =>
@@ -38,6 +41,7 @@ export const ServiceItem = ({
   openServiceSettings,
 }: Props) => {
   const theme = useTheme();
+
   const cardMode = guest ? "elevated" : "contained";
 
   const cardMenuOptions = [

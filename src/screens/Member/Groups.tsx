@@ -1,15 +1,16 @@
 import { useCallback, useLayoutEffect } from "react";
+import { View } from "react-native";
+
 import { useNavigation } from "@react-navigation/native";
 import { ActivityIndicator, Appbar } from "react-native-paper";
-import { GroupItem } from "../../components/GroupItem";
 
-import { useGroupsQueries } from "../../queries/groups";
-import { useRefreshOnFocus } from "../../hooks/useRefreshOnFocus";
-import { useOrganizerStore } from "../../store/organizer";
 import { GroupsStackScreenProps } from "../../../@types/navigation";
-import { View } from "react-native";
 import { CustomNavigationBar } from "../../components/CustomNavigationBar";
+import { GroupItem } from "../../components/GroupItem";
+import { useRefreshOnFocus } from "../../hooks/useRefreshOnFocus";
 import { StyledFlatList } from "../../libs/styled";
+import { useGroupsQueries } from "../../queries/groups";
+import { useOrganizerStore } from "../../store/organizer";
 
 export const Groups = () => {
   const navigation =

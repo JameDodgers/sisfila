@@ -1,5 +1,7 @@
-import { Queue } from "../models/Queue";
 import { IconButton, List, ListItemProps } from "react-native-paper";
+
+import { Queue } from "../models/Queue";
+
 import { CardMenu } from "./CardMenu";
 
 type Props = {

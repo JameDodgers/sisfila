@@ -1,15 +1,6 @@
 import { useCallback, useEffect, useLayoutEffect, useState } from "react";
-import { NestableDraggableFlatList } from "react-native-draggable-flatlist";
-import { useServicesQueries } from "../../queries/services";
-import {
-  Button,
-  HelperText,
-  IconButton,
-  Text,
-  TextInput,
-} from "react-native-paper";
-import * as Yup from "yup";
-import { TimePickerModal } from "react-native-paper-dates";
+import { View } from "react-native";
+
 import {
   addDays,
   format,
@@ -18,22 +9,30 @@ import {
   isSameDay,
   parseISO,
 } from "date-fns";
-
-import { useOrganizerStore } from "../../store/organizer";
-import { View } from "react-native";
 import { Formik } from "formik";
-import { FormikTextInput } from "../../components/FormikTextInput";
+import { NestableDraggableFlatList } from "react-native-draggable-flatlist";
+import {
+  Button,
+  HelperText,
+  IconButton,
+  Text,
+  TextInput,
+} from "react-native-paper";
+import { TimePickerModal } from "react-native-paper-dates";
+import { DatePickerInputProps } from "react-native-paper-dates/lib/typescript/Date/DatePickerInput.shared";
+import * as Yup from "yup";
 
-import { SafeAreaInsetsContainer } from "../../components/SafeInsetsContainer";
 import { ServicesStackScreenProps } from "../../../@types/navigation";
 import { CustomTextInput } from "../../components/CustomTextInput";
-
-import { DatePickerInputProps } from "react-native-paper-dates/lib/typescript/Date/DatePickerInput.shared";
 import { FormikDatePickerInput } from "../../components/FormikDatePickerInput";
-import { useQueuesQueries } from "../../queries/queues";
+import { FormikTextInput } from "../../components/FormikTextInput";
 import { QueueItem } from "../../components/QueueItem";
+import { SafeAreaInsetsContainer } from "../../components/SafeInsetsContainer";
 import { StyledNestableScrollContainer } from "../../libs/styled";
 import { Queue } from "../../models/Queue";
+import { useQueuesQueries } from "../../queries/queues";
+import { useServicesQueries } from "../../queries/services";
+import { useOrganizerStore } from "../../store/organizer";
 
 interface FormValues {
   name: string;

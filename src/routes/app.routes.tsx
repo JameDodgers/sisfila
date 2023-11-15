@@ -1,13 +1,13 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import { DrawerRoutes } from "./drawer.routes";
 
-import { Organizations } from "../screens/Member/Organizations";
-import { CreateOrganization } from "../screens/Member/CreateOrganization";
-
-import { useOrganizerStore } from "../store/organizer";
 import { AppStackParamList } from "../../@types/navigation";
 import { CustomNavigationBar } from "../components/CustomNavigationBar";
+import { CreateOrganization } from "../screens/Member/CreateOrganization";
+import { Organizations } from "../screens/Member/Organizations";
+import { useOrganizerStore } from "../store/organizer";
+
+import { DrawerRoutes } from "./drawer.routes";
 
 const { Navigator, Screen } = createNativeStackNavigator<AppStackParamList>();
 

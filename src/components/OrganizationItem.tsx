@@ -1,5 +1,6 @@
-import { Organization } from "../models/Organization";
 import { Card } from "react-native-paper";
+
+import { Organization } from "../models/Organization";
 
 type Props = {
   item: Organization;

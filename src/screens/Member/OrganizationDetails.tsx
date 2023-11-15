@@ -1,17 +1,16 @@
-import { useNavigation } from "@react-navigation/native";
 
 import { useLayoutEffect, useState } from "react";
-
-import { useOrganizationsQueries } from "../../queries/organizations";
-
-import { useOrganizerStore } from "../../store/organizer";
-import { Button, Portal, Snackbar, TextInput } from "react-native-paper";
 import { View } from "react-native";
 
+import { useNavigation } from "@react-navigation/native";
 import * as Clipboard from "expo-clipboard";
 import * as Linking from "expo-linking";
-import { SafeAreaInsetsContainer } from "../../components/SafeInsetsContainer";
+import { Button, Portal, Snackbar, TextInput } from "react-native-paper";
+
 import { CustomTextInput } from "../../components/CustomTextInput";
+import { SafeAreaInsetsContainer } from "../../components/SafeInsetsContainer";
+import { useOrganizationsQueries } from "../../queries/organizations";
+import { useOrganizerStore } from "../../store/organizer";
 
 export const OrganizationDetails = () => {
   const navigation = useNavigation();

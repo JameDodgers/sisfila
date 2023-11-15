@@ -1,8 +1,12 @@
-import { useField } from "formik";
-import { TextInput, View } from "react-native";
-import { HelperText, TextInputProps } from "react-native-paper";
-import { CustomTextInput } from "./CustomTextInput";
 import { forwardRef } from "react";
+import { TextInput, View } from "react-native";
+
+import { useField } from "formik";
+import { HelperText, TextInputProps } from "react-native-paper";
+
+import { CustomTextInput } from "./CustomTextInput";
+
+
 interface Props extends TextInputProps {
   fieldName: string;
 }

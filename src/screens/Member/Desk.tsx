@@ -1,19 +1,20 @@
-import { useOrganizerStore } from "../../store/organizer";
-import { DesksStackScreenProps } from "../../../@types/navigation";
-
-import { Avatar, Button, Card, Text } from "react-native-paper";
-import { View } from "react-native";
-import { SafeAreaInsetsContainer } from "../../components/SafeInsetsContainer";
 import { useEffect, useLayoutEffect, useState } from "react";
-import { useNavigation } from "@react-navigation/native";
-import { useDesksQueries } from "../../queries/desks";
+import { View } from "react-native";
 
+import { useNavigation } from "@react-navigation/native";
+import * as Clipboard from "expo-clipboard";
+import { Avatar, Button, Card, IconButton, Text } from "react-native-paper";
+
+import { DesksStackScreenProps } from "../../../@types/navigation";
+import { CardMenu } from "../../components/CardMenu";
+import { ClientItem } from "../../components/ClientItem";
+import { CustomListAccordion } from "../../components/CustomListAccordion";
+import { SafeAreaInsetsContainer } from "../../components/SafeInsetsContainer";
 import { ScrollView } from "../../libs/styled";
 import { Service } from "../../models/Service";
-
-import { CustomListAccordion } from "../../components/CustomListAccordion";
-import { ClientItem } from "../../components/ClientItem";
-import { CardMenu } from "../../components/CardMenu";
+import { useDesksQueries } from "../../queries/desks";
+import { useMessageStore } from "../../store/message";
+import { useOrganizerStore } from "../../store/organizer";
 
 type Props = {
   route: DesksStackScreenProps<"Desk">["route"];

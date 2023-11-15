@@ -1,13 +1,17 @@
-import { ActivityIndicator, DataTable, Text } from "react-native-paper";
-import { IconButton } from "react-native-paper";
-
-import { useClientsQueries } from "../../queries/clients";
-import { useRefreshOnFocus } from "../../hooks/useRefreshOnFocus";
-import { useOrganizerStore } from "../../store/organizer";
-
-import { FlatList, View } from "react-native";
-import { SafeAreaInsetsContainer } from "../../components/SafeInsetsContainer";
 import { useCallback } from "react";
+import { FlatList, View } from "react-native";
+
+import {
+  ActivityIndicator,
+  DataTable,
+  Text,
+  IconButton,
+} from "react-native-paper";
+
+import { SafeAreaInsetsContainer } from "../../components/SafeInsetsContainer";
+import { useRefreshOnFocus } from "../../hooks/useRefreshOnFocus";
+import { useClientsQueries } from "../../queries/clients";
+import { useOrganizerStore } from "../../store/organizer";
 
 export const Clients = () => {
   const { useGetOrganizationClients, useRemoveClient } = useClientsQueries();

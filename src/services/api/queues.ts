@@ -1,4 +1,5 @@
 import { Queue, QueueBase, QueueCommon } from "../../models/Queue";
+
 import api from "./config";
 
 interface GetOneResponse extends Array<Queue> {}

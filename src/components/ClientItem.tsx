@@ -1,4 +1,5 @@
 import { Avatar, List, ListItemProps } from "react-native-paper";
+
 import { Client } from "../models/Client";
 
 type Props = {

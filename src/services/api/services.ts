@@ -1,5 +1,6 @@
 import { Desk } from "../../models/Desk";
 import { Service } from "../../models/Service";
+
 import api from "./config";
 
 interface GetOneResponse extends Array<Service> {}

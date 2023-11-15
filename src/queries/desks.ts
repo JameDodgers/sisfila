@@ -1,11 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { desksKeys } from "./keys";
-import { Desk } from "../models/Desk";
-
-import desksApi from "../services/api/desks";
 import { Client } from "../models/Client";
+import { Desk } from "../models/Desk";
+import desksApi from "../services/api/desks";
 import { useUser } from "../store/auth";
+
+import { desksKeys } from "./keys";
 
 export const useDesksQueries = (organizationId: string) => {
   const queryClient = useQueryClient();

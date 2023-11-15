@@ -1,32 +1,29 @@
-import { StatusBar } from "expo-status-bar";
-import { AppState, AppStateStatus, Platform, View } from "react-native";
-import { Provider as PaperProvider, Snackbar } from "react-native-paper";
-
-import { Routes } from "./src/routes";
-import { focusManager } from "@tanstack/react-query";
-
-import { CombinedDefaultTheme } from "./src/styles/theme";
 import { useCallback, useEffect } from "react";
-import { DataProvider } from "./src/contexts/data";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { AppState, AppStateStatus, Platform, View } from "react-native";
+
 import {
   useFonts,
   Montserrat_500Medium,
   Montserrat_400Regular,
   Montserrat_700Bold,
 } from "@expo-google-fonts/montserrat";
-import * as SplashScreen from "expo-splash-screen";
-import { NativeWindStyleSheet } from "nativewind";
-
+import { focusManager } from "@tanstack/react-query";
 import { setDefaultOptions } from "date-fns";
 import { ptBR } from "date-fns/locale";
-
+import * as SplashScreen from "expo-splash-screen";
+import { StatusBar } from "expo-status-bar";
+import { NativeWindStyleSheet } from "nativewind";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { Provider as PaperProvider, Snackbar } from "react-native-paper";
 import { pt, registerTranslation } from "react-native-paper-dates";
-import { useMessageStore } from "./src/store/message";
 
-import { useRequestPermissions } from "./src/hooks/useRequestPermissions";
 import { Loading } from "./src/components/Loading";
+import { DataProvider } from "./src/contexts/data";
 import { LoadingProvider } from "./src/contexts/loading";
+import { useRequestPermissions } from "./src/hooks/useRequestPermissions";
+import { Routes } from "./src/routes";
+import { useMessageStore } from "./src/store/message";
+import { CombinedDefaultTheme } from "./src/styles/theme";
 
 registerTranslation("pt", pt);
 

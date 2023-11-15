@@ -1,17 +1,14 @@
+import { LinkingOptions, NavigationContainer } from "@react-navigation/native";
 import * as Linking from "expo-linking";
 
-import {
-  LinkingOptions,
-  NavigationContainer,
-  getStateFromPath,
-} from "@react-navigation/native";
 
-import { CombinedDefaultTheme } from "../styles/theme";
+import { RootNavigatorParamList } from "../../@types/navigation";
 import { useToken } from "../store/auth";
+import { CombinedDefaultTheme } from "../styles/theme";
 
 import { AppRoutes } from "./app.routes";
 import { GuestRoutes } from "./guest.routes";
-import { RootNavigatorParamList } from "../../@types/navigation";
+
 
 const prefix = Linking.createURL("/");
 

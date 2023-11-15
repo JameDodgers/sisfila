@@ -1,4 +1,5 @@
 import { Button, Card } from "react-native-paper";
+
 import { User } from "../models/User";
 
 type Props = {

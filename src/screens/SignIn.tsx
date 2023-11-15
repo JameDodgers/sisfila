@@ -6,16 +6,17 @@ import {
   TextInput as RNTextInput,
 } from "react-native";
 
-import * as Google from "expo-auth-session/providers/google";
 import { useNavigation } from "@react-navigation/native";
-import * as WebBrowser from "expo-web-browser";
+import * as Google from "expo-auth-session/providers/google";
 import Constants from "expo-constants";
-import { useUserQueries } from "../queries/user";
-import { Button, Text } from "react-native-paper";
-
-import * as Yup from "yup";
+import * as WebBrowser from "expo-web-browser";
 import { Formik } from "formik";
+import { Button, Text } from "react-native-paper";
+import * as Yup from "yup";
+
 import { FormikTextInput } from "../components/FormikTextInput";
+import { useUserQueries } from "../queries/user";
+
 const EXPO_CLIENT_ID = process.env.EXPO_CLIENT_ID;
 const IOS_CLIENT_ID = process.env.ANDROID_CLIENT_ID;
 const ANDROID_CLIENT_ID = process.env.IOS_CLIENT_ID;

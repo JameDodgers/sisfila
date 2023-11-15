@@ -1,13 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import organizationsApi from "../services/api/admin/organizations";
 
-import { useUserQueries } from "./user";
-import { useUser } from "../store/auth";
-
-import { setCurrentOrganizationId } from "../store/organizer";
-import { organizationsKeys } from "./keys";
-import { Role } from "../models/User";
 import { PrivateOrganization } from "../models/Organization";
+import { Role } from "../models/User";
+import organizationsApi from "../services/api/admin/organizations";
+import { useUser } from "../store/auth";
+import { setCurrentOrganizationId } from "../store/organizer";
+
+import { organizationsKeys } from "./keys";
+import { useUserQueries } from "./user";
 
 export const useOrganizationsQueries = () => {
   const queryClient = useQueryClient();

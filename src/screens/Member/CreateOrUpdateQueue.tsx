@@ -1,20 +1,20 @@
 import { useEffect, useLayoutEffect, useState } from "react";
-
-import _ from "lodash";
-
-import { useOrganizerStore } from "../../store/organizer";
 import { View } from "react-native";
-import * as Yup from "yup";
-import { Button } from "react-native-paper";
-import { ScrollView } from "../../libs/styled";
+
 import { Formik } from "formik";
-import { FormikTextInput } from "../../components/FormikTextInput";
-import { useQueuesQueries } from "../../queries/queues";
-import { useGroupsQueries } from "../../queries/groups";
-import { SafeAreaInsetsContainer } from "../../components/SafeInsetsContainer";
+import _ from "lodash";
+import { Button } from "react-native-paper";
+import * as Yup from "yup";
+
+import { ServicesStackScreenProps } from "../../../@types/navigation";
 import { CheckboxList } from "../../components/CheckboxList";
 import { CustomTextInput } from "../../components/CustomTextInput";
-import { ServicesStackScreenProps } from "../../../@types/navigation";
+import { FormikTextInput } from "../../components/FormikTextInput";
+import { SafeAreaInsetsContainer } from "../../components/SafeInsetsContainer";
+import { ScrollView } from "../../libs/styled";
+import { useGroupsQueries } from "../../queries/groups";
+import { useQueuesQueries } from "../../queries/queues";
+import { useOrganizerStore } from "../../store/organizer";
 
 interface FormValues {
   name: string;

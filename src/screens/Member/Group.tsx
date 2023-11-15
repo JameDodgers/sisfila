@@ -1,12 +1,12 @@
 import { useCallback, useLayoutEffect } from "react";
-import { DataTable, Text } from "react-native-paper";
-import { Button } from "react-native-paper";
-
-import { useOrganizerStore } from "../../store/organizer";
-import { GroupsStackScreenProps } from "../../../@types/navigation";
 import { FlatList, View } from "react-native";
-import { useGroupsQueries } from "../../queries/groups";
+
+import { DataTable, Text , Button } from "react-native-paper";
+
+import { GroupsStackScreenProps } from "../../../@types/navigation";
 import { CustomNavigationBar } from "../../components/CustomNavigationBar";
+import { useGroupsQueries } from "../../queries/groups";
+import { useOrganizerStore } from "../../store/organizer";
 
 type Props = GroupsStackScreenProps<"Group">;
 

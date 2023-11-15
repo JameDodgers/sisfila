@@ -1,6 +1,6 @@
 import { forwardRef } from "react";
-import { TextInput } from "react-native";
-import { Platform } from "react-native";
+import { TextInput , Platform } from "react-native";
+
 import {
   TextInput as PaperTextInput,
   TextInputProps,

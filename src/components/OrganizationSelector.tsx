@@ -1,12 +1,14 @@
-import { Divider, List, Menu, Text } from "react-native-paper";
-import { useOrganizationsQueries } from "../queries/organizations";
-import Icon from "@expo/vector-icons/MaterialCommunityIcons";
-import { useOrganizerStore } from "../store/organizer";
 import { useState } from "react";
-import { Pressable, View } from "react-native";
+import { View , Pressable } from "react-native";
+
+import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import { useNavigation } from "@react-navigation/native";
+import { Divider, List, Menu, Text } from "react-native-paper";
+
 import { Organization } from "../models/Organization";
 import { Role } from "../models/User";
+import { useOrganizationsQueries } from "../queries/organizations";
+import { useOrganizerStore } from "../store/organizer";
 
 export const OrganizationSelector = () => {
   const navigation = useNavigation();

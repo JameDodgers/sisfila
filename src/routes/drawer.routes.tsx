@@ -1,20 +1,22 @@
+import { useEffect } from "react";
+import { Platform } from "react-native";
+
 import { createDrawerNavigator } from "@react-navigation/drawer";
 
+import { RootNavigatorScreenProps } from "../../@types/navigation";
 import CustomDrawerContent from "../components/CustomDrawerContent";
-
-import { Platform } from "react-native";
-import { GroupsRoutes } from "./groups.routes";
-import { ServicesRoutes } from "./services.routes";
-import { DesksRoutes } from "./desks.routes";
 import { CustomNavigationBar } from "../components/CustomNavigationBar";
-import { OrganizationDetails } from "../screens/Member/OrganizationDetails";
+import { Role } from "../models/User";
+import { useOrganizationsQueries } from "../queries/organizations";
 import { Attendants } from "../screens/Member/Attendants";
 import { Clients } from "../screens/Member/Clients";
+import { OrganizationDetails } from "../screens/Member/OrganizationDetails";
 import { setCurrentOrganizationId } from "../store/organizer";
-import { useOrganizationsQueries } from "../queries/organizations";
-import { Role } from "../models/User";
-import { RootNavigatorScreenProps } from "../../@types/navigation";
-import { useEffect } from "react";
+
+import { DesksRoutes } from "./desks.routes";
+import { GroupsRoutes } from "./groups.routes";
+import { ServicesRoutes } from "./services.routes";
+
 
 const { Navigator, Screen } = createDrawerNavigator();
 

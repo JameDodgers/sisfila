@@ -1,5 +1,7 @@
 import { View } from "react-native";
+
 import { ActivityIndicator } from "react-native-paper";
+
 import { useLoading } from "../contexts/loading";
 
 export const Loading = () => {

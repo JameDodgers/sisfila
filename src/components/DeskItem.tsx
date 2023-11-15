@@ -1,8 +1,10 @@
+import { ScrollView } from "react-native";
+
 import { Button, Card, Chip } from "react-native-paper";
+
 import { Desk } from "../models/Desk";
 
 import { CardMenu } from "./CardMenu";
-import { ScrollView } from "react-native";
 
 type Props = {
   item: Desk;

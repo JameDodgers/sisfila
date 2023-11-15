@@ -1,18 +1,19 @@
-import { useNavigation } from "@react-navigation/native";
-import { RootNavigatorScreenProps } from "../../../@types/navigation";
-import { SafeAreaInsetsContainer } from "../../components/SafeInsetsContainer";
 import {
   Keyboard,
   Platform,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { Button, Text, useTheme } from "react-native-paper";
 
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useNavigation } from "@react-navigation/native";
 import { Formik } from "formik";
+import { Button, Text, useTheme } from "react-native-paper";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import * as Yup from "yup";
+
+import { RootNavigatorScreenProps } from "../../../@types/navigation";
 import { FormikTextInput } from "../../components/FormikTextInput";
+import { SafeAreaInsetsContainer } from "../../components/SafeInsetsContainer";
 
 type FormValues = {
   organizationId: string;

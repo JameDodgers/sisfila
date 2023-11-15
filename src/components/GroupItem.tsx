@@ -1,5 +1,7 @@
-import { Group } from "../models/Group";
 import { Card } from "react-native-paper";
+
+import { Group } from "../models/Group";
+
 import { CardMenu } from "./CardMenu";
 
 type Props = {

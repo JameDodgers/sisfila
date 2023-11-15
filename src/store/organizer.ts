@@ -1,8 +1,8 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { StateCreator } from "zustand";
 import { persist, createJSONStorage, PersistOptions } from "zustand/middleware";
 
 import { create } from "./helpers";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { StateCreator } from "zustand";
 
 export interface OrganizerStore {
   currentOrganizationId?: string;

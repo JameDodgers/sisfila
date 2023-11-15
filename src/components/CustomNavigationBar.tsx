@@ -1,10 +1,11 @@
-import { Appbar } from "react-native-paper";
 
+import { ReactNode } from "react";
+import { Platform } from "react-native";
+
+import { DrawerHeaderProps } from "@react-navigation/drawer";
 import { getHeaderTitle } from "@react-navigation/elements";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
-import { ReactNode } from "react";
-import { DrawerHeaderProps } from "@react-navigation/drawer";
-import { Platform } from "react-native";
+import { Appbar } from "react-native-paper";
 
 type HeaderProps = NativeStackHeaderProps | DrawerHeaderProps;
 

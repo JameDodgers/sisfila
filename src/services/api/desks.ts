@@ -1,5 +1,6 @@
 import { Client } from "../../models/Client";
 import { Desk } from "../../models/Desk";
+
 import api from "./config";
 
 type CreateParams = {

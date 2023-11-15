@@ -1,9 +1,10 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { CreateOrUpdateService } from "../screens/Member/CreateOrUpdateService";
-import { Services } from "../screens/Member/Services";
 
 import { CustomNavigationBar } from "../components/CustomNavigationBar";
 import { CreateOrUpdateQueue } from "../screens/Member/CreateOrUpdateQueue";
+import { CreateOrUpdateService } from "../screens/Member/CreateOrUpdateService";
+import { Services } from "../screens/Member/Services";
+
 
 const { Navigator, Screen } = createNativeStackNavigator();
 

@@ -1,9 +1,7 @@
-import { View } from "react-native";
-import { AttendantItem } from "../../components/AttendantItem";
-import { useAttendantsQueries } from "../../queries/attendants";
-import { useOrganizerStore } from "../../store/organizer";
 
 import { useCallback, useEffect, useState } from "react";
+import { View } from "react-native";
+
 import { useNavigation } from "@react-navigation/native";
 import {
   ActivityIndicator,
@@ -12,13 +10,16 @@ import {
   Portal,
   Text,
 } from "react-native-paper";
-import { OrganizationDrawerScreenProps } from "../../../@types/navigation";
-import { CustomNavigationBar } from "../../components/CustomNavigationBar";
-import { Dialog as StyledDialog, StyledFlatList } from "../../libs/styled";
-import { CustomTextInput } from "../../components/CustomTextInput";
 
-import { useMessageStore } from "../../store/message";
+import { OrganizationDrawerScreenProps } from "../../../@types/navigation";
+import { AttendantItem } from "../../components/AttendantItem";
+import { CustomNavigationBar } from "../../components/CustomNavigationBar";
+import { CustomTextInput } from "../../components/CustomTextInput";
+import { Dialog as StyledDialog, StyledFlatList } from "../../libs/styled";
 import { Role } from "../../models/User";
+import { useAttendantsQueries } from "../../queries/attendants";
+import { useMessageStore } from "../../store/message";
+import { useOrganizerStore } from "../../store/organizer";
 
 export const Attendants = () => {
   const navigation =

@@ -1,12 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
 import servicesApi, {
   GetClientPositionInServiceParams,
   GetClientPositionInServiceResponse,
 } from "../../services/api/services";
-
-import { useNotificationsQueries } from "./notifications";
 import { useAuthStore } from "../../store/auth";
+
 import { servicesKeys } from "./keys";
+import { useNotificationsQueries } from "./notifications";
 
 type UseGetServices = {
   organizationId: string;

@@ -1,14 +1,16 @@
-import { Button } from "react-native-paper";
-import { View } from "react-native";
-import { Formik } from "formik";
-
-import * as Yup from "yup";
-import { GroupsStackScreenProps } from "../../../@types/navigation";
-import { useOrganizerStore } from "../../store/organizer";
-import { useGroupsQueries } from "../../queries/groups";
-import { SafeAreaInsetsContainer } from "../../components/SafeInsetsContainer";
-import { FormikTextInput } from "../../components/FormikTextInput";
 import { useLayoutEffect } from "react";
+import { View } from "react-native";
+
+import { Formik } from "formik";
+import { Button } from "react-native-paper";
+import * as Yup from "yup";
+
+import { GroupsStackScreenProps } from "../../../@types/navigation";
+import { FormikTextInput } from "../../components/FormikTextInput";
+import { SafeAreaInsetsContainer } from "../../components/SafeInsetsContainer";
+import { useGroupsQueries } from "../../queries/groups";
+import { useOrganizerStore } from "../../store/organizer";
+
 
 interface FormValues {
   name: string;

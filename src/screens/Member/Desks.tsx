@@ -1,15 +1,16 @@
-import { View } from "react-native";
-import { useOrganizerStore } from "../../store/organizer";
-import { useNavigation } from "@react-navigation/native";
-import { DesksStackScreenProps } from "../../../@types/navigation";
-import { useDesksQueries } from "../../queries/desks";
-import { DeskItem } from "../../components/DeskItem";
 import { useCallback, useEffect, useLayoutEffect, useState } from "react";
+import { View } from "react-native";
 
-import { useUser } from "../../store/auth";
-import { StyledFlatList } from "../../libs/styled";
-import { CustomNavigationBar } from "../../components/CustomNavigationBar";
+import { useNavigation } from "@react-navigation/native";
 import { ActivityIndicator, Appbar } from "react-native-paper";
+
+import { DesksStackScreenProps } from "../../../@types/navigation";
+import { CustomNavigationBar } from "../../components/CustomNavigationBar";
+import { DeskItem } from "../../components/DeskItem";
+import { StyledFlatList } from "../../libs/styled";
+import { useDesksQueries } from "../../queries/desks";
+import { useUser } from "../../store/auth";
+import { useOrganizerStore } from "../../store/organizer";
 
 export const Desks = () => {
   const navigation =

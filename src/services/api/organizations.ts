@@ -1,4 +1,5 @@
 import { Organization } from "../../models/Organization";
+
 import api from "./config";
 
 const getOne = (id: string) =>
