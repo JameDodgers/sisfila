@@ -28,6 +28,8 @@ export const Desk = ({ route }: Props) => {
 
   const deskId = route.params?.deskId;
 
+  const showMessage = useMessageStore((state) => state.show);
+
   const { currentOrganizationId = "" } = useOrganizerStore();
 
   const {
@@ -84,6 +86,11 @@ export const Desk = ({ route }: Props) => {
     callNext(deskId);
   };
 
+  const handleCopyRegistrationId = async () => {
+    await Clipboard.setStringAsync(client?.registrationId as string);
+    showMessage("Registro copiado para a área de transferência");
+  };
+
   return (
     <SafeAreaInsetsContainer>
       <View className="flex-1">
@@ -98,7 +105,14 @@ export const Desk = ({ route }: Props) => {
               {client?.name}
             </Text>
             <Text variant="titleMedium">Registro</Text>
-            <Text variant="bodyLarge">{client?.registrationId}</Text>
+            <View className="flex-row items-center">
+              <Text variant="bodyLarge">{client?.registrationId}</Text>
+              <IconButton
+                icon="content-copy"
+                size={20}
+                onPress={handleCopyRegistrationId}
+              />
+            </View>
           </Card.Content>
           <Card.Actions>
             <Button
@@ -132,7 +146,9 @@ export const Desk = ({ route }: Props) => {
                   let title = queue.name;
 
                   if (queue.clients.length > 0) {
-                    title += ` (${queue.clients.length} cliente)`;
+                    title += ` (${queue.clients.length} cliente${
+                      queue.clients.length > 1 ? "s" : ""
+                    })`;
                   }
 
                   return (
