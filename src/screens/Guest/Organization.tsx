@@ -161,7 +161,7 @@ export const Organization = ({ route }: Props) => {
           <Dialog.Content>
             <CustomTextInput
               autoFocus
-              label="Número de matrícula"
+              label="Número de identificação"
               value={registrationId}
               onChangeText={setRegistrationId}
             />

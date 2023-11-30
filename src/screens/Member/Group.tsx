@@ -55,14 +55,18 @@ export const Group = ({ route, navigation }: Props) => {
       <DataTable className="flex-1 justify-between">
         <DataTable.Header>
           <DataTable.Title>Nome</DataTable.Title>
-          <DataTable.Title>Matrícula</DataTable.Title>
+          <DataTable.Title>Registro</DataTable.Title>
         </DataTable.Header>
         <FlatList
           data={group?.clients}
           renderItem={({ item }) => (
             <DataTable.Row key={item.id}>
-              <DataTable.Cell>{item.name}</DataTable.Cell>
-              <DataTable.Cell>{item.registrationId}</DataTable.Cell>
+              <DataTable.Cell>
+                <Text selectable>{item.name}</Text>
+              </DataTable.Cell>
+              <DataTable.Cell>
+                <Text selectable>{item.registrationId}</Text>
+              </DataTable.Cell>
             </DataTable.Row>
           )}
           ListEmptyComponent={ListEmptyComponent}

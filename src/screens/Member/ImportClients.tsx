@@ -92,9 +92,9 @@ export const ImportClients = ({
                         </Text>
                       </View>
                       <Text variant="bodyMedium">
-                        Cole aqui as matrículas e nomes dos alunos, separados
-                        por vírgula, ponto e vírgula ou tabulação, um aluno por
-                        linha. Exemplo:
+                        Cole aqui as matrículas e nomes dos clientes, separados
+                        por vírgula, ponto e vírgula ou tabulação, um cliente
+                        por linha. Exemplo:
                       </Text>
                       <Text variant="bodySmall">
                         1234 Fulano de Tal{"\n"}
