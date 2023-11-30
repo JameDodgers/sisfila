@@ -54,32 +54,26 @@ export const Queue = ({ route }: Props) => {
                 <Text variant="headlineLarge">{queueName}</Text>
                 <Text variant="labelLarge">{queue?.description}</Text>
               </View>
-              <View className="mb-8 flex-row items-center justify-between">
-                <View className="items-center">
-                  <Text variant="labelLarge">Posição geral</Text>
-                  <Text variant="bodyMedium">{data?.position?.toString()}</Text>
-                </View>
-                <View className="items-center">
-                  <Text variant="labelLarge">Aguandando</Text>
-                  <Text variant="bodyMedium">{queue?.clients.length}</Text>
-                </View>
+              <View className="items-center mb-8">
+                <Text variant="labelLarge">Sua posição</Text>
+                <Text variant="bodyMedium">{data?.position?.toString()}</Text>
               </View>
-              <View className="mb-8">
-                <Text variant="titleSmall">Último chamado</Text>
-                {queue?.lastClientCalled && (
+              {queue?.lastClientCalled && (
+                <View className="mb-8">
+                  <Text variant="titleSmall">Último chamado</Text>
                   <Text variant="headlineLarge">
                     {queue?.lastClientCalled.name}
                   </Text>
-                )}
-              </View>
+                </View>
+              )}
               {queue && queue?.clients.length > 0 && (
-                <Text variant="titleSmall">Aguardando</Text>
+                <Text variant="titleSmall">{`Aguardando na fila (${queue?.clients.length})`}</Text>
               )}
             </View>
           }
           data={queue?.clients}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item, index }) => (
+          keyExtractor={(item: any) => item.id}
+          renderItem={({ item, index }: any) => (
             <ClientItem key={item.id} index={index + 1} item={item} />
           )}
         />
