@@ -1,6 +1,5 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-
 import { AppStackParamList } from "../../@types/navigation";
 import { CustomNavigationBar } from "../components/CustomNavigationBar";
 import { CreateOrganization } from "../screens/Member/CreateOrganization";
@@ -24,6 +23,7 @@ export const AppRoutes = () => {
       <Screen
         name="Drawer"
         options={{ headerShown: false }}
+        initialParams={{ organizationId: currentOrganizationId }}
         component={DrawerRoutes}
       />
       <Screen

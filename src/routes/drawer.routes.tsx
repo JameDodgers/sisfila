@@ -17,7 +17,6 @@ import { DesksRoutes } from "./desks.routes";
 import { GroupsRoutes } from "./groups.routes";
 import { ServicesRoutes } from "./services.routes";
 
-
 const { Navigator, Screen } = createDrawerNavigator();
 
 type Props = {
