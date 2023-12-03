@@ -108,6 +108,8 @@ export const Desk = ({ route }: Props) => {
             <View className="flex-row items-center">
               <Text variant="bodyLarge">{client?.registrationId}</Text>
               <IconButton
+                accessibilityLabel="Copiar"
+                accessibilityHint="Copiar registro do cliente"
                 icon="content-copy"
                 size={20}
                 onPress={handleCopyRegistrationId}

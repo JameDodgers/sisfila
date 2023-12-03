@@ -27,7 +27,14 @@ export const QueueItem = ({ item, openSettings, remove, ...props }: Props) => {
   return (
     <List.Item
       title={item.name}
-      left={(props) => <IconButton {...props} icon="drag-horizontal-variant" />}
+      left={(props) => (
+        <IconButton
+          accessibilityLabel="Arrastar"
+          accessibilityHint="Arrastar para mudar posição da fila na lista"
+          {...props}
+          icon="drag-horizontal-variant"
+        />
+      )}
       right={() => <CardMenu options={cardMenuOptions} />}
       descriptionNumberOfLines={2}
       description={item.groups.map((group) => group.name).join(", ")}

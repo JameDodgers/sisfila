@@ -84,6 +84,8 @@ export const Desks = () => {
           headerRight={
             <Appbar.Action
               icon="plus"
+              accessibilityLabel="Adicionar"
+              accessibilityHint="Adicionar guichê"
               onPress={() => {
                 navigation.navigate("CreateOrUpdateDesk");
               }}

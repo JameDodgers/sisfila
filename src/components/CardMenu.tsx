@@ -26,7 +26,13 @@ export const CardMenu = ({ options }: Props) => {
     <Menu
       visible={visible}
       onDismiss={closeMenu}
-      anchor={<IconButton icon="dots-vertical" onPress={openMenu} />}
+      anchor={
+        <IconButton
+          accessibilityLabel="Menu de opções"
+          icon="dots-vertical"
+          onPress={openMenu}
+        />
+      }
     >
       {options.map(({ onPress, ...option }, index) => (
         <Menu.Item key={index} {...option} onPress={onPressMenuItem(onPress)} />

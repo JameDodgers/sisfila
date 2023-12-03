@@ -1,4 +1,3 @@
-
 import { ReactNode } from "react";
 import { Platform } from "react-native";
 
@@ -28,7 +27,12 @@ export const CustomNavigationBar = ({
       {"back" in props && props.back ? (
         <Appbar.BackAction onPress={navigation.goBack} />
       ) : "toggleDrawer" in navigation && Platform.OS !== "web" ? (
-        <Appbar.Action icon="menu" onPress={navigation.toggleDrawer} />
+        <Appbar.Action
+          icon="menu"
+          accessibilityLabel="Menu"
+          accessibilityHint="Abrir menu"
+          onPress={navigation.toggleDrawer}
+        />
       ) : null}
 
       <Appbar.Content title={props.title || title} />

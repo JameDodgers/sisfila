@@ -11,8 +11,6 @@ import { useRefreshOnFocus } from "../../hooks/useRefreshOnFocus";
 import { StyledFlatList } from "../../libs/styled";
 import { useOrganizationsQueries } from "../../queries/organizations";
 
-
-
 export const Organizations = () => {
   const navigation =
     useNavigation<RootNavigatorScreenProps<"Organizations">["navigation"]>();
@@ -35,6 +33,8 @@ export const Organizations = () => {
           headerRight={
             <Appbar.Action
               icon="plus"
+              accessibilityLabel="Adicionar"
+              accessibilityHint="Adicionar organização"
               onPress={() => {
                 navigation.navigate("CreateOrganization");
               }}

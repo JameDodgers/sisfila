@@ -36,6 +36,8 @@ export const Groups = () => {
           headerRight={
             <Appbar.Action
               icon="plus"
+              accessibilityLabel="Adicionar"
+              accessibilityHint="Adicionar grupo"
               onPress={() => {
                 navigation.navigate("CreateOrUpdateGroup");
               }}

@@ -1,5 +1,3 @@
-
-
 import { useCallback, useLayoutEffect } from "react";
 import { View } from "react-native";
 
@@ -45,6 +43,8 @@ export const Services = () => {
         <CustomNavigationBar
           headerRight={
             <Appbar.Action
+              accessibilityLabel="Adicionar"
+              accessibilityHint="Adicionar serviço"
               icon="plus"
               onPress={() => {
                 navigation.navigate("CreateOrUpdateService");

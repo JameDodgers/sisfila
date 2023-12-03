@@ -1,4 +1,3 @@
-
 import { useLayoutEffect, useState } from "react";
 import { View } from "react-native";
 
@@ -57,9 +56,13 @@ export const OrganizationDetails = () => {
               label="URL para clientes"
               value={link}
               editable={false}
+              importantForAccessibility="no"
+              accessibilityElementsHidden
               right={
                 <TextInput.Icon
                   icon="content-copy"
+                  accessibilityLabel="Copiar"
+                  accessibilityHint="Copiar URL da organização"
                   size={20}
                   onPress={handleCopyLink}
                 />

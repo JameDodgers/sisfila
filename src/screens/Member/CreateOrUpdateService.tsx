@@ -361,7 +361,12 @@ export const CreateOrUpdateService = ({ route, navigation }: Props) => {
                       <View>
                         <View className="px-3 flex-row justify-between items-center">
                           <Text variant="titleMedium">Filas</Text>
-                          <IconButton icon="plus" onPress={handleCreateQueue} />
+                          <IconButton
+                            accessibilityLabel="Adicionar"
+                            accessibilityHint="Adicionar fila"
+                            icon="plus"
+                            onPress={handleCreateQueue}
+                          />
                         </View>
                         <HelperText type="info">
                           {sortedServiceQueues.length > 0
