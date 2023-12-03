@@ -123,10 +123,13 @@ export const SignIn = () => {
                 >
                   Entrar
                 </Button>
-                <Text className="self-end mt-2" variant="bodyMedium">
-                  Ainda não tem uma conta?{" "}
+                <View className="mt-2 flex-row self-end">
+                  <Text className="self-end" variant="bodyMedium">
+                    Ainda não tem uma conta?{" "}
+                  </Text>
                   <Text
                     variant="bodyMedium"
+                    accessibilityRole="button"
                     className="underline text-indigo-500"
                     onPress={() => {
                       navigation.navigate("SignUp");
@@ -134,7 +137,7 @@ export const SignIn = () => {
                   >
                     Cadastre-se
                   </Text>
-                </Text>
+                </View>
               </View>
             );
           }}

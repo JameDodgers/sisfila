@@ -121,10 +121,14 @@ export const SignUp = () => {
             }}
           </Formik>
 
-          <Text className="self-end mt-2" variant="bodyMedium">
-            Já possui uma conta?{" "}
+          <View className="flex-row mt-2 self-end">
+            <Text className="self-end" variant="bodyMedium">
+              Já possui uma conta?{" "}
+            </Text>
             <Text
+              href="/"
               variant="bodyMedium"
+              accessibilityRole="link"
               className="underline text-indigo-500"
               onPress={() => {
                 navigation.navigate("SignIn");
@@ -132,7 +136,7 @@ export const SignUp = () => {
             >
               Entrar
             </Text>
-          </Text>
+          </View>
         </View>
       </View>
     </KeyboardAvoidingView>

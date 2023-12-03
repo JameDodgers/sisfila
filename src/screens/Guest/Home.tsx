@@ -91,16 +91,19 @@ export const Home = () => {
                       >
                         Avançar
                       </Button>
-                      <Text variant="bodyMedium" className="self-end">
-                        É um coordenador?{" "}
+                      <View className="flex-row self-end">
+                        <Text variant="bodyMedium" className="self-end">
+                          É um coordenador?{" "}
+                        </Text>
                         <Text
                           variant="bodyMedium"
+                          accessibilityRole="button"
                           className="text-indigo-500"
                           onPress={handleSignIn}
                         >
                           Faça login
                         </Text>
-                      </Text>
+                      </View>
                     </View>
                   </View>
                 );
