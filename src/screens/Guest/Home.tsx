@@ -49,7 +49,11 @@ export const Home = () => {
 
   return (
     <SafeAreaInsetsContainer>
-      <TouchableWithoutFeedback onPress={handleDismiss}>
+      <TouchableWithoutFeedback
+        accessibilityRole="button"
+        importantForAccessibility="no"
+        onPress={handleDismiss}
+      >
         <View
           style={{
             paddingTop: insets.top,
